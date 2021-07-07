@@ -11,6 +11,7 @@ const CustomButton = styled.View`
 
 const Title = styled.Text`
   color: white;
+  font-size: 20px;
   font-weight: bold;
   text-transform: uppercase;
   text-align: center;

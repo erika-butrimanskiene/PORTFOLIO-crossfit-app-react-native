@@ -1,0 +1,12 @@
+{
+  "login": {
+    "Email": "El.paštas",
+    "Password": "Slaptažodis",
+    "SignIn": "Prisijugti",
+    "Start": "Pirmyn!",
+    "ForgotPsw": "Pamiršote slaptažodį?"
+  },
+  "signup": {
+    "SignUp": "Registruotis",
+  },
+}

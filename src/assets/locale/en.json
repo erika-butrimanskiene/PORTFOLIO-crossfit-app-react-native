@@ -1,0 +1,12 @@
+{
+  "login": {
+    "Email": "Email",
+    "Password": "Password",
+    "SignIn": "Login",
+    "Start": "Let's Go!",
+    "ForgotPsw": "Forgot your password?"
+  },
+  "signup": {
+    "SignUp": "Sign Up",
+  },
+}

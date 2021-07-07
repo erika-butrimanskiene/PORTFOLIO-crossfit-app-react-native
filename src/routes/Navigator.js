@@ -1,4 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
+import {theme} from "../../assets/styles/theme";
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -48,11 +49,11 @@ const Navigator = () => {
             component={LandingView}
             options={({navigation}) => ({
               title: '',
+              headerTransparent: true,
               headerStyle: {
-                backgroundColor: 'pink',
-                shadowColor: 'pink',
                 elevation: 0,
               },
+              headerTintColor: "white",
             })}
           />
           <Stack.Screen
@@ -60,22 +61,34 @@ const Navigator = () => {
             component={LoginView}
             options={({navigation}) => ({
               title: '',
+              headerTransparent: true,
               headerStyle: {
-                backgroundColor: 'pink',
-                shadowColor: 'pink',
                 elevation: 0,
               },
+              headerTintColor: "white",
             })}
           />
           <Stack.Screen
             name={ROUTES.Register}
             component={RegisterView}
-            options={({navigation}) => ({title: ''})}
+            options={({navigation}) => ({
+              title: '',
+              headerTransparent: true,
+              headerStyle: {
+                elevation: 0,
+              },
+              headerTintColor: "white",})}
           />
           <Stack.Screen
             name={ROUTES.Password}
             component={ForgotPasswordView}
-            options={({navigation}) => ({title: ''})}
+            options={({navigation}) => ({
+              title: '',
+              headerTransparent: true,
+              headerStyle: {
+                elevation: 0,
+              },
+              headerTintColor: "white",})}
           />
         </Stack.Navigator>
       )}

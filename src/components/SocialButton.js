@@ -5,8 +5,10 @@ import {TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const CustomButton = styled.View`
-  width: 250px;
-  border-radius: 20px;
+  margin: 10px;
+  padding: 5px 0px;
+  width: 150px;
+  border-radius: 30px;
   flex-direction: row;
   align-items: center;
   justify-content: center;

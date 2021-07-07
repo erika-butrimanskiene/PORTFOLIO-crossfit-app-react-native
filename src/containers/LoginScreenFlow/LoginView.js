@@ -1,12 +1,51 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import styled from 'styled-components';
+import {View, Text, TouchableOpacity, StatusBar} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {theme} from "../../assets/styles/theme";
+
 import ROUTES from '../../routes/Routes';
+import {AuthContext} from '../../routes/AuthProvider';
+import {useTranslation} from 'react-i18next';
+
+//COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
-import {AuthContext} from '../../routes/AuthProvider';
+
+const LoginContainer = styled(LinearGradient)`
+  flex: 1;
+  padding-top: 60px;
+  font-size: 20px;
+  align-items: center;
+`;
+
+const LoginHeading = styled.Text`
+  margin: 15px 0px 25px 0px;
+  color: ${theme.appColors.whiteColor};
+  font-size: 30px;
+`;
+
+const LoginInputs = styled.View`
+margin-bottom: 20px;
+align-items: center;
+`
+const ForgotPasswordText = styled.Text`
+color: ${theme.appColors.whiteColor};
+font-style: italic;
+padding-bottom: 15px;
+`
+
+const SocialButtons = styled.View`
+flex-direction: row;
+margin-top: 40px;
+align-items: center;
+`
+
 
 const LoginView = ({navigation}) => {
+  const {t} = useTranslation();
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -16,17 +55,18 @@ const LoginView = ({navigation}) => {
     navigation.navigate(ROUTES.Password);
   };
 
-  const navigateToSignUp = () => {
-    navigation.navigate(ROUTES.Register);
-  };
 
   return (
-    <View>
-      <Text>Login Page</Text>
+    <LoginContainer colors={[`${theme.appColors.darkAccentColor}`, `${theme.appColors.lightAccentColor}`]}>
+    <StatusBar
+        backgroundColor={`${theme.appColors.darkAccentColor}`}
+      />
+      <LoginHeading>MyCrossfit</LoginHeading>
+      <LoginInputs>
       <AuthFormInput
         labelValue={email}
         onChangeText={userEmail => setEmail(userEmail)}
-        placeholderText="Email"
+        placeholderText={t("login:Email")}
         iconType="user"
         keyboardType="email-address"
         autoCapitalize="none"
@@ -36,45 +76,47 @@ const LoginView = ({navigation}) => {
       <AuthFormInput
         labelValue={password}
         onChangeText={userPassword => setPassword(userPassword)}
-        placeholderText="Password"
+        placeholderText={t("login:Password")}
         iconType="lock"
         secureTextEntry={true}
       />
 
+      <TouchableOpacity onPress={navigateToForgotPassword}>
+        <ForgotPasswordText>{t("login:ForgotPsw")}</ForgotPasswordText>
+      </TouchableOpacity>
+
+      </LoginInputs>
+
       <Button
-        text="Sign In"
-        bgColor="blue"
+        text={t('login:Start')}
+        bgColor={`${theme.appColors.darkAccentColor}`}
         onPress={() => login(email, password)}
       />
 
-      <TouchableOpacity onPress={navigateToForgotPassword}>
-        <Text>Forgot your password?</Text>
-      </TouchableOpacity>
 
+      <SocialButtons>
       <SocialButton
-        text="Sign In with Facebook"
+        text="Facebook"
         btnType="facebook"
         iconColor="#4867aa"
-        bgColor="#e6eaf4"
+        bgColor={`${theme.appColors.whiteColor}`}
         onPress={() => {
           fbLogin();
         }}
       />
 
       <SocialButton
-        text="Sign In with Google"
+        text="Google"
         btnType="google"
         iconColor="#de4d41"
-        bgColor="#5e7ea"
+        bgColor={`${theme.appColors.whiteColor}`}
         onPress={() => {
           alert('Google Clicked');
         }}
       />
+      </SocialButtons>
 
-      <TouchableOpacity onPress={navigateToSignUp}>
-        <Text>Do not have account? Create here</Text>
-      </TouchableOpacity>
-    </View>
+    </LoginContainer>
   );
 };
 
