@@ -1,8 +1,8 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
 import ROUTES from '../../routes/Routes';
-import SwitchSelector from 'react-native-switch-selector';
 import {useTranslation} from 'react-i18next';
+import SwitchSelector from 'react-native-switch-selector';
 import styled, {withTheme} from 'styled-components';
 
 //COMPONENTS
