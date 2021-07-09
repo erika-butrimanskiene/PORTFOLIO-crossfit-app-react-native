@@ -1,9 +1,10 @@
-
 export const theme = {
-    appColors: {
-        "darkAccentColor": "#3c1053",
-        "lightAccentColor": "#B63C73",
-        "whiteColor": "#ffffff",
-        "blackColor": "#000000"
-    }
-}
+  appColors: {
+    primaryColor: '#111924',
+    secondColor: '#181a1c',
+    darkAccentColor: '#3c1053',
+    lightAccentColor: '#BD3CB5',
+    whiteColor: '#ffffff',
+    blackColor: '#000000',
+  },
+};

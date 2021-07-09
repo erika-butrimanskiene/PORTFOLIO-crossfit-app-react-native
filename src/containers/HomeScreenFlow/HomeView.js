@@ -1,21 +1,37 @@
 import React, {useContext} from 'react';
-import {View, Text} from 'react-native';
+import {StatusBar} from 'react-native';
 import {AuthContext} from '../../routes/AuthProvider';
+import styled, {withTheme} from 'styled-components';
+
+//COMPONENTS
 import Button from '../../components/Button';
 
-const HomeView = () => {
-const {logout} = useContext(AuthContext);
+const HomeView = ({theme}) => {
+  const {logout} = useContext(AuthContext);
 
   return (
-    <View>
-      <Text>Welcome</Text>
+    <HomeContainer>
+      <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
+      <Heading>Welcome To Home Page</Heading>
       <Button
         text="Logout"
-        bgColor="blue"
+        bgColor={`${theme.appColors.lightAccentColor}`}
         onPress={() => logout()}
       />
-    </View>
+    </HomeContainer>
   );
 };
 
-export default HomeView;
+const HomeContainer = styled.View`
+  flex: 1;
+  padding-top: 60px;
+  font-size: 20px;
+  align-items: center;
+  background-color: ${({theme}) => theme.appColors.primaryColor};
+`;
+
+const Heading = styled.Text`
+  color: ${({theme}) => theme.appColors.whiteColor}; ;
+`;
+
+export default withTheme(HomeView);

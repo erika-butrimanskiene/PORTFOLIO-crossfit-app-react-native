@@ -1,8 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+
+const Button = ({text, onPress, bgColor}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <CustomButton style={{backgroundColor: bgColor}}>
+        <Title>{text}</Title>
+      </CustomButton>
+    </TouchableOpacity>
+  );
+};
 
 const CustomButton = styled.View`
+  margin: 10px 0px;
   width: 200px;
   border-radius: 50px;
   padding-vertical: 14px;
@@ -16,15 +27,5 @@ const Title = styled.Text`
   text-transform: uppercase;
   text-align: center;
 `;
-
-const Button = ({text, onPress, bgColor}) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <CustomButton style={{backgroundColor: bgColor}}>
-        <Title>{text}</Title>
-      </CustomButton>
-    </TouchableOpacity>
-  );
-};
 
 export default Button;

@@ -35,60 +35,41 @@ const Navigator = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <Stack.Navigator>
-          <Stack.Screen
-            name={ROUTES.Home}
-            component={HomeView}
-            options={({navigation}) => ({title: ''})}
-          />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator>
-          <Stack.Screen
-            name={ROUTES.Landing}
-            component={LandingView}
-            options={({navigation}) => ({
+        <Stack.Navigator screenOptions={{
               title: '',
               headerTransparent: true,
               headerStyle: {
                 elevation: 0,
               },
-              headerTintColor: "white",
-            })}
+              headerTintColor: "white"}}>
+          <Stack.Screen
+            name={ROUTES.Home}
+            component={HomeView}
+          />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator screenOptions={{
+              title: '',
+              headerTransparent: true,
+              headerStyle: {
+                elevation: 0,
+              },
+              headerTintColor: "white"}}>
+          <Stack.Screen
+            name={ROUTES.Landing}
+            component={LandingView}
           />
           <Stack.Screen
             name={ROUTES.Login}
             component={LoginView}
-            options={({navigation}) => ({
-              title: '',
-              headerTransparent: true,
-              headerStyle: {
-                elevation: 0,
-              },
-              headerTintColor: "white",
-            })}
           />
           <Stack.Screen
             name={ROUTES.Register}
             component={RegisterView}
-            options={({navigation}) => ({
-              title: '',
-              headerTransparent: true,
-              headerStyle: {
-                elevation: 0,
-              },
-              headerTintColor: "white",})}
           />
           <Stack.Screen
             name={ROUTES.Password}
             component={ForgotPasswordView}
-            options={({navigation}) => ({
-              title: '',
-              headerTransparent: true,
-              headerStyle: {
-                elevation: 0,
-              },
-              headerTintColor: "white",})}
           />
         </Stack.Navigator>
       )}

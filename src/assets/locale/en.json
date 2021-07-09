@@ -8,5 +8,31 @@
   },
   "signup": {
     "SignUp": "Sign Up",
+    "Email": "Email",
+    "Password": "Password",
+    "ConfirmPassword": "Confirm Password"
   },
+  "landing": {
+    "firstMessage": "-Register to MyCrossfit workouts-",
+    "secondMessage": "-Track your results-"
+  },
+  "forgotPassword": {
+    "message": "It's Okay! Reset your password",
+    "enterEmail": "Enter Your Email",
+    "continueBtn": "Continue"
+  },
+  "authErrors": {
+    "fieldsCanNotBeEmpty": "All fields are required",
+    "passwordsNotMatch": "Passwords must match",
+    "passwordLength": "Password min length is 6 characters",
+    "auth/account-exists-with-different-credential": "Account exists with different credential",
+    "auth/credential-already-in-use": "Credential already in use",
+    "auth/email-already-in-use": "Email already in use",
+    "auth/invalid-credential": "Invalid credential",
+    "auth/invalid-email": "Invalid email",
+    "auth/user-not-found": "User not found",
+    "auth/weak-password": "Weak password",
+    "auth/wrong-password": "Wrong password",
+    "auth/unknown": "Unknown error"
+  }
 }

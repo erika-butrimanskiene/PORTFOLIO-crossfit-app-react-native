@@ -8,5 +8,31 @@
   },
   "signup": {
     "SignUp": "Registruotis",
+    "Email": "El.paštas",
+    "Password": "Slaptažodis",
+    "ConfirmPassword": "Pakartoki slaptažodį"
   },
+  "landing": {
+    "firstMessage": "-Registruokis į MyCrossfit treniruotes-",
+    "secondMessage": "-Sek savo rezultatus-"
+  },
+  "forgotPassword": {
+    "message": "Viskas gerai! Atkurki slaptažodį",
+    "enterEmail": "Įveski el.paštą",
+    "continueBtn": "Tęsti"
+  },
+  "authErrors": {
+    "fieldsCanNotBeEmpty": "Visi laukeliai yra privalomi",
+    "passwordsNotMatch": "Slaptažodžiai turi sutapti",
+    "passwordLength": "Slaptažodžio minimalus ilgis yra 6 simboliai",
+    "auth/account-exists-with-different-credential": "Sąskaita egzistuoja su skirtingais įgaliojimais",
+    "auth/credential-already-in-use": "Kredencialai jau naudojami",
+    "auth/email-already-in-use": "Elektroninis paštas jau yra naudojamas",
+    "auth/invalid-credential": "Neteisingas įgaliojimas",
+    "auth/invalid-email": "Neteisingas el. pašto adresas",
+    "auth/user-not-found": "Vartotojas nerastas",
+    "auth/weak-password": "Silpnas slaptazodis",
+    "auth/wrong-password": "Neteisingas slaptažodis",
+    "auth/unknown": "Nežinoma klaida"
+  }
 }

@@ -15,7 +15,8 @@ export const AuthProvider = ({children}) => {
           try {
             await auth().signInWithEmailAndPassword(email, password);
           } catch (e) {
-            console.log(e);
+            console.log(e.code);
+            return {status: false, code: e.code};
           }
         },
         fbLogin: async () => {
@@ -52,7 +53,8 @@ export const AuthProvider = ({children}) => {
           try {
             await auth().createUserWithEmailAndPassword(email, password);
           } catch (e) {
-            console.log(e);
+            console.log(e.code);
+            return {status: false, code: e.code};
           }
         },
         logout: async () => {

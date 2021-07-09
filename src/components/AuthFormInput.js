@@ -1,8 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import {View, TextInput} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {theme} from "../assets/styles/theme";
+import {theme} from '../assets/styles/theme';
+
+const AuthFormInput = ({labelValue, placeholderText, iconType, ...rest}) => {
+  return (
+    <InputContainer>
+      <Icon>
+        <AntDesign
+          name={iconType}
+          size={25}
+          color={`${theme.appColors.whiteColor}`}
+        />
+      </Icon>
+      <InputField
+        value={labelValue}
+        numberOfLines={1}
+        placeholder={placeholderText}
+        placeholderTextColor={`${theme.appColors.whiteColor}`}
+        {...rest}
+      />
+    </InputContainer>
+  );
+};
 
 const InputContainer = styled.View`
   width: 90%;
@@ -32,22 +52,5 @@ const InputField = styled.TextInput`
   color: ${theme.appColors.whiteColor};
   text-decoration: none;
 `;
-
-const AuthFormInput = ({labelValue, placeholderText, iconType, ...rest}) => {
-  return (
-    <InputContainer>
-      <Icon>
-        <AntDesign name={iconType} size={25} color="white" />
-      </Icon>
-      <InputField
-        value={labelValue}
-        numberOfLines={1}
-        placeholder={placeholderText}
-        placeholderTextColor="white"
-        {...rest}
-      />
-    </InputContainer>
-  );
-};
 
 export default AuthFormInput;

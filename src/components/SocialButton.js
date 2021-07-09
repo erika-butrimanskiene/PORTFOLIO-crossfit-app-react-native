@@ -1,8 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import {TouchableOpacity} from 'react-native';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+const SocialButton = ({text, btnType, iconColor, onPress}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <CustomButton>
+        <IconWrapper>
+          <FontAwesome name={btnType} size={22} color={iconColor} />
+        </IconWrapper>
+        <Title style={{color: iconColor}}>{text}</Title>
+      </CustomButton>
+    </TouchableOpacity>
+  );
+};
 
 const CustomButton = styled.View`
   margin: 10px;
@@ -12,6 +24,7 @@ const CustomButton = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  background-color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 const Title = styled.Text`
@@ -26,18 +39,5 @@ const IconWrapper = styled.View`
   justify-content: center;
   align-items: center;
 `;
-
-const SocialButton = ({text, btnType, iconColor, onPress, bgColor}) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <CustomButton style={{backgroundColor: bgColor}}>
-        <IconWrapper>
-          <FontAwesome name={btnType} size={22} color={iconColor} />
-        </IconWrapper>
-        <Title style={{color: iconColor}}>{text}</Title>
-      </CustomButton>
-    </TouchableOpacity>
-  );
-};
 
 export default SocialButton;
