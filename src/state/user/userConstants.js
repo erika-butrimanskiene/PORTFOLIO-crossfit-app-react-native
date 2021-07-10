@@ -1,0 +1,5 @@
+export const userConstants = {
+  INIT_SET_USER: 'INIT_SET_USER',
+  SET_USER_SUCCESS: 'SET_USER_SUCCESS',
+  SET_USER_FAILURE: 'SET_USER_FAILURE',
+};

@@ -13,7 +13,16 @@ export const AuthProvider = ({children}) => {
         setUser,
         login: async (email, password) => {
           try {
-            await auth().signInWithEmailAndPassword(email, password);
+            const response = await auth().signInWithEmailAndPassword(
+              email,
+              password,
+            );
+            console.log(response);
+            return {
+              status: true,
+              email: response.user.email,
+              uid: response.user.uid,
+            };
           } catch (e) {
             console.log(e.code);
             return {status: false, code: e.code};
@@ -44,14 +53,27 @@ export const AuthProvider = ({children}) => {
             );
 
             // Sign-in the user with the credential
-            await auth().signInWithCredential(facebookCredential);
+            const response = await auth().signInWithCredential(
+              facebookCredential,
+            );
+            console.log(response);
+            return {
+              status: true,
+              email: response.user.email,
+              uid: response.user.uid,
+            };
           } catch (e) {
             console.log(e);
+            return {status: false, code: e};
           }
         },
         register: async (email, password) => {
           try {
-            await auth().createUserWithEmailAndPassword(email, password);
+            const response = await auth().createUserWithEmailAndPassword(
+              email,
+              password,
+            );
+            console.log(response);
           } catch (e) {
             console.log(e.code);
             return {status: false, code: e.code};

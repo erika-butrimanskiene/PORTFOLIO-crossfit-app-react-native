@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {Text, TouchableOpacity, StatusBar} from 'react-native';
+import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ROUTES from '../../routes/Routes';
 import {AuthContext} from '../../routes/AuthProvider';
@@ -10,8 +11,17 @@ import styled, {withTheme} from 'styled-components';
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
+import {actions} from '../../state/actions';
 
-const LoginView = ({navigation, theme}) => {
+const LoginView = ({
+  navigation,
+  theme,
+  error,
+  user,
+  onSync,
+  handleLoginThunk,
+  handleLoginFacebookThunk,
+}) => {
   const {t} = useTranslation();
 
   const [email, setEmail] = useState('');
@@ -19,27 +29,6 @@ const LoginView = ({navigation, theme}) => {
   const [responseMsg, setResponseMsg] = useState('');
 
   const {login, fbLogin} = useContext(AuthContext);
-
-  const handleLogin = async () => {
-    if (email === '' || password === '') {
-      setResponseMsg(t('authErrors:fieldsCanNotBeEmpty'));
-      return;
-    }
-
-    const response = await login(email, password);
-    if (response.status === false) {
-      switch (response.code) {
-        case 'auth/invalid-credential':
-        case 'auth/invalid-email':
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-          setResponseMsg(t(`authErrors:${response.code}`));
-          break;
-        default:
-          setResponseMsg(t('authErrors:auth/unknown'));
-      }
-    }
-  };
 
   const navigateToForgotPassword = () => {
     navigation.navigate(ROUTES.Password);
@@ -77,13 +66,14 @@ const LoginView = ({navigation, theme}) => {
         </TouchableOpacity>
       </LoginInputs>
 
-      {responseMsg !== '' && <Text>{responseMsg}</Text>}
-
       <Button
         text={t('login:Start')}
         bgColor={`${theme.appColors.darkAccentColor}`}
-        onPress={handleLogin}
+        onPress={() => {
+          handleLoginThunk(email, password, login, t);
+        }}
       />
+      {error !== '' && <Text>{error}</Text>}
 
       <SocialButtons>
         <SocialButton
@@ -91,7 +81,7 @@ const LoginView = ({navigation, theme}) => {
           btnType="facebook"
           iconColor="#4867aa"
           onPress={() => {
-            fbLogin();
+            handleLoginFacebookThunk(fbLogin, t);
           }}
         />
 
@@ -106,6 +96,87 @@ const LoginView = ({navigation, theme}) => {
       </SocialButtons>
     </LoginContainer>
   );
+};
+
+const mapStateToProps = state => {
+  return {
+    onSync: state.user.onSync,
+    user: state.user.user,
+    error: state.user.error,
+  };
+};
+
+const handleLoginFacebook = (fbLogin, t) => {
+  return async dispatch => {
+    dispatch(actions.user.initSetUser());
+    const response = await fbLogin();
+
+    if (response.status === true) {
+      console.log(response);
+      dispatch(
+        actions.user.setUserSuccess({
+          email: response.email,
+          uid: response.uid,
+          id: '',
+        }),
+      );
+    }
+
+    if (response.status === false) {
+      console.log(response);
+      actions.user.setUserFailure(response.code); //Error not display. Facebook reload page.
+    }
+  };
+};
+
+const handleLogin = (email, password, login, t) => {
+  return async dispatch => {
+    if (email === '' || password === '') {
+      dispatch(
+        actions.user.setUserFailure(t('authErrors:fieldsCanNotBeEmpty')),
+      );
+      return;
+    }
+
+    dispatch(actions.user.initSetUser());
+    const response = await login(email, password);
+
+    if (response.status === true) {
+      console.log(response);
+      dispatch(
+        actions.user.setUserSuccess({
+          email: response.email,
+          uid: response.uid,
+          id: '',
+        }),
+      );
+    }
+
+    if (response.status === false) {
+      console.log(response);
+      switch (response.code) {
+        case 'auth/invalid-credential':
+        case 'auth/invalid-email':
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+          dispatch(
+            actions.user.setUserFailure(t(`authErrors:${response.code}`)),
+          );
+          break;
+        default:
+          dispatch(actions.user.setUserFailure(t('authErrors:auth/unknown')));
+      }
+    }
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleLoginThunk: (email, password, login, t) =>
+      dispatch(handleLogin(email, password, login, t)),
+    handleLoginFacebookThunk: (fbLogin, t) =>
+      dispatch(handleLoginFacebook(fbLogin, t)),
+  };
 };
 
 const LoginContainer = styled(LinearGradient)`
@@ -137,4 +208,7 @@ const SocialButtons = styled.View`
   align-items: center;
 `;
 
-export default withTheme(LoginView);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(LoginView));
