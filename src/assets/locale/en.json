@@ -7,6 +7,8 @@
     "ForgotPsw": "Forgot your password?"
   },
   "signup": {
+    "Name": "Name",
+    "Surname": "Surname",
     "SignUp": "Sign Up",
     "Email": "Email",
     "Password": "Password",
@@ -33,6 +35,7 @@
     "auth/user-not-found": "User not found",
     "auth/weak-password": "Weak password",
     "auth/wrong-password": "Wrong password",
-    "auth/unknown": "Unknown error"
+    "auth/unknown": "Unknown error",
+    "auth/reset-error": ""
   }
 }

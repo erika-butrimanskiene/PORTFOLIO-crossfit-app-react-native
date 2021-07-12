@@ -74,6 +74,11 @@ export const AuthProvider = ({children}) => {
               password,
             );
             console.log(response);
+            return {
+              status: true,
+              email: response.user.email,
+              uid: response.user.uid,
+            };
           } catch (e) {
             console.log(e.code);
             return {status: false, code: e.code};

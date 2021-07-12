@@ -7,6 +7,8 @@
     "ForgotPsw": "Pamiršote slaptažodį?"
   },
   "signup": {
+    "Name": "Vardas",
+    "Surname": "Pavardė",
     "SignUp": "Registruotis",
     "Email": "El.paštas",
     "Password": "Slaptažodis",
@@ -33,6 +35,7 @@
     "auth/user-not-found": "Vartotojas nerastas",
     "auth/weak-password": "Silpnas slaptazodis",
     "auth/wrong-password": "Neteisingas slaptažodis",
-    "auth/unknown": "Nežinoma klaida"
+    "auth/unknown": "Nežinoma klaida",
+    "auth/reset-error": ""
   }
 }

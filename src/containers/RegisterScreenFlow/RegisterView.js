@@ -1,42 +1,231 @@
-import React, {useContext, useState} from 'react';
-import {Text, TouchableOpacity, StatusBar} from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
+import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
+import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-import styled, {withTheme} from 'styled-components';
 import {AuthContext} from '../../routes/AuthProvider';
 import {useTranslation} from 'react-i18next';
+import styled, {withTheme} from 'styled-components';
+import {actions} from '../../state/actions';
 
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
 
-const RegisterView = ({theme}) => {
+const RegisterView = ({
+  theme,
+  error,
+  onSync,
+  handleErrorStateReset,
+  handleSignUpThunk,
+  handleSignUpFacebookThunk,
+}) => {
   const {t} = useTranslation();
 
+  const [userName, setUserName] = useState('');
+  const [userSurname, setUserSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [responseMsg, setResponseMsg] = useState('');
 
   const {register, fbLogin} = useContext(AuthContext);
 
-  const handleRegistration = async () => {
-    if (email === '' || password === '' || confirmPassword === '') {
-      setResponseMsg(t('authErrors:fieldsCanNotBeEmpty'));
+  useEffect(() => {
+    handleErrorStateReset(t('authErrors:auth/reset-error'));
+  }, []);
+
+  return (
+    <RegisterContainer
+      colors={[
+        `${theme.appColors.primaryColor}`,
+        `${theme.appColors.lightAccentColor}`,
+      ]}>
+      <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
+      {onSync ? (
+        <ActivityIndicator size="large" color="#ffffff" />
+      ) : (
+        <>
+          <ScrollView>
+            <RegisterHeading>MyCrossfit</RegisterHeading>
+            <RegisterInputs>
+              <AuthFormInput
+                labelValue={userName}
+                onChangeText={username => setUserName(username)}
+                placeholderText={t('signup:Name')}
+                iconType="user"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+
+              <AuthFormInput
+                labelValue={userSurname}
+                onChangeText={usersurname => setUserSurname(usersurname)}
+                placeholderText={t('signup:Surname')}
+                iconType="user"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+
+              <AuthFormInput
+                labelValue={email}
+                onChangeText={userEmail => setEmail(userEmail)}
+                placeholderText={t('signup:Email')}
+                iconType="user"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+
+              <AuthFormInput
+                labelValue={password}
+                onChangeText={userPassword => setPassword(userPassword)}
+                placeholderText={t('signup:Password')}
+                iconType="lock"
+                secureTextEntry={true}
+              />
+
+              <AuthFormInput
+                labelValue={confirmPassword}
+                onChangeText={confirmPassword =>
+                  setConfirmPassword(confirmPassword)
+                }
+                placeholderText={t('signup:ConfirmPassword')}
+                iconType="lock"
+                secureTextEntry={true}
+              />
+            </RegisterInputs>
+            {error !== '' && <Text>{error}</Text>}
+            <SignUpButtonContainer>
+              <Button
+                text={t('signup:SignUp')}
+                bgColor={`${theme.appColors.darkAccentColor}`}
+                onPress={() =>
+                  handleSignUpThunk(
+                    email,
+                    password,
+                    confirmPassword,
+                    userName,
+                    userSurname,
+                    register,
+                    t,
+                  )
+                }
+              />
+            </SignUpButtonContainer>
+            <SocialButtons>
+              <SocialButton
+                text="Facebook"
+                btnType="facebook"
+                iconColor="#4867aa"
+                bgColor={`${theme.appColors.whiteColor}`}
+                onPress={() => {
+                  handleSignUpFacebookThunk(fbLogin, t);
+                }}
+              />
+
+              <SocialButton
+                text="Google"
+                btnType="google"
+                iconColor="#de4d41"
+                bgColor={`${theme.appColors.whiteColor}`}
+                onPress={() => {
+                  alert('Google Clicked');
+                }}
+              />
+            </SocialButtons>
+          </ScrollView>
+        </>
+      )}
+    </RegisterContainer>
+  );
+};
+
+const mapStateToProps = state => {
+  return {
+    onSync: state.user.onSync,
+    user: state.user.user,
+    error: state.user.error,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleSignUpThunk: (
+      email,
+      password,
+      confirmPassword,
+      userName,
+      userSurname,
+      register,
+      t,
+    ) =>
+      dispatch(
+        handleRegistration(
+          email,
+          password,
+          confirmPassword,
+          userName,
+          userSurname,
+          register,
+          t,
+        ),
+      ),
+    handleSignUpFacebookThunk: (fbLogin, t) =>
+      dispatch(handleLoginFacebook(fbLogin, t)),
+    handleErrorStateReset: text => {
+      dispatch(actions.user.setUserFailure(text));
+    },
+  };
+};
+
+const handleRegistration = (
+  email,
+  password,
+  confirmPassword,
+  userName,
+  userSurname,
+  register,
+  t,
+) => {
+  return async dispatch => {
+    if (
+      userName === '' ||
+      userSurname === '' ||
+      email === '' ||
+      password === '' ||
+      confirmPassword === ''
+    ) {
+      dispatch(
+        actions.user.setUserFailure(t('authErrors:fieldsCanNotBeEmpty')),
+      );
       return;
     }
 
     if (password.length < 6) {
-      setResponseMsg(t('authErrors:passwordLength'));
+      dispatch(actions.user.setUserFailure(t('authErrors:passwordLength')));
       return;
     }
 
     if (password !== confirmPassword) {
-      setResponseMsg(t('authErrors:passwordsNotMatch'));
+      dispatch(actions.user.setUserFailure(t('authErrors:passwordsNotMatch')));
       return;
     }
 
+    dispatch(actions.user.initSetUser());
     const response = await register(email, password);
+
+    if (response.status === true) {
+      console.log(response);
+      dispatch(
+        actions.user.setUserSuccess({
+          email: response.email,
+          uid: response.uid,
+          id: '',
+        }),
+      );
+      dispatch(actions.user.setUserFailure(t('authErrors:auth/reset-error')));
+    }
+
     if (response.status === false) {
       console.log('status===false');
       switch (response.code) {
@@ -46,94 +235,38 @@ const RegisterView = ({theme}) => {
         case 'auth/invalid-credential':
         case 'auth/invalid-email':
         case 'auth/weak-password':
-          setResponseMsg(t(`authErrors:${response.code}`));
+          dispatch(
+            actions.user.setUserFailure(t(`authErrors:${response.code}`)),
+          );
           break;
         default:
-          setResponseMsg(t('authErrors:auth/unknown'));
+          dispatch(actions.user.setUserFailure(t('authErrors:auth/unknown')));
       }
     }
   };
+};
 
-  return (
-    <RegisterContainer
-      colors={[
-        `${theme.appColors.primaryColor}`,
-        `${theme.appColors.lightAccentColor}`,
-      ]}>
-      <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
-      <RegisterHeading>MyCrossfit</RegisterHeading>
-      <RegisterInputs>
-        <AuthFormInput
-          labelValue={email}
-          onChangeText={userEmail => setEmail(userEmail)}
-          placeholderText={t('signup:Email')}
-          iconType="user"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
+const handleLoginFacebook = (fbLogin, t) => {
+  return async dispatch => {
+    dispatch(actions.user.initSetUser());
+    const response = await fbLogin();
 
-        <AuthFormInput
-          labelValue={password}
-          onChangeText={userPassword => setPassword(userPassword)}
-          placeholderText={t('signup:Password')}
-          iconType="lock"
-          secureTextEntry={true}
-        />
+    if (response.status === true) {
+      console.log(response);
+      dispatch(
+        actions.user.setUserSuccess({
+          email: response.email,
+          uid: response.uid,
+          id: '',
+        }),
+      );
+    }
 
-        <AuthFormInput
-          labelValue={confirmPassword}
-          onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
-          placeholderText={t('signup:ConfirmPassword')}
-          iconType="lock"
-          secureTextEntry={true}
-        />
-      </RegisterInputs>
-
-      {responseMsg !== '' && <Text>{responseMsg}</Text>}
-
-      <Button
-        text={t('signup:SignUp')}
-        bgColor={`${theme.appColors.darkAccentColor}`}
-        onPress={handleRegistration}
-      />
-
-      <ConfirmRegistration>
-        <ConfirmRegistrationText>
-          By registering, you confirm that you accept our
-        </ConfirmRegistrationText>
-        <TouchableOpacity>
-          <ConfirmRegistrationLink>Terms of Service</ConfirmRegistrationLink>
-        </TouchableOpacity>
-        <ConfirmRegistrationText>and</ConfirmRegistrationText>
-        <TouchableOpacity>
-          <ConfirmRegistrationLink>Privacy Policy</ConfirmRegistrationLink>
-        </TouchableOpacity>
-      </ConfirmRegistration>
-
-      <SocialButtons>
-        <SocialButton
-          text="Facebook"
-          btnType="facebook"
-          iconColor="#4867aa"
-          bgColor={`${theme.appColors.whiteColor}`}
-          onPress={() => {
-            fbLogin();
-          }}
-        />
-
-        <SocialButton
-          text="Google"
-          btnType="google"
-          iconColor="#de4d41"
-          bgColor={`${theme.appColors.whiteColor}`}
-          onPress={() => {
-            alert('Google Clicked');
-          }}
-        />
-      </SocialButtons>
-    </RegisterContainer>
-  );
+    if (response.status === false) {
+      console.log(response);
+      actions.user.setUserFailure(response.code); //Error not display. Facebook reload page.
+    }
+  };
 };
 
 const RegisterContainer = styled(LinearGradient)`
@@ -141,41 +274,32 @@ const RegisterContainer = styled(LinearGradient)`
   padding-top: 60px;
   font-size: 20px;
   align-items: center;
+  justify-content: center;
 `;
 
 const RegisterHeading = styled.Text`
   margin: 15px 0px 25px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 30px;
+  text-align: center;
+`;
+
+const SignUpButtonContainer = styled.View`
+  align-items: center;
+  width: 100%;
 `;
 
 const RegisterInputs = styled.View`
   margin-bottom: 20px;
   align-items: center;
 `;
-
-const ConfirmRegistration = styled.View`
-  padding: 10px 0px;
-  width: 85%;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const ConfirmRegistrationText = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const ConfirmRegistrationLink = styled.Text`
-  color: ${({theme}) => theme.appColors.darkAccentColor};
-  padding: 0px 4px;
-  font-weight: bold;
-`;
-
 const SocialButtons = styled.View`
   flex-direction: row;
-  margin-top: 30px;
+  margin: 30px 0px;
   align-items: center;
 `;
 
-export default withTheme(RegisterView);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(RegisterView));
