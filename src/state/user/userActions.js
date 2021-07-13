@@ -17,6 +17,11 @@ const setUserFailure = error => {
     payload: error,
   };
 };
+const setUserClear = () => {
+  return {
+    type: constants.user.SET_USER_CLEAR
+  };
+};
 
 export const userActions = {
   initSetUser,

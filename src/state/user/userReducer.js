@@ -25,6 +25,13 @@ const userReducer = (state = initialUserState, action) => {
         onSync: false,
         error: action.payload,
       };
+    case constants.user.SET_USER_CLEAR:
+      return {
+        ...state,
+        onSync: false,
+        user: {},
+        error: "",
+      };
     default:
       return state;
   }
