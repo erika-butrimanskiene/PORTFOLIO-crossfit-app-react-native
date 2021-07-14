@@ -16,8 +16,7 @@ const CustomButton = styled.View`
   margin: 10px 0px;
   width: 200px;
   border-radius: 50px;
-  padding-vertical: 14px;
-  padding-horizontal: 10px;
+  padding: 10px 14px;
 `;
 
 const Title = styled.Text`

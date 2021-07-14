@@ -1,5 +1,12 @@
 import {constants} from '../constants';
 
+const getUser = (email, password, login) => {
+  return {
+    type: constants.user.GET_USER,
+    payload: {email, password, login},
+  };
+};
+
 const initSetUser = () => {
   return {
     type: constants.user.INIT_SET_USER,
@@ -19,12 +26,14 @@ const setUserFailure = error => {
 };
 const setUserClear = () => {
   return {
-    type: constants.user.SET_USER_CLEAR
+    type: constants.user.SET_USER_CLEAR,
   };
 };
 
 export const userActions = {
+  getUser,
   initSetUser,
   setUserSuccess,
   setUserFailure,
+  setUserClear,
 };

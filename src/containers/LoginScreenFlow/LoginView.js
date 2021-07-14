@@ -24,7 +24,7 @@ const LoginView = ({
   error,
   onSync,
   handleErrorStateReset,
-  handleLoginThunk,
+  handleLoginSaga,
   handleLoginFacebookThunk,
 }) => {
   const {t} = useTranslation();
@@ -82,10 +82,10 @@ const LoginView = ({
             text={t('login:Start')}
             bgColor={`${theme.appColors.darkAccentColor}`}
             onPress={() => {
-              handleLoginThunk(email, password, login, t);
+              handleLoginSaga(email, password, login);
             }}
           />
-          {error !== '' && <Text>{error}</Text>}
+          {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
 
           <SocialButtons>
             <SocialButton
@@ -122,8 +122,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLoginThunk: (email, password, login, t) =>
-      dispatch(handleLogin(email, password, login, t)),
+    handleLoginSaga: (email, password, login) =>
+      dispatch(actions.user.getUser(email, password, login)),
     handleLoginFacebookThunk: (fbLogin, t) =>
       dispatch(handleLoginFacebook(fbLogin, t)),
     handleErrorStateReset: text => {

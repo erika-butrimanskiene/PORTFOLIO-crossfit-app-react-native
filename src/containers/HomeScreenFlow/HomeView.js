@@ -5,7 +5,6 @@ import styled, {withTheme} from 'styled-components';
 import {connect} from 'react-redux';
 import {actions} from '../../state/actions';
 
-
 //COMPONENTS
 import Button from '../../components/Button';
 
@@ -21,7 +20,7 @@ const HomeView = ({theme, user, onSync, handleLogoutThunk}) => {
       <Button
         text="Logout"
         bgColor={`${theme.appColors.lightAccentColor}`}
-        onPress={() => handleLogoutThunk(logout)}
+        onPress={() => logout()}
       />
     </HomeContainer>
   );
@@ -37,27 +36,18 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogoutThunk: (
-      logout,
-    ) =>
-    
-        dispatch(
-        handleLogout(
-          logout,
-        ),
-      ),
-    
+    handleLogoutThunk: logout => dispatch(handleLogout(logout)),
   };
 };
 
-const handleLogout = (logout) => {
- return async dispatch => {
-   const response = logout();
-   if(response.status === true){
-     dispatch(actions.user.SET_USER_CLEAR())
-   }
- }
-}
+// const handleLogout = (logout) => {
+//  return async dispatch => {
+//    const response = logout();
+//    if(response.status === true){
+//      dispatch(actions.user.SET_USER_CLEAR())
+//    }
+//  }
+// }
 
 const HomeContainer = styled.View`
   flex: 1;
@@ -71,5 +61,7 @@ const Heading = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor}; ;
 `;
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HomeView));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(HomeView));
