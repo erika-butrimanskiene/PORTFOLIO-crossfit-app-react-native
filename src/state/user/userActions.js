@@ -1,9 +1,44 @@
 import {constants} from '../constants';
 
-const getUser = (email, password, login) => {
+const getUserAtLogin = (email, password, login) => {
   return {
-    type: constants.user.GET_USER,
+    type: constants.user.GET_USER_AT_LOGIN,
     payload: {email, password, login},
+  };
+};
+
+const getUserAtRegister = (
+  email,
+  password,
+  confirmPassword,
+  userName,
+  userSurname,
+  register,
+) => {
+  return {
+    type: constants.user.GET_USER_AT_REGISTER,
+    payload: {
+      email,
+      password,
+      confirmPassword,
+      userName,
+      userSurname,
+      register,
+    },
+  };
+};
+
+const getUserAtFbLogin = fbLogin => {
+  return {
+    type: constants.user.GET_USER_AT_FB_LOGIN,
+    payload: fbLogin,
+  };
+};
+
+const logoutUser = logout => {
+  return {
+    type: constants.user.LOGOUT_USER,
+    payload: logout,
   };
 };
 
@@ -31,7 +66,10 @@ const setUserClear = () => {
 };
 
 export const userActions = {
-  getUser,
+  getUserAtLogin,
+  getUserAtRegister,
+  getUserAtFbLogin,
+  logoutUser,
   initSetUser,
   setUserSuccess,
   setUserFailure,

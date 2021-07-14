@@ -89,9 +89,10 @@ export const AuthProvider = ({children}) => {
             auth().signOut();
             return {
               status: true,
-            }
+            };
           } catch (e) {
-            console.log(e);
+            console.log(e.code);
+            return {status: false, code: e.code};
           }
         },
       }}>

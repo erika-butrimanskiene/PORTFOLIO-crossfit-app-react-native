@@ -17,15 +17,17 @@ import {actions} from '../../state/actions';
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
+import {constants} from '../../state/constants';
 
 const LoginView = ({
   navigation,
   theme,
+  user,
   error,
   onSync,
   handleErrorStateReset,
   handleLoginSaga,
-  handleLoginFacebookThunk,
+  handleLoginFacebookSaga,
 }) => {
   const {t} = useTranslation();
 
@@ -33,6 +35,7 @@ const LoginView = ({
   const [password, setPassword] = useState('');
 
   const {login, fbLogin} = useContext(AuthContext);
+  console.log(user.email);
 
   const navigateToForgotPassword = () => {
     navigation.navigate(ROUTES.Password);
@@ -93,7 +96,7 @@ const LoginView = ({
               btnType="facebook"
               iconColor="#4867aa"
               onPress={() => {
-                handleLoginFacebookThunk(fbLogin, t);
+                handleLoginFacebookSaga(fbLogin);
               }}
             />
 
@@ -123,77 +126,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleLoginSaga: (email, password, login) =>
-      dispatch(actions.user.getUser(email, password, login)),
-    handleLoginFacebookThunk: (fbLogin, t) =>
-      dispatch(handleLoginFacebook(fbLogin, t)),
+      dispatch(actions.user.getUserAtLogin(email, password, login)),
+    handleLoginFacebookSaga: fbLogin =>
+      dispatch(actions.user.getUserAtFbLogin(fbLogin)),
     handleErrorStateReset: text => {
       dispatch(actions.user.setUserFailure(text));
     },
-  };
-};
-
-const handleLogin = (email, password, login, t) => {
-  return async dispatch => {
-    if (email === '' || password === '') {
-      dispatch(
-        actions.user.setUserFailure(t('authErrors:fieldsCanNotBeEmpty')),
-      );
-      return;
-    }
-
-    dispatch(actions.user.initSetUser());
-    const response = await login(email, password);
-
-    if (response.status === true) {
-      console.log(response);
-      dispatch(
-        actions.user.setUserSuccess({
-          email: response.email,
-          uid: response.uid,
-          id: '',
-        }),
-      );
-      dispatch(actions.user.setUserFailure(t('authErrors:auth/reset-error')));
-    }
-
-    if (response.status === false) {
-      console.log(response);
-      switch (response.code) {
-        case 'auth/invalid-credential':
-        case 'auth/invalid-email':
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-          dispatch(
-            actions.user.setUserFailure(t(`authErrors:${response.code}`)),
-          );
-          break;
-        default:
-          dispatch(actions.user.setUserFailure(t('authErrors:auth/unknown')));
-      }
-    }
-  };
-};
-
-const handleLoginFacebook = (fbLogin, t) => {
-  return async dispatch => {
-    dispatch(actions.user.initSetUser());
-    const response = await fbLogin();
-
-    if (response.status === true) {
-      console.log(response);
-      dispatch(
-        actions.user.setUserSuccess({
-          email: response.email,
-          uid: response.uid,
-          id: '',
-        }),
-      );
-    }
-
-    if (response.status === false) {
-      console.log(response);
-      actions.user.setUserFailure(response.code); //Error not display. Facebook reload page.
-    }
   };
 };
 

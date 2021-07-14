@@ -8,7 +8,7 @@ import {actions} from '../../state/actions';
 //COMPONENTS
 import Button from '../../components/Button';
 
-const HomeView = ({theme, user, onSync, handleLogoutThunk}) => {
+const HomeView = ({theme, user, onSync, handleLogoutSaga}) => {
   const {logout} = useContext(AuthContext);
 
   return (
@@ -20,7 +20,7 @@ const HomeView = ({theme, user, onSync, handleLogoutThunk}) => {
       <Button
         text="Logout"
         bgColor={`${theme.appColors.lightAccentColor}`}
-        onPress={() => logout()}
+        onPress={() => handleLogoutSaga(logout)}
       />
     </HomeContainer>
   );
@@ -36,18 +36,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogoutThunk: logout => dispatch(handleLogout(logout)),
+    handleLogoutSaga: logout => dispatch(actions.user.logoutUser(logout)),
   };
 };
-
-// const handleLogout = (logout) => {
-//  return async dispatch => {
-//    const response = logout();
-//    if(response.status === true){
-//      dispatch(actions.user.SET_USER_CLEAR())
-//    }
-//  }
-// }
 
 const HomeContainer = styled.View`
   flex: 1;

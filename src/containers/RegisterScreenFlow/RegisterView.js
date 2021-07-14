@@ -17,8 +17,8 @@ const RegisterView = ({
   error,
   onSync,
   handleErrorStateReset,
-  handleSignUpThunk,
-  handleSignUpFacebookThunk,
+  handleSignUpSaga,
+  handleLoginFacebookSaga,
 }) => {
   const {t} = useTranslation();
 
@@ -94,20 +94,19 @@ const RegisterView = ({
                 secureTextEntry={true}
               />
             </RegisterInputs>
-            {error !== '' && <Text>{error}</Text>}
+            {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
             <SignUpButtonContainer>
               <Button
                 text={t('signup:SignUp')}
                 bgColor={`${theme.appColors.darkAccentColor}`}
                 onPress={() =>
-                  handleSignUpThunk(
+                  handleSignUpSaga(
                     email,
                     password,
                     confirmPassword,
                     userName,
                     userSurname,
                     register,
-                    t,
                   )
                 }
               />
@@ -119,7 +118,7 @@ const RegisterView = ({
                 iconColor="#4867aa"
                 bgColor={`${theme.appColors.whiteColor}`}
                 onPress={() => {
-                  handleSignUpFacebookThunk(fbLogin, t);
+                  handleLoginFacebookSaga(fbLogin);
                 }}
               />
 
@@ -150,122 +149,29 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleSignUpThunk: (
+    handleSignUpSaga: (
       email,
       password,
       confirmPassword,
       userName,
       userSurname,
       register,
-      t,
     ) =>
       dispatch(
-        handleRegistration(
+        actions.user.getUserAtRegister(
           email,
           password,
           confirmPassword,
           userName,
           userSurname,
           register,
-          t,
         ),
       ),
-    handleSignUpFacebookThunk: (fbLogin, t) =>
-      dispatch(handleLoginFacebook(fbLogin, t)),
+    handleLoginFacebookSaga: fbLogin =>
+      dispatch(actions.user.getUserAtFbLogin(fbLogin)),
     handleErrorStateReset: text => {
       dispatch(actions.user.setUserFailure(text));
     },
-  };
-};
-
-const handleRegistration = (
-  email,
-  password,
-  confirmPassword,
-  userName,
-  userSurname,
-  register,
-  t,
-) => {
-  return async dispatch => {
-    if (
-      userName === '' ||
-      userSurname === '' ||
-      email === '' ||
-      password === '' ||
-      confirmPassword === ''
-    ) {
-      dispatch(
-        actions.user.setUserFailure(t('authErrors:fieldsCanNotBeEmpty')),
-      );
-      return;
-    }
-
-    if (password.length < 6) {
-      dispatch(actions.user.setUserFailure(t('authErrors:passwordLength')));
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      dispatch(actions.user.setUserFailure(t('authErrors:passwordsNotMatch')));
-      return;
-    }
-
-    dispatch(actions.user.initSetUser());
-    const response = await register(email, password);
-
-    if (response.status === true) {
-      console.log(response);
-      dispatch(
-        actions.user.setUserSuccess({
-          email: response.email,
-          uid: response.uid,
-          id: '',
-        }),
-      );
-      dispatch(actions.user.setUserFailure(t('authErrors:auth/reset-error')));
-    }
-
-    if (response.status === false) {
-      console.log('status===false');
-      switch (response.code) {
-        case 'auth/account-exists-with-different-credential':
-        case 'auth/credential-already-in-use':
-        case 'auth/email-already-in-use':
-        case 'auth/invalid-credential':
-        case 'auth/invalid-email':
-        case 'auth/weak-password':
-          dispatch(
-            actions.user.setUserFailure(t(`authErrors:${response.code}`)),
-          );
-          break;
-        default:
-          dispatch(actions.user.setUserFailure(t('authErrors:auth/unknown')));
-      }
-    }
-  };
-};
-
-const handleLoginFacebook = (fbLogin, t) => {
-  return async dispatch => {
-    dispatch(actions.user.initSetUser());
-    const response = await fbLogin();
-
-    if (response.status === true) {
-      console.log(response);
-      dispatch(
-        actions.user.setUserSuccess({
-          email: response.email,
-          uid: response.uid,
-          id: '',
-        }),
-      );
-    }
-
-    if (response.status === false) {
-      console.log(response);
-      actions.user.setUserFailure(response.code); //Error not display. Facebook reload page.
-    }
   };
 };
 
