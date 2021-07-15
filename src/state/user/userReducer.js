@@ -30,7 +30,7 @@ const userReducer = (state = initialUserState, action) => {
         ...state,
         onSync: false,
         user: {},
-        error: "",
+        error: '',
       };
     default:
       return state;

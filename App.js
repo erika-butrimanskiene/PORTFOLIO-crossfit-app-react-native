@@ -4,7 +4,9 @@ import {ThemeProvider} from 'styled-components';
 import {theme} from './src/assets/styles/theme';
 import Navigator from './src/routes/Navigator';
 import {Provider} from 'react-redux';
-import store from './src/state/store';
+import {configStore} from './src/state/store';
+
+const {store, persistor} = configStore();
 
 const App = () => {
   return (
