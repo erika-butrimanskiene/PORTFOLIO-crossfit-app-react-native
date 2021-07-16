@@ -2,14 +2,19 @@ import React, {useContext} from 'react';
 import {StatusBar} from 'react-native';
 import {AuthContext} from '../../routes/AuthProvider';
 import styled, {withTheme} from 'styled-components';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {actions} from '../../state/actions';
 
 //COMPONENTS
 import Button from '../../components/Button';
 
-const HomeView = ({theme, user, onSync, handleLogoutSaga}) => {
+const HomeView = ({theme}) => {
   const {logout} = useContext(AuthContext);
+
+  const onSync = useSelector(state => state.user.onSync);
+  const user = useSelector(state => state.user.user);
+
+  const dispatch = useDispatch();
 
   return (
     <HomeContainer>
@@ -20,24 +25,10 @@ const HomeView = ({theme, user, onSync, handleLogoutSaga}) => {
       <Button
         text="Logout"
         bgColor={`${theme.appColors.lightAccentColor}`}
-        onPress={() => handleLogoutSaga(logout)}
+        onPress={() => dispatch(actions.user.logoutUser(logout))}
       />
     </HomeContainer>
   );
-};
-
-const mapStateToProps = state => {
-  return {
-    onSync: state.user.onSync,
-    user: state.user.user,
-    error: state.user.error,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    handleLogoutSaga: logout => dispatch(actions.user.logoutUser(logout)),
-  };
 };
 
 const HomeContainer = styled.View`
@@ -52,7 +43,4 @@ const Heading = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor}; ;
 `;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTheme(HomeView));
+export default withTheme(HomeView);

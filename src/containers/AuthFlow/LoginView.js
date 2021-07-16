@@ -5,7 +5,7 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ROUTES from '../../routes/Routes';
 import {AuthContext} from '../../routes/AuthProvider';
@@ -17,32 +17,25 @@ import {actions} from '../../state/actions';
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
-import {constants} from '../../state/constants';
 
-const LoginView = ({
-  navigation,
-  theme,
-  user,
-  error,
-  onSync,
-  handleErrorStateReset,
-  handleLoginSaga,
-  handleLoginFacebookSaga,
-}) => {
+const LoginView = ({navigation, theme}) => {
   const {t} = useTranslation();
+  const {login, fbLogin} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const {login, fbLogin} = useContext(AuthContext);
-  console.log(user.email);
+  const onSync = useSelector(state => state.user.onSync);
+  const error = useSelector(state => state.user.error);
+
+  const dispatch = useDispatch();
 
   const navigateToForgotPassword = () => {
     navigation.navigate(ROUTES.Password);
   };
 
   useEffect(() => {
-    handleErrorStateReset(t('authErrors:auth/reset-error'));
+    dispatch(actions.user.setUserFailure(t('authErrors:auth/reset-error')));
   }, []);
 
   return (
@@ -85,7 +78,7 @@ const LoginView = ({
             text={t('login:Start')}
             bgColor={`${theme.appColors.darkAccentColor}`}
             onPress={() => {
-              handleLoginSaga(email, password, login);
+              dispatch(actions.user.getUserAtLogin(email, password, login));
             }}
           />
           {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
@@ -96,7 +89,7 @@ const LoginView = ({
               btnType="facebook"
               iconColor="#4867aa"
               onPress={() => {
-                handleLoginFacebookSaga(fbLogin);
+                dispatch(actions.user.getUserAtFbLogin(fbLogin));
               }}
             />
 
@@ -113,26 +106,6 @@ const LoginView = ({
       )}
     </LoginContainer>
   );
-};
-
-const mapStateToProps = state => {
-  return {
-    onSync: state.user.onSync,
-    user: state.user.user,
-    error: state.user.error,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    handleLoginSaga: (email, password, login) =>
-      dispatch(actions.user.getUserAtLogin(email, password, login)),
-    handleLoginFacebookSaga: fbLogin =>
-      dispatch(actions.user.getUserAtFbLogin(fbLogin)),
-    handleErrorStateReset: text => {
-      dispatch(actions.user.setUserFailure(text));
-    },
-  };
 };
 
 const LoginContainer = styled(LinearGradient)`
@@ -165,7 +138,4 @@ const SocialButtons = styled.View`
   align-items: center;
 `;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTheme(LoginView));
+export default withTheme(LoginView);

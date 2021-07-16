@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../routes/AuthProvider';
 import {useTranslation} from 'react-i18next';
@@ -12,14 +12,7 @@ import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
 
-const RegisterView = ({
-  theme,
-  error,
-  onSync,
-  handleErrorStateReset,
-  handleSignUpSaga,
-  handleLoginFacebookSaga,
-}) => {
+const RegisterView = ({theme}) => {
   const {t} = useTranslation();
 
   const [userName, setUserName] = useState('');
@@ -28,10 +21,15 @@ const RegisterView = ({
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const onSync = useSelector(state => state.user.onSync);
+  const error = useSelector(state => state.user.error);
+
+  const dispatch = useDispatch();
+
   const {register, fbLogin} = useContext(AuthContext);
 
   useEffect(() => {
-    handleErrorStateReset(t('authErrors:auth/reset-error'));
+    dispatch(actions.user.setUserFailure(t('authErrors:auth/reset-error')));
   }, []);
 
   return (
@@ -100,13 +98,15 @@ const RegisterView = ({
                 text={t('signup:SignUp')}
                 bgColor={`${theme.appColors.darkAccentColor}`}
                 onPress={() =>
-                  handleSignUpSaga(
-                    email,
-                    password,
-                    confirmPassword,
-                    userName,
-                    userSurname,
-                    register,
+                  dispatch(
+                    actions.user.getUserAtRegister(
+                      email,
+                      password,
+                      confirmPassword,
+                      userName,
+                      userSurname,
+                      register,
+                    ),
                   )
                 }
               />
@@ -118,7 +118,7 @@ const RegisterView = ({
                 iconColor="#4867aa"
                 bgColor={`${theme.appColors.whiteColor}`}
                 onPress={() => {
-                  handleLoginFacebookSaga(fbLogin);
+                  dispatch(actions.user.getUserAtFbLogin(fbLogin));
                 }}
               />
 
@@ -137,42 +137,6 @@ const RegisterView = ({
       )}
     </RegisterContainer>
   );
-};
-
-const mapStateToProps = state => {
-  return {
-    onSync: state.user.onSync,
-    user: state.user.user,
-    error: state.user.error,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    handleSignUpSaga: (
-      email,
-      password,
-      confirmPassword,
-      userName,
-      userSurname,
-      register,
-    ) =>
-      dispatch(
-        actions.user.getUserAtRegister(
-          email,
-          password,
-          confirmPassword,
-          userName,
-          userSurname,
-          register,
-        ),
-      ),
-    handleLoginFacebookSaga: fbLogin =>
-      dispatch(actions.user.getUserAtFbLogin(fbLogin)),
-    handleErrorStateReset: text => {
-      dispatch(actions.user.setUserFailure(text));
-    },
-  };
 };
 
 const RegisterContainer = styled(LinearGradient)`
@@ -205,7 +169,4 @@ const SocialButtons = styled.View`
   align-items: center;
 `;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTheme(RegisterView));
+export default withTheme(RegisterView);

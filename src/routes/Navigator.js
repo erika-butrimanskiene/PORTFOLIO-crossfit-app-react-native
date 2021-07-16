@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {theme} from "../../assets/styles/theme";
+import {theme} from '../../assets/styles/theme';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -8,9 +8,9 @@ import auth from '@react-native-firebase/auth';
 import {AuthContext} from './AuthProvider';
 
 import LandingView from '../containers/LandingScreenFlow/LandingView';
-import LoginView from '../containers/LoginScreenFlow/LoginView';
-import RegisterView from '../containers/RegisterScreenFlow/RegisterView';
-import ForgotPasswordView from '../containers/ForgotPasswordFlow/ForgotPasswordView';
+import LoginView from '../containers/AuthFlow/LoginView';
+import RegisterView from '../containers/AuthFlow/RegisterView';
+import ForgotPasswordView from '../containers/AuthFlow/ForgotPasswordView';
 import HomeView from '../containers/HomeScreenFlow/HomeView';
 import ROUTES from './Routes';
 
@@ -35,42 +35,31 @@ const Navigator = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <Stack.Navigator screenOptions={{
-              title: '',
-              headerTransparent: true,
-              headerStyle: {
-                elevation: 0,
-              },
-              headerTintColor: "white"}}>
-          <Stack.Screen
-            name={ROUTES.Home}
-            component={HomeView}
-          />
+        <Stack.Navigator
+          screenOptions={{
+            title: '',
+            headerTransparent: true,
+            headerStyle: {
+              elevation: 0,
+            },
+            headerTintColor: 'white',
+          }}>
+          <Stack.Screen name={ROUTES.Home} component={HomeView} />
         </Stack.Navigator>
       ) : (
-        <Stack.Navigator screenOptions={{
-              title: '',
-              headerTransparent: true,
-              headerStyle: {
-                elevation: 0,
-              },
-              headerTintColor: "white"}}>
-          <Stack.Screen
-            name={ROUTES.Landing}
-            component={LandingView}
-          />
-          <Stack.Screen
-            name={ROUTES.Login}
-            component={LoginView}
-          />
-          <Stack.Screen
-            name={ROUTES.Register}
-            component={RegisterView}
-          />
-          <Stack.Screen
-            name={ROUTES.Password}
-            component={ForgotPasswordView}
-          />
+        <Stack.Navigator
+          screenOptions={{
+            title: '',
+            headerTransparent: true,
+            headerStyle: {
+              elevation: 0,
+            },
+            headerTintColor: 'white',
+          }}>
+          <Stack.Screen name={ROUTES.Landing} component={LandingView} />
+          <Stack.Screen name={ROUTES.Login} component={LoginView} />
+          <Stack.Screen name={ROUTES.Register} component={RegisterView} />
+          <Stack.Screen name={ROUTES.Password} component={ForgotPasswordView} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
