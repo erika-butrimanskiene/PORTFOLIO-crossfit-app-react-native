@@ -42,21 +42,10 @@ const logoutUser = logout => {
   };
 };
 
-const initSetUser = () => {
-  return {
-    type: constants.user.INIT_SET_USER,
-  };
-};
 const setUserSuccess = user => {
   return {
     type: constants.user.SET_USER_SUCCESS,
     payload: user,
-  };
-};
-const setUserFailure = error => {
-  return {
-    type: constants.user.SET_USER_FAILURE,
-    payload: error,
   };
 };
 const setUserClear = () => {
@@ -70,8 +59,6 @@ export const userActions = {
   getUserAtRegister,
   getUserAtFbLogin,
   logoutUser,
-  initSetUser,
   setUserSuccess,
-  setUserFailure,
   setUserClear,
 };

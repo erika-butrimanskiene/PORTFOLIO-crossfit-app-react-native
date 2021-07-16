@@ -35,7 +35,6 @@
     "auth/user-not-found": "User not found",
     "auth/weak-password": "Weak password",
     "auth/wrong-password": "Wrong password",
-    "auth/unknown": "Unknown error",
-    "auth/reset-error": ""
+    "auth/unknown": "Unknown error"
   }
 }

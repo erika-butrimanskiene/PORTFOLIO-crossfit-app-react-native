@@ -5,12 +5,13 @@ import {constants} from '../constants';
 function* handleLogin({payload: {email, password, login}}) {
   try {
     if (email === '' || password === '') {
-      yield put(actions.user.setUserFailure('fieldsCanNotBeEmpty'));
+      yield put(actions.messages.setErrorMessage('fieldsCanNotBeEmpty'));
       return;
     }
 
-    yield put(actions.user.initSetUser());
+    yield put(actions.ui.setOnSync(true));
     const response = yield call(login, email, password);
+    yield put(actions.ui.setOnSync(false));
     console.log(response);
     if (response.status === true) {
       console.log(response);
@@ -21,7 +22,7 @@ function* handleLogin({payload: {email, password, login}}) {
           id: '',
         }),
       );
-      yield put(actions.user.setUserFailure('auth/reset-error'));
+      yield put(actions.messages.setErrorMessage('auth/reset-error'));
     }
 
     if (response.status === false) {
@@ -34,10 +35,10 @@ function* handleLogin({payload: {email, password, login}}) {
       case 'auth/invalid-email':
       case 'auth/user-not-found':
       case 'auth/wrong-password':
-        yield put(actions.user.setUserFailure(`${e.code}`));
+        yield put(actions.messages.setErrorMessage(`${e.code}`));
         break;
       default:
-        yield put(actions.user.setUserFailure('auth/unknown'));
+        yield put(actions.messages.setErrorMessage('auth/unknown'));
     }
   }
 }
@@ -54,23 +55,23 @@ function* handleRegistration({
       password === '' ||
       confirmPassword === ''
     ) {
-      yield put(actions.user.setUserFailure('fieldsCanNotBeEmpty'));
+      yield put(actions.messages.setErrorMessage('fieldsCanNotBeEmpty'));
       return;
     }
 
     if (password.length < 6) {
-      yield put(actions.user.setUserFailure('passwordLength'));
+      yield put(actions.messages.setErrorMessage('passwordLength'));
       return;
     }
 
     if (password !== confirmPassword) {
-      yield put(actions.user.setUserFailure('passwordsNotMatch'));
+      yield put(actions.messages.setErrorMessage('passwordsNotMatch'));
       return;
     }
 
-    yield put(actions.user.initSetUser());
+    yield put(actions.ui.setOnSync(true));
     const response = yield call(register, email, password);
-
+    yield put(actions.ui.setOnSync(false));
     if (response.status === true) {
       console.log(response);
       yield put(
@@ -80,7 +81,7 @@ function* handleRegistration({
           id: '',
         }),
       );
-      yield put(actions.user.setUserFailure('auth/reset-error'));
+      yield put(actions.messages.setErrorMessage('auth/reset-error'));
     }
 
     if (response.status === false) {
@@ -94,19 +95,19 @@ function* handleRegistration({
       case 'auth/invalid-credential':
       case 'auth/invalid-email':
       case 'auth/weak-password':
-        yield put(actions.user.setUserFailure(`${e.code}`));
+        yield put(actions.messages.setErrorMessage(`${e.code}`));
         break;
       default:
-        yield put(actions.user.setUserFailure('auth/unknown'));
+        yield put(actions.messages.setErrorMessage('auth/unknown'));
     }
   }
 }
 
 function* handleLoginFacebook({payload: fbLogin}) {
   try {
-    yield put(actions.user.initSetUser());
+    yield put(actions.ui.setOnSync(true));
     const response = yield call(fbLogin);
-
+    yield put(actions.ui.setOnSync(false));
     if (response.status === true) {
       console.log(response);
       yield put(
@@ -123,13 +124,15 @@ function* handleLoginFacebook({payload: fbLogin}) {
     }
   } catch (e) {
     console.log(e);
-    yield put(actions.user.setUserFailure(e.code)); //Error not display. Facebook reload page.
+    yield put(actions.messages.setErrorMessage(e.code)); //Error not display. Facebook reload page.
   }
 }
 
 function* handleLogout({payload: logout}) {
   try {
+    yield put(actions.ui.setOnSync(true));
     const response = yield call(logout);
+    yield put(actions.ui.setOnSync(false));
     if (response.status === true) {
       yield put(actions.user.setUserClear());
     }
@@ -138,7 +141,7 @@ function* handleLogout({payload: logout}) {
       throw response;
     }
   } catch (e) {
-    yield put(actions.user.setUserFailure(e.code));
+    yield put(actions.messages.setErrorMessage(e.code));
   }
 }
 

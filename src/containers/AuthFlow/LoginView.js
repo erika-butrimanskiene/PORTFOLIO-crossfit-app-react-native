@@ -25,8 +25,8 @@ const LoginView = ({navigation, theme}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSync = useSelector(state => state.user.onSync);
-  const error = useSelector(state => state.user.error);
+  const onSync = useSelector(state => state.ui.authOnSync);
+  const error = useSelector(state => state.messages.authErrorMsg);
 
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ const LoginView = ({navigation, theme}) => {
   };
 
   useEffect(() => {
-    dispatch(actions.user.setUserFailure(t('authErrors:auth/reset-error')));
+    dispatch(actions.messages.clearMessages());
   }, []);
 
   return (

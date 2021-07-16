@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, ActivityIndicator} from 'react-native';
 import {AuthContext} from '../../routes/AuthProvider';
 import styled, {withTheme} from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 const HomeView = ({theme}) => {
   const {logout} = useContext(AuthContext);
 
-  const onSync = useSelector(state => state.user.onSync);
+  const onSync = useSelector(state => state.ui.authOnSync);
   const user = useSelector(state => state.user.user);
 
   const dispatch = useDispatch();
@@ -19,14 +19,21 @@ const HomeView = ({theme}) => {
   return (
     <HomeContainer>
       <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
-      <Heading>Welcome To Home Page</Heading>
-      <Heading>{user.email}</Heading>
-      <Heading>{onSync}</Heading>
-      <Button
-        text="Logout"
-        bgColor={`${theme.appColors.lightAccentColor}`}
-        onPress={() => dispatch(actions.user.logoutUser(logout))}
-      />
+
+      {onSync ? (
+        <ActivityIndicator size="large" color="#ffffff" />
+      ) : (
+        <>
+          <Heading>Welcome To Home Page</Heading>
+          <Heading>{user.email}</Heading>
+          <Heading>{onSync}</Heading>
+          <Button
+            text="Logout"
+            bgColor={`${theme.appColors.lightAccentColor}`}
+            onPress={() => dispatch(actions.user.logoutUser(logout))}
+          />
+        </>
+      )}
     </HomeContainer>
   );
 };
@@ -36,6 +43,7 @@ const HomeContainer = styled.View`
   padding-top: 60px;
   font-size: 20px;
   align-items: center;
+  justify-content: center;
   background-color: ${({theme}) => theme.appColors.primaryColor};
 `;
 

@@ -35,7 +35,6 @@
     "auth/user-not-found": "Vartotojas nerastas",
     "auth/weak-password": "Silpnas slaptazodis",
     "auth/wrong-password": "Neteisingas slaptažodis",
-    "auth/unknown": "Nežinoma klaida",
-    "auth/reset-error": ""
+    "auth/unknown": "Nežinoma klaida"
   }
 }
