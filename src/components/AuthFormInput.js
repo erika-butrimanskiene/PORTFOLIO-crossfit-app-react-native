@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {theme} from '../assets/styles/theme';
 
-const AuthFormInput = ({labelValue, placeholderText, iconType, ...rest}) => {
+const AuthFormInput = ({
+  labelValue,
+  placeholderText,
+  iconType,
+  bgColor,
+  ...rest
+}) => {
+  const [isInputActive, setIsInputActive] = useState(false);
+  console.log(isInputActive);
   return (
-    <InputContainer>
+    <InputContainer bgColor={bgColor} focus={isInputActive}>
       <Icon>
         <AntDesign
           name={iconType}
@@ -18,6 +26,8 @@ const AuthFormInput = ({labelValue, placeholderText, iconType, ...rest}) => {
         numberOfLines={1}
         placeholder={placeholderText}
         placeholderTextColor={`${theme.appColors.whiteColor}`}
+        onFocus={() => setIsInputActive(true)}
+        onBlur={() => setIsInputActive(false)}
         {...rest}
       />
     </InputContainer>
@@ -27,10 +37,11 @@ const AuthFormInput = ({labelValue, placeholderText, iconType, ...rest}) => {
 const InputContainer = styled.View`
   width: 90%;
   height: 60px;
-  margin: 5px 0px;
-  border-color: ${theme.appColors.whiteColor};
-  border-radius: 50px;
-  border-width: 1px;
+  margin: 10px 0px;
+  background-color: ${props => props.bgColor};
+  border-width: ${props => (props.focus ? '1px' : '0px')};
+  border-color: ${theme.appColors.primaryColorLighter};
+  border-radius: 10px;
   flex-direction: row;
   align-items: center;
   justify-content: center;

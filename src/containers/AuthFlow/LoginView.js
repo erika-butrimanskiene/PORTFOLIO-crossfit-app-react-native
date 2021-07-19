@@ -60,29 +60,36 @@ const LoginView = ({navigation, theme}) => {
                     <AuthFormInput
                       labelValue={formikProps.values.email}
                       onChangeText={formikProps.handleChange('email')}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
                       placeholderText={t('login:Email')}
-                      iconType="user"
+                      iconType="mail"
                       keyboardType="email-address"
                       autoCapitalize="none"
                       autoCorrect={false}
                     />
 
-                    <Text>
-                      {formikProps.touched.email && formikProps.errors.email}
-                    </Text>
+                    {formikProps.touched.email && formikProps.errors.email && (
+                      <ErrorText>
+                        {formikProps.touched.email && formikProps.errors.email}
+                      </ErrorText>
+                    )}
 
                     <AuthFormInput
                       labelValue={formikProps.values.password}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
                       onChangeText={formikProps.handleChange('password')}
                       placeholderText={t('login:Password')}
                       iconType="lock"
                       secureTextEntry={true}
                     />
 
-                    <Text>
-                      {formikProps.touched.password &&
-                        formikProps.errors.password}
-                    </Text>
+                    {formikProps.touched.password &&
+                      formikProps.errors.password && (
+                        <ErrorText>
+                          {formikProps.touched.password &&
+                            formikProps.errors.password}
+                        </ErrorText>
+                      )}
 
                     <TouchableOpacity onPress={navigateToForgotPassword}>
                       <ForgotPasswordText>
@@ -93,7 +100,7 @@ const LoginView = ({navigation, theme}) => {
 
                   <Button
                     text={t('login:Start')}
-                    bgColor={`${theme.appColors.accentColor}`}
+                    bgColor={`${theme.appColors.primaryColorLighter}`}
                     onPress={formikProps.handleSubmit}
                   />
                 </>
@@ -138,9 +145,10 @@ const LoginContainer = styled.View`
 `;
 
 const LoginHeading = styled.Text`
-  margin: 15px 0px 25px 0px;
+  margin: 10px 0px 80px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
-  font-size: 30px;
+  font-size: 35px;
+  font-weight: bold;
 `;
 
 const LoginInputs = styled.View`
@@ -148,15 +156,22 @@ const LoginInputs = styled.View`
   align-items: center;
 `;
 const ForgotPasswordText = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.textColorLightGray};
   font-style: italic;
-  padding-bottom: 15px;
+  font-size: 15px;
+  padding-bottom: 25px;
 `;
 
 const SocialButtons = styled.View`
   flex-direction: row;
   margin-top: 40px;
   align-items: center;
+`;
+
+const ErrorText = styled.Text`
+  color: ${({theme}) => theme.appColors.accentColor};
+  font-size: 17px;
+  padding-bottom: 10px;
 `;
 
 export default withTheme(LoginView);

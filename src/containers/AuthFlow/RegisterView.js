@@ -18,12 +18,6 @@ import Button from '../../components/Button';
 const RegisterView = ({theme}) => {
   const {t} = useTranslation();
 
-  // const [userName, setUserName] = useState('');
-  // const [userSurname, setUserSurname] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
-
   const onSync = useSelector(state => state.ui.authOnSync);
   const error = useSelector(state => state.messages.authErrorMsg);
 
@@ -36,11 +30,7 @@ const RegisterView = ({theme}) => {
   }, []);
 
   return (
-    <RegisterContainer
-      colors={[
-        `${theme.appColors.backgroundColor}`,
-        `${theme.appColors.lightPrimaryColor}`,
-      ]}>
+    <RegisterContainer>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
@@ -82,6 +72,7 @@ const RegisterView = ({theme}) => {
                     <RegisterInputs>
                       <AuthFormInput
                         labelValue={formikProps.values.userName}
+                        bgColor={`${theme.appColors.backgroundColorDarken}`}
                         onChangeText={formikProps.handleChange('userName')}
                         placeholderText={t('signup:Name')}
                         iconType="user"
@@ -89,13 +80,17 @@ const RegisterView = ({theme}) => {
                         autoCorrect={false}
                       />
 
-                      <Text>
-                        {formikProps.touched.userName &&
-                          formikProps.errors.userName}
-                      </Text>
+                      {formikProps.touched.userName &&
+                        formikProps.errors.userName && (
+                          <ErrorText>
+                            {formikProps.touched.userName &&
+                              formikProps.errors.userName}
+                          </ErrorText>
+                        )}
 
                       <AuthFormInput
                         labelValue={formikProps.values.userSurname}
+                        bgColor={`${theme.appColors.backgroundColorDarken}`}
                         onChangeText={formikProps.handleChange('userSurname')}
                         placeholderText={t('signup:Surname')}
                         iconType="user"
@@ -103,13 +98,17 @@ const RegisterView = ({theme}) => {
                         autoCorrect={false}
                       />
 
-                      <Text>
-                        {formikProps.touched.userSurname &&
-                          formikProps.errors.userSurname}
-                      </Text>
+                      {formikProps.touched.userSurname &&
+                        formikProps.errors.userSurname && (
+                          <ErrorText>
+                            {formikProps.touched.userSurname &&
+                              formikProps.errors.userSurname}
+                          </ErrorText>
+                        )}
 
                       <AuthFormInput
                         labelValue={formikProps.values.email}
+                        bgColor={`${theme.appColors.backgroundColorDarken}`}
                         onChangeText={formikProps.handleChange('email')}
                         placeholderText={t('signup:Email')}
                         iconType="user"
@@ -117,26 +116,33 @@ const RegisterView = ({theme}) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                       />
-
-                      <Text>
-                        {formikProps.touched.email && formikProps.errors.email}
-                      </Text>
+                      {formikProps.touched.email &&
+                        formikProps.errors.email && (
+                          <ErrorText>
+                            {formikProps.touched.email &&
+                              formikProps.errors.email}
+                          </ErrorText>
+                        )}
 
                       <AuthFormInput
                         labelValue={formikProps.values.password}
+                        bgColor={`${theme.appColors.backgroundColorDarken}`}
                         onChangeText={formikProps.handleChange('password')}
                         placeholderText={t('signup:Password')}
                         iconType="lock"
                         secureTextEntry={true}
                       />
-
-                      <Text>
-                        {formikProps.touched.password &&
-                          formikProps.errors.password}
-                      </Text>
+                      {formikProps.touched.password &&
+                        formikProps.errors.password && (
+                          <ErrorText>
+                            {formikProps.touched.password &&
+                              formikProps.errors.password}
+                          </ErrorText>
+                        )}
 
                       <AuthFormInput
                         labelValue={formikProps.values.passwordConfirm}
+                        bgColor={`${theme.appColors.backgroundColorDarken}`}
                         onChangeText={formikProps.handleChange(
                           'passwordConfirm',
                         )}
@@ -144,17 +150,19 @@ const RegisterView = ({theme}) => {
                         iconType="lock"
                         secureTextEntry={true}
                       />
-
-                      <Text>
-                        {formikProps.touched.passwordConfirm &&
-                          formikProps.errors.passwordConfirm}
-                      </Text>
+                      {formikProps.touched.passwordConfirm &&
+                        formikProps.errors.passwordConfirm && (
+                          <ErrorText>
+                            {formikProps.touched.passwordConfirm &&
+                              formikProps.errors.passwordConfirm}
+                          </ErrorText>
+                        )}
                     </RegisterInputs>
                     {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
                     <SignUpButtonContainer>
                       <Button
                         text={t('signup:SignUp')}
-                        bgColor={`${theme.appColors.accentColor}`}
+                        bgColor={`${theme.appColors.primaryColorLighter}`}
                         onPress={formikProps.handleSubmit}
                       />
                     </SignUpButtonContainer>
@@ -190,7 +198,8 @@ const RegisterView = ({theme}) => {
   );
 };
 
-const RegisterContainer = styled(LinearGradient)`
+const RegisterContainer = styled.View`
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 60px;
   font-size: 20px;
@@ -218,6 +227,12 @@ const SocialButtons = styled.View`
   flex-direction: row;
   margin: 30px 0px;
   align-items: center;
+`;
+
+const ErrorText = styled.Text`
+  color: ${({theme}) => theme.appColors.accentColor};
+  font-size: 17px;
+  padding-bottom: 10px;
 `;
 
 export default withTheme(RegisterView);

@@ -1,9 +1,10 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import ROUTES from '../../routes/Routes';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 import styled, {withTheme} from 'styled-components';
+
+import ROUTES from '../../routes/Routes';
 
 //COMPONENTS
 import Button from '../../components/Button';
@@ -46,7 +47,7 @@ const LandingView = ({navigation, theme}) => {
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
       <Image
         source={{
-          uri: 'https://images.pexels.com/photos/7675412/pexels-photo-7675412.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          uri: 'https://images.pexels.com/photos/7676553/pexels-photo-7676553.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
         }}
         resizeMode="cover">
         <ImageCover>
@@ -59,12 +60,12 @@ const LandingView = ({navigation, theme}) => {
             <Button
               text={t('login:SignIn')}
               onPress={navigateToLogin}
-              bgColor={theme.appColors.darkPrimaryColor}
+              bgColor={theme.appColors.primaryColorDarken}
             />
             <Button
               text={t('signup:SignUp')}
               onPress={navigateToRegister}
-              bgColor={theme.appColors.lightPrimaryColor}
+              bgColor={theme.appColors.primaryColorLighter}
             />
           </Buttons>
         </ImageCover>
@@ -95,20 +96,21 @@ const Heading = styled.Text`
   font-weight: bold;
 `;
 const TextMessagesContainer = styled.View`
-  margin: 40px 0px 0px 0px;
-  padding: 5px 15px;
+  border-radius: 10px;
+  margin: 20px 0px 250px 0px;
+  padding: 5px 20px;
   justify-content: center;
 `;
 
 const TextMessage = styled.Text`
   font-size: 22px;
-  padding: 5px 0px;
+  padding: 4px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
   text-align: center;
 `;
 
 const Buttons = styled.View`
-  margin: 250px 0px 0px 0px;
+  margin: 30px 0px 0px 0px;
 `;
 
 export default withTheme(LandingView);

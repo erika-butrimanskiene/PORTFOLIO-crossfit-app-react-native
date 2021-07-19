@@ -10,7 +10,7 @@ const SocialButton = ({text, btnType, iconColor, onPress}) => {
         <IconWrapper>
           <FontAwesome name={btnType} size={22} color={iconColor} />
         </IconWrapper>
-        <Title style={{color: iconColor}}>{text}</Title>
+        <Title>{text}</Title>
       </CustomButton>
     </TouchableOpacity>
   );
@@ -18,8 +18,8 @@ const SocialButton = ({text, btnType, iconColor, onPress}) => {
 
 const CustomButton = styled.View`
   margin: 10px;
-  padding: 5px 0px;
-  width: 150px;
+  padding: 10px 0px;
+  width: 160px;
   border-radius: 30px;
   flex-direction: row;
   align-items: center;
@@ -28,7 +28,7 @@ const CustomButton = styled.View`
 `;
 
 const Title = styled.Text`
-  color: white;
+  color: ${({theme}) => theme.appColors.textColorDarkGray};
   font-weight: bold;
   text-transform: uppercase;
   text-align: center;

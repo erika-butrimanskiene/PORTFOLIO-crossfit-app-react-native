@@ -1,9 +1,10 @@
 import React, {useContext} from 'react';
 import {StatusBar, ActivityIndicator} from 'react-native';
-import {AuthContext} from '../../routes/AuthProvider';
 import styled, {withTheme} from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
+
 import {actions} from '../../state/actions';
+import {AuthContext} from '../../routes/AuthProvider';
 
 //COMPONENTS
 import Button from '../../components/Button';
