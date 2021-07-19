@@ -15,8 +15,8 @@
     "ConfirmPassword": "Pakartoki slaptažodį"
   },
   "landing": {
-    "firstMessage": "-Registruokis į MyCrossfit treniruotes-",
-    "secondMessage": "-Sek savo rezultatus-"
+    "firstMessage": "Registruokis į MyCrossFit treniruotes",
+    "secondMessage": "Sek savo rezultatus"
   },
   "forgotPassword": {
     "message": "Viskas gerai! Atkurki slaptažodį",
@@ -24,6 +24,13 @@
     "continueBtn": "Tęsti"
   },
   "authErrors": {
+    "nameRequired": "Vardas yra privalomas",
+    "surnameRequired": "Pavardė yra privaloma",
+    "emailRequired": "El. paštas yra privalomas",
+    "emailValid": "Netinkamai nurodytas el. paštas",
+    "passwordRequired": "Slaptažodis yra privalomas",
+    "passwordValid": "Slaptažodžio minimalus ilgis yra 6 simboliai",
+    "passwordsMustMatch": "Slaptažodžiai turi sutapti",
     "fieldsCanNotBeEmpty": "Visi laukeliai yra privalomi",
     "passwordsNotMatch": "Slaptažodžiai turi sutapti",
     "passwordLength": "Slaptažodžio minimalus ilgis yra 6 simboliai",

@@ -7,11 +7,14 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-import ROUTES from '../../routes/Routes';
-import {AuthContext} from '../../routes/AuthProvider';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme} from 'styled-components';
+import {Formik} from 'formik';
+
+import ROUTES from '../../routes/Routes';
+import {AuthContext} from '../../routes/AuthProvider';
 import {actions} from '../../state/actions';
+import {loginSchema} from '../../utils/formsValidations';
 
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
@@ -21,9 +24,6 @@ import Button from '../../components/Button';
 const LoginView = ({navigation, theme}) => {
   const {t} = useTranslation();
   const {login, fbLogin} = useContext(AuthContext);
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const onSync = useSelector(state => state.ui.authOnSync);
   const error = useSelector(state => state.messages.authErrorMsg);
@@ -39,48 +39,68 @@ const LoginView = ({navigation, theme}) => {
   }, []);
 
   return (
-    <LoginContainer
-      colors={[
-        `${theme.appColors.primaryColor}`,
-        `${theme.appColors.lightAccentColor}`,
-      ]}>
-      <StatusBar backgroundColor={`#111924`} />
+    <LoginContainer>
+      <StatusBar backgroundColor={`#212121`} />
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
           <LoginHeading>MyCrossfit</LoginHeading>
-          <LoginInputs>
-            <AuthFormInput
-              labelValue={email}
-              onChangeText={userEmail => setEmail(userEmail)}
-              placeholderText={t('login:Email')}
-              iconType="user"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            <AuthFormInput
-              labelValue={password}
-              onChangeText={userPassword => setPassword(userPassword)}
-              placeholderText={t('login:Password')}
-              iconType="lock"
-              secureTextEntry={true}
-            />
-
-            <TouchableOpacity onPress={navigateToForgotPassword}>
-              <ForgotPasswordText>{t('login:ForgotPsw')}</ForgotPasswordText>
-            </TouchableOpacity>
-          </LoginInputs>
-
-          <Button
-            text={t('login:Start')}
-            bgColor={`${theme.appColors.darkAccentColor}`}
-            onPress={() => {
+          <Formik
+            initialValues={{email: '', password: ''}}
+            validationSchema={loginSchema}
+            onSubmit={values => {
+              const {email, password} = values;
               dispatch(actions.user.getUserAtLogin(email, password, login));
+            }}>
+            {formikProps => {
+              return (
+                <>
+                  <LoginInputs>
+                    <AuthFormInput
+                      labelValue={formikProps.values.email}
+                      onChangeText={formikProps.handleChange('email')}
+                      placeholderText={t('login:Email')}
+                      iconType="user"
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                    />
+
+                    <Text>
+                      {formikProps.touched.email && formikProps.errors.email}
+                    </Text>
+
+                    <AuthFormInput
+                      labelValue={formikProps.values.password}
+                      onChangeText={formikProps.handleChange('password')}
+                      placeholderText={t('login:Password')}
+                      iconType="lock"
+                      secureTextEntry={true}
+                    />
+
+                    <Text>
+                      {formikProps.touched.password &&
+                        formikProps.errors.password}
+                    </Text>
+
+                    <TouchableOpacity onPress={navigateToForgotPassword}>
+                      <ForgotPasswordText>
+                        {t('login:ForgotPsw')}
+                      </ForgotPasswordText>
+                    </TouchableOpacity>
+                  </LoginInputs>
+
+                  <Button
+                    text={t('login:Start')}
+                    bgColor={`${theme.appColors.accentColor}`}
+                    onPress={formikProps.handleSubmit}
+                  />
+                </>
+              );
             }}
-          />
+          </Formik>
+
           {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
 
           <SocialButtons>
@@ -108,7 +128,8 @@ const LoginView = ({navigation, theme}) => {
   );
 };
 
-const LoginContainer = styled(LinearGradient)`
+const LoginContainer = styled.View`
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 60px;
   font-size: 20px;

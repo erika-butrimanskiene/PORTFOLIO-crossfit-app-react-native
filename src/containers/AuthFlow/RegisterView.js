@@ -2,10 +2,13 @@ import React, {useContext, useState, useEffect} from 'react';
 import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-import {AuthContext} from '../../routes/AuthProvider';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme} from 'styled-components';
+import {Formik} from 'formik';
+
 import {actions} from '../../state/actions';
+import {AuthContext} from '../../routes/AuthProvider';
+import {registerSchema} from '../../utils/formsValidations';
 
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
@@ -15,11 +18,11 @@ import Button from '../../components/Button';
 const RegisterView = ({theme}) => {
   const {t} = useTranslation();
 
-  const [userName, setUserName] = useState('');
-  const [userSurname, setUserSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // const [userName, setUserName] = useState('');
+  // const [userSurname, setUserSurname] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [confirmPassword, setConfirmPassword] = useState('');
 
   const onSync = useSelector(state => state.ui.authOnSync);
   const error = useSelector(state => state.messages.authErrorMsg);
@@ -35,82 +38,130 @@ const RegisterView = ({theme}) => {
   return (
     <RegisterContainer
       colors={[
-        `${theme.appColors.primaryColor}`,
-        `${theme.appColors.lightAccentColor}`,
+        `${theme.appColors.backgroundColor}`,
+        `${theme.appColors.lightPrimaryColor}`,
       ]}>
-      <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
+      <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
           <ScrollView>
             <RegisterHeading>MyCrossfit</RegisterHeading>
-            <RegisterInputs>
-              <AuthFormInput
-                labelValue={userName}
-                onChangeText={username => setUserName(username)}
-                placeholderText={t('signup:Name')}
-                iconType="user"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <Formik
+              initialValues={{
+                userName: '',
+                userSurname: '',
+                email: '',
+                password: '',
+                passwordConfirm: '',
+              }}
+              validationSchema={registerSchema}
+              onSubmit={values => {
+                const {
+                  userName,
+                  userSurname,
+                  email,
+                  password,
+                  passwordConfirm,
+                } = values;
+                dispatch(
+                  actions.user.getUserAtRegister(
+                    email,
+                    password,
+                    passwordConfirm,
+                    userName,
+                    userSurname,
+                    register,
+                  ),
+                );
+              }}>
+              {formikProps => {
+                return (
+                  <>
+                    <RegisterInputs>
+                      <AuthFormInput
+                        labelValue={formikProps.values.userName}
+                        onChangeText={formikProps.handleChange('userName')}
+                        placeholderText={t('signup:Name')}
+                        iconType="user"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                      />
 
-              <AuthFormInput
-                labelValue={userSurname}
-                onChangeText={usersurname => setUserSurname(usersurname)}
-                placeholderText={t('signup:Surname')}
-                iconType="user"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+                      <Text>
+                        {formikProps.touched.userName &&
+                          formikProps.errors.userName}
+                      </Text>
 
-              <AuthFormInput
-                labelValue={email}
-                onChangeText={userEmail => setEmail(userEmail)}
-                placeholderText={t('signup:Email')}
-                iconType="user"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+                      <AuthFormInput
+                        labelValue={formikProps.values.userSurname}
+                        onChangeText={formikProps.handleChange('userSurname')}
+                        placeholderText={t('signup:Surname')}
+                        iconType="user"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                      />
 
-              <AuthFormInput
-                labelValue={password}
-                onChangeText={userPassword => setPassword(userPassword)}
-                placeholderText={t('signup:Password')}
-                iconType="lock"
-                secureTextEntry={true}
-              />
+                      <Text>
+                        {formikProps.touched.userSurname &&
+                          formikProps.errors.userSurname}
+                      </Text>
 
-              <AuthFormInput
-                labelValue={confirmPassword}
-                onChangeText={confirmPassword =>
-                  setConfirmPassword(confirmPassword)
-                }
-                placeholderText={t('signup:ConfirmPassword')}
-                iconType="lock"
-                secureTextEntry={true}
-              />
-            </RegisterInputs>
-            {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
-            <SignUpButtonContainer>
-              <Button
-                text={t('signup:SignUp')}
-                bgColor={`${theme.appColors.darkAccentColor}`}
-                onPress={() =>
-                  dispatch(
-                    actions.user.getUserAtRegister(
-                      email,
-                      password,
-                      confirmPassword,
-                      userName,
-                      userSurname,
-                      register,
-                    ),
-                  )
-                }
-              />
-            </SignUpButtonContainer>
+                      <AuthFormInput
+                        labelValue={formikProps.values.email}
+                        onChangeText={formikProps.handleChange('email')}
+                        placeholderText={t('signup:Email')}
+                        iconType="user"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                      />
+
+                      <Text>
+                        {formikProps.touched.email && formikProps.errors.email}
+                      </Text>
+
+                      <AuthFormInput
+                        labelValue={formikProps.values.password}
+                        onChangeText={formikProps.handleChange('password')}
+                        placeholderText={t('signup:Password')}
+                        iconType="lock"
+                        secureTextEntry={true}
+                      />
+
+                      <Text>
+                        {formikProps.touched.password &&
+                          formikProps.errors.password}
+                      </Text>
+
+                      <AuthFormInput
+                        labelValue={formikProps.values.passwordConfirm}
+                        onChangeText={formikProps.handleChange(
+                          'passwordConfirm',
+                        )}
+                        placeholderText={t('signup:ConfirmPassword')}
+                        iconType="lock"
+                        secureTextEntry={true}
+                      />
+
+                      <Text>
+                        {formikProps.touched.passwordConfirm &&
+                          formikProps.errors.passwordConfirm}
+                      </Text>
+                    </RegisterInputs>
+                    {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
+                    <SignUpButtonContainer>
+                      <Button
+                        text={t('signup:SignUp')}
+                        bgColor={`${theme.appColors.accentColor}`}
+                        onPress={formikProps.handleSubmit}
+                      />
+                    </SignUpButtonContainer>
+                  </>
+                );
+              }}
+            </Formik>
             <SocialButtons>
               <SocialButton
                 text="Facebook"

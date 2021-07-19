@@ -1,9 +1,11 @@
 export const theme = {
   appColors: {
-    primaryColor: '#111924',
-    secondColor: '#181a1c',
-    darkAccentColor: '#3c1053',
-    lightAccentColor: '#BD3CB5',
+    backgroundColor: '#212121',
+    backgroundColorDarken: "#121212",
+    // secondColor: '#181a1c',
+    accentColor: '#ff3ca5',
+    lightPrimaryColor: '#5853F2',
+    darkPrimaryColor: '#2c298c',
     whiteColor: '#ffffff',
     blackColor: '#000000',
   },

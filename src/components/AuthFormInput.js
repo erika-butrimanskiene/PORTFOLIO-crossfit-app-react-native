@@ -27,7 +27,7 @@ const AuthFormInput = ({labelValue, placeholderText, iconType, ...rest}) => {
 const InputContainer = styled.View`
   width: 90%;
   height: 60px;
-  margin: 15px 0px;
+  margin: 5px 0px;
   border-color: ${theme.appColors.whiteColor};
   border-radius: 50px;
   border-width: 1px;

@@ -18,7 +18,7 @@ const HomeView = ({theme}) => {
 
   return (
     <HomeContainer>
-      <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
+      <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
 
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
@@ -29,7 +29,7 @@ const HomeView = ({theme}) => {
           <Heading>{onSync}</Heading>
           <Button
             text="Logout"
-            bgColor={`${theme.appColors.lightAccentColor}`}
+            bgColor={`${theme.appColors.lightPrimaryColor}`}
             onPress={() => dispatch(actions.user.logoutUser(logout))}
           />
         </>
@@ -44,7 +44,7 @@ const HomeContainer = styled.View`
   font-size: 20px;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}) => theme.appColors.primaryColor};
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
 const Heading = styled.Text`

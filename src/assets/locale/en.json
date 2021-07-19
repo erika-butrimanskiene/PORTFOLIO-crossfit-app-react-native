@@ -15,8 +15,8 @@
     "ConfirmPassword": "Confirm Password"
   },
   "landing": {
-    "firstMessage": "-Register to MyCrossfit workouts-",
-    "secondMessage": "-Track your results-"
+    "firstMessage": "Register to MyCrossFit workouts",
+    "secondMessage": "Track your results"
   },
   "forgotPassword": {
     "message": "It's Okay! Reset your password",
@@ -24,6 +24,13 @@
     "continueBtn": "Continue"
   },
   "authErrors": {
+    "emailRequired": "Email is required",
+    "nameRequired": "Name is required",
+    "surnameRequired": "Surname is required",
+    "emailValid": "Email is not valid",
+    "passwordRequired": "Password is required",
+    "passwordValid": "Password min length is 6 characters",
+    "passwordsMustMatch": "Passwords must match",
     "fieldsCanNotBeEmpty": "All fields are required",
     "passwordsNotMatch": "Passwords must match",
     "passwordLength": "Password min length is 6 characters",

@@ -16,8 +16,8 @@ const ForgotPasswordView = ({theme}) => {
   return (
     <ResetPasswordContainer
       colors={[
-        `${theme.appColors.primaryColor}`,
-        `${theme.appColors.lightAccentColor}`,
+        `${theme.appColors.backgroundColor}`,
+        `${theme.appColors.lightPrimaryColor}`,
       ]}>
       <View>
         <AntDesign name={'questioncircleo'} size={70} color="white" />
@@ -27,12 +27,12 @@ const ForgotPasswordView = ({theme}) => {
         value={email}
         numberOfLines={1}
         placeholder={t('forgotPassword:enterEmail')}
-        placeholderTextColor={`${theme.appColors.darkAccentColor}`}
+        placeholderTextColor={`${theme.appColors.accentColor}`}
         onChangeText={userEmail => setEmail(userEmail)}
       />
       <Button
         text={t('forgotPassword:continueBtn')}
-        bgColor={`${theme.appColors.darkAccentColor}`}
+        bgColor={`${theme.appColors.accentColor}`}
         onPress={() => alert('Reset password')}
       />
     </ResetPasswordContainer>

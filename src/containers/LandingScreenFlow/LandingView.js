@@ -23,7 +23,7 @@ const LandingView = ({navigation, theme}) => {
           options={options}
           hasPadding
           initial={0}
-          buttonColor={theme.appColors.lightAccentColor}
+          buttonColor={theme.appColors.accentColor}
           style={{width: 70}}
           onPress={language => {
             i18n.changeLanguage(language);
@@ -43,14 +43,14 @@ const LandingView = ({navigation, theme}) => {
 
   return (
     <LandingContainer>
-      <StatusBar backgroundColor={`${theme.appColors.primaryColor}`} />
+      <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
       <Image
         source={{
           uri: 'https://images.pexels.com/photos/7675412/pexels-photo-7675412.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         }}
         resizeMode="cover">
         <ImageCover>
-          <Heading>MyCrossfit</Heading>
+          <Heading>MyCrossFit</Heading>
           <TextMessagesContainer>
             <TextMessage>{t('landing:firstMessage')}</TextMessage>
             <TextMessage>{t('landing:secondMessage')}</TextMessage>
@@ -59,12 +59,12 @@ const LandingView = ({navigation, theme}) => {
             <Button
               text={t('login:SignIn')}
               onPress={navigateToLogin}
-              bgColor={theme.appColors.darkAccentColor}
+              bgColor={theme.appColors.darkPrimaryColor}
             />
             <Button
               text={t('signup:SignUp')}
               onPress={navigateToRegister}
-              bgColor={theme.appColors.lightAccentColor}
+              bgColor={theme.appColors.lightPrimaryColor}
             />
           </Buttons>
         </ImageCover>
@@ -84,29 +84,31 @@ const Image = styled.ImageBackground`
 
 const ImageCover = styled.View`
   flex: 1;
-  padding-top: 100px;
-  background-color: #111924a0;
+  padding-top: 70px;
+  background-color: #212121a0;
   align-items: center;
 `;
 
 const Heading = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 35px;
+  font-weight: bold;
 `;
 const TextMessagesContainer = styled.View`
-  padding: 20px 0px;
+  margin: 40px 0px 0px 0px;
+  padding: 5px 15px;
   justify-content: center;
 `;
 
 const TextMessage = styled.Text`
-  font-size: 20px;
+  font-size: 22px;
   padding: 5px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
   text-align: center;
 `;
 
 const Buttons = styled.View`
-  margin: 80px 0px 0px 0px;
+  margin: 250px 0px 0px 0px;
 `;
 
 export default withTheme(LandingView);
