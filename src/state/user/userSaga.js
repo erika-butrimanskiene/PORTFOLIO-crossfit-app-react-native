@@ -4,11 +4,6 @@ import {constants} from '../constants';
 
 function* handleLogin({payload: {email, password, login}}) {
   try {
-    if (email === '' || password === '') {
-      yield put(actions.messages.setErrorMessage('fieldsCanNotBeEmpty'));
-      return;
-    }
-
     yield put(actions.ui.setOnSync(true));
     const response = yield call(login, email, password);
     yield put(actions.ui.setOnSync(false));
@@ -22,7 +17,7 @@ function* handleLogin({payload: {email, password, login}}) {
           id: '',
         }),
       );
-      yield put(actions.messages.setErrorMessage('auth/reset-error'));
+      yield put(actions.messages.clearMessages());
     }
 
     if (response.status === false) {
@@ -47,28 +42,6 @@ function* handleRegistration({
   payload: {email, password, confirmPassword, userName, userSurname, register},
 }) {
   try {
-    console;
-    if (
-      userName === '' ||
-      userSurname === '' ||
-      email === '' ||
-      password === '' ||
-      confirmPassword === ''
-    ) {
-      yield put(actions.messages.setErrorMessage('fieldsCanNotBeEmpty'));
-      return;
-    }
-
-    if (password.length < 6) {
-      yield put(actions.messages.setErrorMessage('passwordLength'));
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      yield put(actions.messages.setErrorMessage('passwordsNotMatch'));
-      return;
-    }
-
     yield put(actions.ui.setOnSync(true));
     const response = yield call(register, email, password);
     yield put(actions.ui.setOnSync(false));
@@ -81,7 +54,7 @@ function* handleRegistration({
           id: '',
         }),
       );
-      yield put(actions.messages.setErrorMessage('auth/reset-error'));
+      yield put(actions.messages.clearMessages());
     }
 
     if (response.status === false) {

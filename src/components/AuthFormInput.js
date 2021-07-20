@@ -11,7 +11,6 @@ const AuthFormInput = ({
   ...rest
 }) => {
   const [isInputActive, setIsInputActive] = useState(false);
-  console.log(isInputActive);
   return (
     <InputContainer bgColor={bgColor} focus={isInputActive}>
       <Icon>

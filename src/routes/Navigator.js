@@ -1,5 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
+import {useSelector} from 'react-redux';
 import {theme} from '../../assets/styles/theme';
+import {View, Text} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -17,8 +20,13 @@ import ROUTES from './Routes';
 const Stack = createStackNavigator();
 
 const Navigator = () => {
+  const {t} = useTranslation();
   const {user, setUser} = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const error = useSelector(state => state.messages.authErrorMsg);
+  console.log(error);
+  const errorText = t(`authErrors:${error}`);
 
   const onAuthStateChanged = user => {
     setUser(user);
@@ -27,13 +35,23 @@ const Navigator = () => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    if (errorText !== '') {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
     return subscriber;
-  }, []);
+  }, [errorText]);
 
   if (initializing) return null;
 
   return (
     <NavigationContainer>
+      {isError && (
+        <View>
+          <Text>{errorText}</Text>
+        </View>
+      )}
       {user ? (
         <Stack.Navigator
           screenOptions={{
