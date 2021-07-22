@@ -30,10 +30,6 @@ const LoginView = ({navigation, theme}) => {
 
   const dispatch = useDispatch();
 
-  const navigateToForgotPassword = () => {
-    navigation.navigate(ROUTES.Password);
-  };
-
   useEffect(() => {
     dispatch(actions.messages.clearMessages());
   }, []);
@@ -91,7 +87,7 @@ const LoginView = ({navigation, theme}) => {
                         </ErrorText>
                       )}
 
-                    <TouchableOpacity onPress={navigateToForgotPassword}>
+                    <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Password)}>
                       <ForgotPasswordText>
                         {t('login:ForgotPsw')}
                       </ForgotPasswordText>

@@ -43,5 +43,8 @@
     "auth/weak-password": "Silpnas slaptazodis",
     "auth/wrong-password": "Neteisingas slaptažodis",
     "auth/unknown": "Nežinoma klaida"
+  },
+  "user": {
+    "userProfile": "User Profile"
   }
 }

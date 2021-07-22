@@ -1,15 +1,23 @@
 import React, {useContext} from 'react';
-import {StatusBar, ActivityIndicator} from 'react-native';
+import {
+  StatusBar,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import styled, {withTheme} from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 import {actions} from '../../state/actions';
 import {AuthContext} from '../../routes/AuthProvider';
+import ROUTES from '../../routes/Routes';
 
 //COMPONENTS
 import Button from '../../components/Button';
 
-const HomeView = ({theme}) => {
+const HomeView = ({theme, navigation}) => {
+  const {t} = useTranslation();
   const {logout} = useContext(AuthContext);
 
   const onSync = useSelector(state => state.ui.authOnSync);
@@ -33,6 +41,10 @@ const HomeView = ({theme}) => {
             bgColor={`${theme.appColors.lightPrimaryColor}`}
             onPress={() => dispatch(actions.user.logoutUser(logout))}
           />
+
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Profile)}>
+            <Text>{t('user:userProfile')}</Text>
+          </TouchableOpacity>
         </>
       )}
     </HomeContainer>

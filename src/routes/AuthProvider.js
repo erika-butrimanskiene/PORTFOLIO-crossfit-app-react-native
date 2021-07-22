@@ -1,16 +1,14 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext} from 'react';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import database from '@react-native-firebase/database';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-  const [user, setUser] = useState(null);
   return (
     <AuthContext.Provider
       value={{
-        user,
-        setUser,
         login: async (email, password) => {
           try {
             const response = await auth().signInWithEmailAndPassword(
@@ -18,6 +16,16 @@ export const AuthProvider = ({children}) => {
               password,
             );
             console.log(response);
+            // const reference = await database().ref('/users/124546').once("value");
+            // console.log(reference);
+            // console.log("App: " + database().app.name);
+            // const test = database()
+            //   .ref(`/users`);
+            //   // .update({
+            //   //   email: `a@b.lt`,
+            //   // })
+            //   // .then(() => console.log('Data set.'), (error) => console.log(error));
+            //   console.log(test);
             return {
               status: true,
               email: response.user.email,
@@ -74,6 +82,12 @@ export const AuthProvider = ({children}) => {
               password,
             );
             console.log(response);
+            // database()
+            //   .ref(`/users/${response.user.uid}`)
+            //   .update({
+            //     email: `${response.user.email}`,
+            //   })
+            //   .then(() => console.log('Data set.'));
             return {
               status: true,
               email: response.user.email,

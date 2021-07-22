@@ -16,7 +16,7 @@ const ForgotPasswordView = ({theme}) => {
   return (
     <ResetPasswordContainer>
       <View>
-        <AntDesign name={'questioncircleo'} size={70} color="white" />
+        <AntDesign name={'questioncircleo'} size={70} color={`${theme.appColors.accentColor}`} />
       </View>
       <ResetPasswordHeading>{t('forgotPassword:message')}</ResetPasswordHeading>
       <InputField

@@ -1,8 +1,9 @@
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 import styled, {withTheme} from 'styled-components';
+import {useSelector} from 'react-redux';
 
 import ROUTES from '../../routes/Routes';
 
@@ -16,20 +17,25 @@ const options = [
 
 const LandingView = ({navigation, theme}) => {
   const {t, i18n} = useTranslation();
+  const onSync = useSelector(state => state.ui.authOnSync);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <SwitchSelector
-          options={options}
-          hasPadding
-          initial={0}
-          buttonColor={theme.appColors.accentColor}
-          style={{width: 70}}
-          onPress={language => {
-            i18n.changeLanguage(language);
-          }}
-        />
+        <>
+          {!onSync && (
+            <SwitchSelector
+              options={options}
+              hasPadding
+              initial={0}
+              buttonColor={theme.appColors.accentColor}
+              style={{width: 70}}
+              onPress={language => {
+                i18n.changeLanguage(language);
+              }}
+            />
+          )}
+        </>
       ),
     });
   }, [navigation]);
@@ -45,37 +51,43 @@ const LandingView = ({navigation, theme}) => {
   return (
     <LandingContainer>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
-      <Image
-        source={{
-          uri: 'https://images.pexels.com/photos/7676553/pexels-photo-7676553.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-        }}
-        resizeMode="cover">
-        <ImageCover>
-          <Heading>MyCrossFit</Heading>
-          <TextMessagesContainer>
-            <TextMessage>{t('landing:firstMessage')}</TextMessage>
-            <TextMessage>{t('landing:secondMessage')}</TextMessage>
-          </TextMessagesContainer>
-          <Buttons>
-            <Button
-              text={t('login:SignIn')}
-              onPress={navigateToLogin}
-              bgColor={theme.appColors.primaryColorDarken}
-            />
-            <Button
-              text={t('signup:SignUp')}
-              onPress={navigateToRegister}
-              bgColor={theme.appColors.primaryColorLighter}
-            />
-          </Buttons>
-        </ImageCover>
-      </Image>
+      {onSync ? (
+        <ActivityIndicator size="large" color="#ffffff" />
+      ) : (
+        <Image
+          source={{
+            uri: 'https://images.pexels.com/photos/7676553/pexels-photo-7676553.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+          }}
+          resizeMode="cover">
+          <ImageCover>
+            <Heading>MyCrossFit</Heading>
+            <TextMessagesContainer>
+              <TextMessage>{t('landing:firstMessage')}</TextMessage>
+              <TextMessage>{t('landing:secondMessage')}</TextMessage>
+            </TextMessagesContainer>
+            <Buttons>
+              <Button
+                text={t('login:SignIn')}
+                onPress={navigateToLogin}
+                bgColor={theme.appColors.primaryColorDarken}
+              />
+              <Button
+                text={t('signup:SignUp')}
+                onPress={navigateToRegister}
+                bgColor={theme.appColors.primaryColorLighter}
+              />
+            </Buttons>
+          </ImageCover>
+        </Image>
+      )}
     </LandingContainer>
   );
 };
 
 const LandingContainer = styled.View`
   flex: 1;
+  justify-content: center;
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
 const Image = styled.ImageBackground`

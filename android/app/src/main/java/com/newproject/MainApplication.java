@@ -11,6 +11,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.BV.LinearGradient.LinearGradientPackage;
+import io.invertase.firebase.database.ReactNativeFirebaseDatabasePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           packages.add(new LinearGradientPackage());
+          // packages.add(new MainReactPackage());
+          // packages.add(new ReactNativeFirebaseDatabasePackage());
           return packages;
         }
 

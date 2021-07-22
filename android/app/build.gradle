@@ -193,6 +193,9 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
     implementation 'com.android.support:multidex:1.0.3'
+    // implementation project(path: ":@react-native-firebase_database")
+        implementation 'com.google.firebase:firebase-database:20.0.0'
+
     implementation project (':react-native-linear-gradient')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

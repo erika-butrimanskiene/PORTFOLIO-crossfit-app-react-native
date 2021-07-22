@@ -57,3 +57,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Database URL
+src/utils/database.js

@@ -43,5 +43,8 @@
     "auth/weak-password": "Weak password",
     "auth/wrong-password": "Wrong password",
     "auth/unknown": "Unknown error"
+  },
+  "user": {
+    "userProfile": "Vartotojo Profilis"
   }
 }
