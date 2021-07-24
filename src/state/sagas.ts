@@ -5,7 +5,7 @@ import watchUser from './user/userWatcherSaga';
 
 export function* rootSaga() {
   yield all([fork(userSaga)]);
-  const user = auth().currentUser;
+  const user: any = auth().currentUser;
   if (user) {
     yield fork(watchUser, user._user.uid);
   }

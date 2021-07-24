@@ -2,7 +2,7 @@ import sagaPlugin from 'reactotron-redux-saga';
 import {NativeModules} from 'react-native';
 import Reactotron, {networking} from 'reactotron-react-native';
 import {reactotronRedux} from 'reactotron-redux';
-import ReactotronFlipper from 'reactotron-react-native/dist/flipper';
+// import ReactotronFlipper from 'reactotron-react-native/dist/flipper';
 
 export const initReactotron = () => {
   const scriptURL: string = NativeModules.SourceCode.scriptURL;
@@ -10,7 +10,7 @@ export const initReactotron = () => {
 
   Reactotron.configure({
     host: scriptHostname,
-    createSocket: path => new ReactotronFlipper(path),
+    // createSocket: path => new ReactotronFlipper(path),
   })
     .useReactNative()
     .use(reactotronRedux())

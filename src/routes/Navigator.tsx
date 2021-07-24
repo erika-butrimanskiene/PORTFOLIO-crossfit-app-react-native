@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import {RootState} from 'src/state/reducers';
 
 import ROUTES from './Routes';
 import {actions} from '../state/actions';
@@ -17,20 +18,22 @@ import ForgotPasswordView from '../containers/AuthFlow/ForgotPasswordView';
 import HomeView from '../containers/HomeScreenFlow/HomeView';
 import ProfileView from '../containers/UserFlow/ProfileView';
 
-const Stack = createStackNavigator();
+import {RootStackParamList} from './Interface';
 
-const Navigator = () => {
+const Stack = createStackNavigator<RootStackParamList>();
+
+const Navigator: React.FC = () => {
   const {t} = useTranslation();
   const [initializing, setInitializing] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const dispatch = useDispatch();
-  const error = useSelector(state => state.messages.authErrorMsg);
-  const user = useSelector(state => state.user.user);
+  const error = useSelector((state: RootState) => state.messages.authErrorMsg);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const errorText = t(`authErrors:${error}`);
 
-  const onAuthStateChanged = authUser => {
+  const onAuthStateChanged = (authUser: any) => {
     if (authUser) {
       dispatch(actions.ui.setOnSync(true));
       database

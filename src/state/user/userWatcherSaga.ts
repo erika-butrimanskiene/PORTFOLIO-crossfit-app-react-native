@@ -1,9 +1,9 @@
 import {database} from '../../utils/database';
-import {eventChannel} from 'redux-saga';
+import {EventChannel, eventChannel} from 'redux-saga';
 import {call, take, put} from 'redux-saga/effects';
 import {actions} from '../actions';
 
-const usersChannel = uid => {
+const usersChannel = (uid: string) => {
   return eventChannel(emit => {
     const firebaseDatabase = database.ref(`users/${uid}`);
     firebaseDatabase.on(
@@ -19,8 +19,8 @@ const usersChannel = uid => {
   });
 };
 
-export default function* watchUser(uid) {
-  const channel = yield call(usersChannel, uid);
+export default function* watchUser(uid: string) {
+  const channel: EventChannel<unknown> = yield call(usersChannel, uid);
   try {
     while (true) {
       const {user} = yield take(channel);

@@ -1,29 +1,31 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 import {useTranslation} from 'react-i18next';
-import styled, {withTheme} from 'styled-components';
+import styled, {withTheme} from 'styled-components/native';
 import {Formik} from 'formik';
 
 import {actions} from '../../state/actions';
-import {AuthContext} from '../../routes/AuthProvider';
 import {registerSchema} from '../../utils/formsValidations';
+import {IDefaultTheme} from '../../assets/styles/interface';
+import {RootState} from 'src/state/reducers';
 
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
 
-const RegisterView = ({theme}) => {
+interface IRegisterViewProps {
+  theme: IDefaultTheme;
+}
+
+const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
   const {t} = useTranslation();
 
-  const onSync = useSelector(state => state.ui.authOnSync);
-  const error = useSelector(state => state.messages.authErrorMsg);
+  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const error = useSelector((state: RootState) => state.messages.authErrorMsg);
 
   const dispatch = useDispatch();
-
-  const {register, fbLogin} = useContext(AuthContext);
 
   useEffect(() => {
     dispatch(actions.messages.clearMessages());
@@ -62,7 +64,6 @@ const RegisterView = ({theme}) => {
                     passwordConfirm,
                     userName,
                     userSurname,
-                    register,
                   ),
                 );
               }}>
@@ -175,9 +176,8 @@ const RegisterView = ({theme}) => {
                 text="Facebook"
                 btnType="facebook"
                 iconColor="#4867aa"
-                bgColor={`${theme.appColors.whiteColor}`}
                 onPress={() => {
-                  dispatch(actions.user.getUserAtFbLogin(fbLogin));
+                  dispatch(actions.user.getUserAtFbLogin());
                 }}
               />
 
@@ -185,7 +185,6 @@ const RegisterView = ({theme}) => {
                 text="Google"
                 btnType="google"
                 iconColor="#de4d41"
-                bgColor={`${theme.appColors.whiteColor}`}
                 onPress={() => {
                   alert('Google Clicked');
                 }}
@@ -199,7 +198,8 @@ const RegisterView = ({theme}) => {
 };
 
 const RegisterContainer = styled.View`
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
+  background-color: ${({theme}: IRegisterViewProps) =>
+    theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 60px;
   font-size: 20px;
@@ -209,7 +209,7 @@ const RegisterContainer = styled.View`
 
 const RegisterHeading = styled.Text`
   margin: 15px 0px 25px 0px;
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme}: IRegisterViewProps) => theme.appColors.whiteColor};
   font-size: 30px;
   text-align: center;
 `;
@@ -230,7 +230,7 @@ const SocialButtons = styled.View`
 `;
 
 const ErrorText = styled.Text`
-  color: ${({theme}) => theme.appColors.accentColor};
+  color: ${({theme}: IRegisterViewProps) => theme.appColors.accentColor};
   font-size: 17px;
   padding-bottom: 10px;
 `;

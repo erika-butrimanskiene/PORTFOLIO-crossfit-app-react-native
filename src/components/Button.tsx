@@ -1,8 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import {TouchableOpacity} from 'react-native';
+import styled from 'styled-components/native';
+import {TouchableOpacity, GestureResponderEvent} from 'react-native';
 
-const Button = ({text, onPress, bgColor}) => {
+interface IButtonProps {
+  text: string;
+  onPress: ((event: GestureResponderEvent) => void) | any;
+  bgColor: string;
+}
+
+const Button: React.FC<IButtonProps> = ({text, onPress, bgColor}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <CustomButton style={{backgroundColor: bgColor}}>

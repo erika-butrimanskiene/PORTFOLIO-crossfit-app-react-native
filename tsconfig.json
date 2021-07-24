@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es2020",
+    "baseUrl": "./",
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "lint": {
+          "validProperties": [
+            "aspect-ratio",
+            "border-bottom-end-radius",
+            "border-bottom-start-radius",
+            "elevation",
+            "margin-horizontal",
+            "margin-vertical",
+            "padding-horizontal",
+            "padding-vertical",
+            "resize-mode",
+            "shadow-color",
+            "shadow-offset",
+            "shadow-opacity",
+            "shadow-radius",
+            "tint-color"
+          ]
+        }
+      }
+    ],
+    "jsx": "react",
+    "strict": false,
+    "types": [],
+    "declaration": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

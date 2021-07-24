@@ -5,23 +5,37 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import styled, {withTheme} from 'styled-components';
+import styled, {withTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootState} from 'src/state/reducers';
 
 import {actions} from '../../state/actions';
 import {AuthContext} from '../../routes/AuthProvider';
+import {IDefaultTheme} from '../../assets/styles/interface';
 import ROUTES from '../../routes/Routes';
+import {RootStackParamList} from 'src/routes/Interface';
 
 //COMPONENTS
 import Button from '../../components/Button';
 
-const HomeView = ({theme, navigation}) => {
-  const {t} = useTranslation();
-  const {logout} = useContext(AuthContext);
+type HomeViewScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.Home
+>;
 
-  const onSync = useSelector(state => state.ui.authOnSync);
-  const user = useSelector(state => state.user.user);
+interface IHomeViewProps {
+  theme: IDefaultTheme;
+  navigation: HomeViewScreenNavigationProp;
+}
+
+const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
+  const {t} = useTranslation();
+  //const {logout} = useContext(AuthContext);
+
+  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const dispatch = useDispatch();
 
@@ -38,8 +52,8 @@ const HomeView = ({theme, navigation}) => {
           <Heading>{onSync}</Heading>
           <Button
             text="Logout"
-            bgColor={`${theme.appColors.lightPrimaryColor}`}
-            onPress={() => dispatch(actions.user.logoutUser(logout))}
+            bgColor={`${theme.appColors.primaryColorLighter}`}
+            onPress={() => dispatch(actions.user.logoutUser())}
           />
 
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Profile)}>
@@ -57,11 +71,12 @@ const HomeContainer = styled.View`
   font-size: 20px;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
+  background-color: ${({theme}: IHomeViewProps) =>
+    theme.appColors.backgroundColor};
 `;
 
 const Heading = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor}; ;
+  color: ${({theme}: IHomeViewProps) => theme.appColors.whiteColor}; ;
 `;
 
 export default withTheme(HomeView);

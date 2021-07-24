@@ -1,10 +1,14 @@
 import {constants} from '../constants';
+import {IUserState, userActionsType} from './userInterface';
 
 const initialUserState = {
   user: {},
 };
 
-const userReducer = (state = initialUserState, action) => {
+const userReducer = (
+  state: IUserState = initialUserState,
+  action: userActionsType,
+) => {
   switch (action.type) {
     case constants.user.SET_USER_SUCCESS:
       return {

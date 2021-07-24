@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -6,27 +6,40 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 import {useTranslation} from 'react-i18next';
-import styled, {withTheme} from 'styled-components';
+import styled, {withTheme} from 'styled-components/native';
 import {Formik} from 'formik';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 import ROUTES from '../../routes/Routes';
 import {AuthContext} from '../../routes/AuthProvider';
 import {actions} from '../../state/actions';
 import {loginSchema} from '../../utils/formsValidations';
+import {RootStackParamList} from 'src/routes/Interface';
+import {IDefaultTheme} from '../../assets/styles/interface';
+import {RootState} from 'src/state/reducers';
 
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
 
-const LoginView = ({navigation, theme}) => {
-  const {t} = useTranslation();
-  const {login, fbLogin} = useContext(AuthContext);
+type LoginViewScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.Login
+>;
 
-  const onSync = useSelector(state => state.ui.authOnSync);
-  const error = useSelector(state => state.messages.authErrorMsg);
+interface ILoginViewProps {
+  theme: IDefaultTheme;
+  navigation: LoginViewScreenNavigationProp;
+}
+
+const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
+  const {t} = useTranslation();
+  //const {login, fbLogin} = useContext(AuthContext);
+
+  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const error = useSelector((state: RootState) => state.messages.authErrorMsg);
 
   const dispatch = useDispatch();
 
@@ -46,8 +59,9 @@ const LoginView = ({navigation, theme}) => {
             initialValues={{email: '', password: ''}}
             validationSchema={loginSchema}
             onSubmit={values => {
+              console.log('login btn clicked');
               const {email, password} = values;
-              dispatch(actions.user.getUserAtLogin(email, password, login));
+              dispatch(actions.user.getUserAtLogin(email, password));
             }}>
             {formikProps => {
               return (
@@ -87,7 +101,8 @@ const LoginView = ({navigation, theme}) => {
                         </ErrorText>
                       )}
 
-                    <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Password)}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate(ROUTES.Password)}>
                       <ForgotPasswordText>
                         {t('login:ForgotPsw')}
                       </ForgotPasswordText>
@@ -112,7 +127,7 @@ const LoginView = ({navigation, theme}) => {
               btnType="facebook"
               iconColor="#4867aa"
               onPress={() => {
-                dispatch(actions.user.getUserAtFbLogin(fbLogin));
+                dispatch(actions.user.getUserAtFbLogin());
               }}
             />
 
@@ -132,7 +147,8 @@ const LoginView = ({navigation, theme}) => {
 };
 
 const LoginContainer = styled.View`
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
+  background-color: ${({theme}: ILoginViewProps) =>
+    theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 60px;
   font-size: 20px;
@@ -142,7 +158,7 @@ const LoginContainer = styled.View`
 
 const LoginHeading = styled.Text`
   margin: 10px 0px 80px 0px;
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme}: ILoginViewProps) => theme.appColors.whiteColor};
   font-size: 35px;
   font-weight: bold;
 `;
@@ -152,7 +168,7 @@ const LoginInputs = styled.View`
   align-items: center;
 `;
 const ForgotPasswordText = styled.Text`
-  color: ${({theme}) => theme.appColors.textColorLightGray};
+  color: ${({theme}: ILoginViewProps) => theme.appColors.textColorLightGray};
   font-style: italic;
   font-size: 15px;
   padding-bottom: 25px;
@@ -165,7 +181,7 @@ const SocialButtons = styled.View`
 `;
 
 const ErrorText = styled.Text`
-  color: ${({theme}) => theme.appColors.accentColor};
+  color: ${({theme}: ILoginViewProps) => theme.appColors.accentColor};
   font-size: 17px;
   padding-bottom: 10px;
 `;

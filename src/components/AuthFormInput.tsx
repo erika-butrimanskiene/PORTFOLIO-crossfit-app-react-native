@@ -1,13 +1,28 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import styled, {withTheme} from 'styled-components/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {theme} from '../assets/styles/theme';
+import {IDefaultTheme} from '../assets/styles/interface';
 
-const AuthFormInput = ({
+interface IAutFormInputProps {
+  labelValue: string;
+  placeholderText: string;
+  iconType: string;
+  bgColor: string;
+  focus?: boolean;
+  theme?: IDefaultTheme;
+  onChangeText?: any;
+  keyboardType?: string;
+  autoCapitalize?: string;
+  autoCorrect?: boolean;
+  secureTextEntry?: boolean;
+}
+
+const AuthFormInput: React.FC<IAutFormInputProps> = ({
   labelValue,
   placeholderText,
   iconType,
   bgColor,
+  theme,
   ...rest
 }) => {
   const [isInputActive, setIsInputActive] = useState(false);
@@ -37,9 +52,10 @@ const InputContainer = styled.View`
   width: 90%;
   height: 60px;
   margin: 10px 0px;
-  background-color: ${props => props.bgColor};
-  border-width: ${props => (props.focus ? '1px' : '0px')};
-  border-color: ${theme.appColors.primaryColorLighter};
+  background-color: ${({bgColor}: IAutFormInputProps) => bgColor};
+  border-width: ${({focus}: IAutFormInputProps) => (focus ? '1px' : '0px')};
+  border-color: ${({theme}: IAutFormInputProps) =>
+    theme.appColors.primaryColorLighter};
   border-radius: 10px;
   flex-direction: row;
   align-items: center;
@@ -59,8 +75,8 @@ const InputField = styled.TextInput`
   width: 80%;
   height: 40px;
   font-size: 20px;
-  color: ${theme.appColors.whiteColor};
+  color: ${({theme}: IAutFormInputProps) => theme.appColors.whiteColor};
   text-decoration: none;
 `;
 
-export default AuthFormInput;
+export default withTheme(AuthFormInput);

@@ -1,20 +1,28 @@
 import {constants} from '../constants';
+import {
+  IUser,
+  IgetUserAtFbLogin,
+  IgetUserAtLogin,
+  IgetUserAtRegister,
+  IlogoutUser,
+  IsetUserSuccess,
+  IsetUserClear,
+} from './userInterface';
 
-const getUserAtLogin = (email, password, login) => {
+const getUserAtLogin = (email: string, password: string): IgetUserAtLogin => {
   return {
     type: constants.user.GET_USER_AT_LOGIN,
-    payload: {email, password, login},
+    payload: {email, password},
   };
 };
 
 const getUserAtRegister = (
-  email,
-  password,
-  confirmPassword,
-  userName,
-  userSurname,
-  register,
-) => {
+  email: string,
+  password: string,
+  confirmPassword: string,
+  userName: string,
+  userSurname: string,
+): IgetUserAtRegister => {
   return {
     type: constants.user.GET_USER_AT_REGISTER,
     payload: {
@@ -23,32 +31,29 @@ const getUserAtRegister = (
       confirmPassword,
       userName,
       userSurname,
-      register,
     },
   };
 };
 
-const getUserAtFbLogin = fbLogin => {
+const getUserAtFbLogin = (): IgetUserAtFbLogin => {
   return {
     type: constants.user.GET_USER_AT_FB_LOGIN,
-    payload: fbLogin,
   };
 };
 
-const logoutUser = logout => {
+const logoutUser = (): IlogoutUser => {
   return {
     type: constants.user.LOGOUT_USER,
-    payload: logout,
   };
 };
 
-const setUserSuccess = user => {
+const setUserSuccess = (user: IUser): IsetUserSuccess => {
   return {
     type: constants.user.SET_USER_SUCCESS,
     payload: user,
   };
 };
-const setUserClear = () => {
+const setUserClear = (): IsetUserClear => {
   return {
     type: constants.user.SET_USER_CLEAR,
   };

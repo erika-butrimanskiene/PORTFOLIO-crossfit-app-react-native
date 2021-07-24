@@ -2,13 +2,32 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 import {actions} from '../actions';
 import {constants} from '../constants';
 import {database} from '../../utils/database';
+import {
+  register,
+  login,
+  fbLogin,
+  logout,
+  IFirebaseAuth,
+} from '../../utils/firebaseAuthAPI';
+import {AnyAction} from 'redux';
 
-function* handleRegistration({
-  payload: {email, password, confirmPassword, userName, userSurname, register},
+function* handleRegistration(action: {
+  payload: {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    userName: string;
+    userSurname: string;
+  };
+  type: string;
 }) {
   try {
     yield put(actions.ui.setOnSync(true));
-    const response = yield call(register, email, password);
+    const response: IFirebaseAuth = yield call(
+      register,
+      action.payload.email,
+      action.payload.password,
+    );
     yield put(actions.ui.setOnSync(false));
     if (response.status === true) {
       console.log(response);
@@ -17,8 +36,8 @@ function* handleRegistration({
         .ref(`/users/${response.uid}`)
         .set({
           email: `${response.email}`,
-          name: userName,
-          surname: userSurname,
+          name: action.payload.userName,
+          surname: action.payload.userSurname,
         })
         .then(() => console.log('Data set.'));
       yield put(actions.messages.clearMessages());
@@ -44,10 +63,10 @@ function* handleRegistration({
   }
 }
 
-function* handleLogin({payload: {email, password, login}}) {
+function* handleLogin({payload: {email, password}}: AnyAction) {
   try {
     yield put(actions.ui.setOnSync(true));
-    const response = yield call(login, email, password);
+    const response: IFirebaseAuth = yield call(login, email, password);
     yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
@@ -72,13 +91,20 @@ function* handleLogin({payload: {email, password, login}}) {
   }
 }
 
-function* handleLoginFacebook({payload: fbLogin}) {
+function* handleLoginFacebook() {
   try {
     yield put(actions.ui.setOnSync(true));
-    const response = yield call(fbLogin);
+    const response: IFirebaseAuth = yield call(fbLogin);
     yield put(actions.ui.setOnSync(false));
     if (response.status === true) {
-      console.log(response);
+      database
+        .ref(`/users/${response.uid}`)
+        .set({
+          email: `${response.email}`,
+          name: `${response.name}`,
+          surname: `${response.surname}`,
+        })
+        .then(() => console.log('Data set.'));
     }
 
     if (response.status === false) {
@@ -90,10 +116,10 @@ function* handleLoginFacebook({payload: fbLogin}) {
   }
 }
 
-function* handleLogout({payload: logout}) {
+function* handleLogout() {
   try {
     yield put(actions.ui.setOnSync(true));
-    const response = yield call(logout);
+    const response: IFirebaseAuth = yield call(logout);
     yield put(actions.ui.setOnSync(false));
     if (response.status === true) {
       yield put(actions.user.setUserClear());

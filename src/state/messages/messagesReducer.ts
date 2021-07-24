@@ -1,11 +1,20 @@
 import {constants} from '../constants';
+import {messagesActionsType} from './messagesActions';
+
+export interface IMessagesState {
+  authErrorMsg: string;
+  authSuccessMsg: string;
+}
 
 const initialMessagesState = {
   authErrorMsg: '',
   authSuccessMsg: '',
 };
 
-const messagesReducer = (state = initialMessagesState, action) => {
+const messagesReducer = (
+  state: IMessagesState = initialMessagesState,
+  action: messagesActionsType,
+) => {
   switch (action.type) {
     case constants.messages.SET_ERROR_MESSAGE:
       return {

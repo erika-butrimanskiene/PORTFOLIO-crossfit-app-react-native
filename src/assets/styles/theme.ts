@@ -1,4 +1,6 @@
-export const theme = {
+import {IDefaultTheme} from './interface';
+
+export const theme: IDefaultTheme = {
   appColors: {
     backgroundColor: '#212121',
     backgroundColorDarken: '#121212',

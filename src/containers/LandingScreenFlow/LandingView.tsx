@@ -2,10 +2,14 @@ import React from 'react';
 import {StatusBar, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
-import styled, {withTheme} from 'styled-components';
+import styled, {withTheme} from 'styled-components/native';
 import {useSelector} from 'react-redux';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootState} from 'src/state/reducers';
 
+import {IDefaultTheme} from '../../assets/styles/interface';
 import ROUTES from '../../routes/Routes';
+import {RootStackParamList} from 'src/routes/Interface';
 
 //COMPONENTS
 import Button from '../../components/Button';
@@ -15,9 +19,19 @@ const options = [
   {label: 'LT', value: 'lt'},
 ];
 
-const LandingView = ({navigation, theme}) => {
+type LandingViewScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.Landing
+>;
+
+interface ILandingViewProps {
+  theme: IDefaultTheme;
+  navigation: LandingViewScreenNavigationProp;
+}
+
+const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
   const {t, i18n} = useTranslation();
-  const onSync = useSelector(state => state.ui.authOnSync);
+  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,7 +44,7 @@ const LandingView = ({navigation, theme}) => {
               initial={0}
               buttonColor={theme.appColors.accentColor}
               style={{width: 70}}
-              onPress={language => {
+              onPress={(language: string) => {
                 i18n.changeLanguage(language);
               }}
             />
@@ -87,7 +101,8 @@ const LandingView = ({navigation, theme}) => {
 const LandingContainer = styled.View`
   flex: 1;
   justify-content: center;
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
+  background-color: ${({theme}: ILandingViewProps) =>
+    theme.appColors.backgroundColor};
 `;
 
 const Image = styled.ImageBackground`
@@ -103,7 +118,7 @@ const ImageCover = styled.View`
 `;
 
 const Heading = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme}: ILandingViewProps) => theme.appColors.whiteColor};
   font-size: 35px;
   font-weight: bold;
 `;
@@ -117,7 +132,7 @@ const TextMessagesContainer = styled.View`
 const TextMessage = styled.Text`
   font-size: 22px;
   padding: 4px 0px;
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme}: ILandingViewProps) => theme.appColors.whiteColor};
   text-align: center;
 `;
 
