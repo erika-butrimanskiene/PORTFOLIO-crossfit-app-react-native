@@ -48,7 +48,13 @@
     "userProfile": "Profilis"
   },
   "admin": {
-    "createWorkout": "Sukurti pratimų"
+    "createWorkout": "Sukurti pratimą",
+    "createNewWorkout": "Sukurti naują pratimą",
+    "formsErrors": {
+      "workoutNameRequired": "Pratimo pavadinimas yra privalomas",
+      "workoutDefinitionRequired": "Pratimo aprašymas yra privalomas"
+    },
+    "workoutName": "Pratimo pavadinimas",
+    "workoutDefinition": "Pratimo aprašymas"
   }
-
 }

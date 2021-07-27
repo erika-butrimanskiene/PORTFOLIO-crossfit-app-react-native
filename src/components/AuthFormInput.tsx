@@ -39,7 +39,7 @@ const AuthFormInput: React.FC<IAutFormInputProps> = ({
         value={labelValue}
         numberOfLines={1}
         placeholder={placeholderText}
-        placeholderTextColor={`${theme.appColors.whiteColor}`}
+        placeholderTextColor={`${theme.appColors.textColorLightGray}`}
         onFocus={() => setIsInputActive(true)}
         onBlur={() => setIsInputActive(false)}
         {...rest}

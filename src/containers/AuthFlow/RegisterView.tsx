@@ -4,9 +4,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {Formik} from 'formik';
+import {StackNavigationProp} from '@react-navigation/stack';
 
+import ROUTES from '../../routes/Routes';
 import {actions} from '../../state/actions';
 import {registerSchema} from '../../utils/formsValidations';
+import {RootStackParamList} from 'src/routes/Interface';
 import {RootState} from 'src/state/reducers';
 
 //COMPONENTS
@@ -14,11 +17,16 @@ import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
 
+type RegisterViewScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.Register
+>;
 interface IRegisterViewProps {
   theme: DefaultTheme;
+  navigation: RegisterViewScreenNavigationProp;
 }
 
-const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
+const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
 
   const onSync = useSelector((state: RootState) => state.ui.authOnSync);
@@ -27,8 +35,12 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.messages.clearMessages());
-  }, []);
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      dispatch(actions.messages.clearMessages());
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <Container>
@@ -38,7 +50,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
       ) : (
         <>
           <ScrollView>
-            <Heading>MyCrossfit</Heading>
+            <Heading>{t('signup:SignUp')}</Heading>
             <Formik
               initialValues={{
                 userName: '',

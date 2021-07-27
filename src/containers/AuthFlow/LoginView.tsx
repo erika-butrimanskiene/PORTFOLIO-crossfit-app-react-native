@@ -41,8 +41,12 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.messages.clearMessages());
-  }, []);
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      dispatch(actions.messages.clearMessages());
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <Container>
@@ -51,7 +55,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <Heading>MyCrossfit</Heading>
+          <Heading>{t('login:SignIn')}</Heading>
           <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={loginSchema}
@@ -116,8 +120,6 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
             }}
           </Formik>
 
-          {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
-
           <SocialButtons>
             <SocialButton
               text="Facebook"
@@ -146,7 +148,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 60px;
+  padding-top: 70px;
   font-size: 20px;
   align-items: center;
   justify-content: center;

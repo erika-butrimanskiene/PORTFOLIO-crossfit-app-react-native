@@ -10,6 +10,7 @@
         "name": "typescript-styled-plugin",
         "lint": {
           "validProperties": [
+            "text-align-vertical",
             "aspect-ratio",
             "border-bottom-end-radius",
             "border-bottom-start-radius",

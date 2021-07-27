@@ -48,6 +48,13 @@
     "userProfile": "Profile"
   },
   "admin": {
-    "createWorkout": "Create Workout"
+    "createWorkout": "Create Workout",
+    "createNewWorkout": "Create New Workout",
+    "formsErrors": {
+      "workoutNameRequired": "Workout name required",
+      "workoutDefinitionRequired": "Workout definition required"
+    },
+    "workoutName": "Workout name",
+    "workoutDefinition": "Workout definition"
   }
 }
