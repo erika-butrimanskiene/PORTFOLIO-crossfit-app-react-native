@@ -45,6 +45,9 @@
     "auth/unknown": "Unknown error"
   },
   "user": {
-    "userProfile": "Vartotojo Profilis"
+    "userProfile": "Profile"
+  },
+  "admin": {
+    "createWorkout": "Create Workout"
   }
 }

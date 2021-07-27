@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -7,16 +7,14 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import styled, {withTheme} from 'styled-components/native';
+import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {Formik} from 'formik';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 import ROUTES from '../../routes/Routes';
-import {AuthContext} from '../../routes/AuthProvider';
 import {actions} from '../../state/actions';
 import {loginSchema} from '../../utils/formsValidations';
 import {RootStackParamList} from 'src/routes/Interface';
-import {IDefaultTheme} from '../../assets/styles/interface';
 import {RootState} from 'src/state/reducers';
 
 //COMPONENTS
@@ -30,13 +28,12 @@ type LoginViewScreenNavigationProp = StackNavigationProp<
 >;
 
 interface ILoginViewProps {
-  theme: IDefaultTheme;
+  theme: DefaultTheme;
   navigation: LoginViewScreenNavigationProp;
 }
 
 const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   const {t} = useTranslation();
-  //const {login, fbLogin} = useContext(AuthContext);
 
   const onSync = useSelector((state: RootState) => state.ui.authOnSync);
   const error = useSelector((state: RootState) => state.messages.authErrorMsg);
@@ -48,13 +45,13 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   }, []);
 
   return (
-    <LoginContainer>
+    <Container>
       <StatusBar backgroundColor={`#212121`} />
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <LoginHeading>MyCrossfit</LoginHeading>
+          <Heading>MyCrossfit</Heading>
           <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={loginSchema}
@@ -66,7 +63,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
             {formikProps => {
               return (
                 <>
-                  <LoginInputs>
+                  <Inputs>
                     <AuthFormInput
                       labelValue={formikProps.values.email}
                       onChangeText={formikProps.handleChange('email')}
@@ -107,7 +104,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
                         {t('login:ForgotPsw')}
                       </ForgotPasswordText>
                     </TouchableOpacity>
-                  </LoginInputs>
+                  </Inputs>
 
                   <Button
                     text={t('login:Start')}
@@ -142,13 +139,12 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
           </SocialButtons>
         </>
       )}
-    </LoginContainer>
+    </Container>
   );
 };
 
-const LoginContainer = styled.View`
-  background-color: ${({theme}: ILoginViewProps) =>
-    theme.appColors.backgroundColor};
+const Container = styled.View`
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 60px;
   font-size: 20px;
@@ -156,19 +152,19 @@ const LoginContainer = styled.View`
   justify-content: center;
 `;
 
-const LoginHeading = styled.Text`
+const Heading = styled.Text`
   margin: 10px 0px 80px 0px;
-  color: ${({theme}: ILoginViewProps) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 35px;
   font-weight: bold;
 `;
 
-const LoginInputs = styled.View`
+const Inputs = styled.View`
   margin-bottom: 20px;
   align-items: center;
 `;
 const ForgotPasswordText = styled.Text`
-  color: ${({theme}: ILoginViewProps) => theme.appColors.textColorLightGray};
+  color: ${({theme}) => theme.appColors.textColorLightGray};
   font-style: italic;
   font-size: 15px;
   padding-bottom: 25px;
@@ -181,7 +177,7 @@ const SocialButtons = styled.View`
 `;
 
 const ErrorText = styled.Text`
-  color: ${({theme}: ILoginViewProps) => theme.appColors.accentColor};
+  color: ${({theme}) => theme.appColors.accentColor};
   font-size: 17px;
   padding-bottom: 10px;
 `;

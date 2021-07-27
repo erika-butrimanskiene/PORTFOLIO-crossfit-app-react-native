@@ -2,12 +2,11 @@ import React from 'react';
 import {StatusBar, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
-import styled, {withTheme} from 'styled-components/native';
+import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootState} from 'src/state/reducers';
 
-import {IDefaultTheme} from '../../assets/styles/interface';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 
@@ -25,7 +24,7 @@ type LandingViewScreenNavigationProp = StackNavigationProp<
 >;
 
 interface ILandingViewProps {
-  theme: IDefaultTheme;
+  theme: DefaultTheme;
   navigation: LandingViewScreenNavigationProp;
 }
 
@@ -101,8 +100,7 @@ const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
 const LandingContainer = styled.View`
   flex: 1;
   justify-content: center;
-  background-color: ${({theme}: ILandingViewProps) =>
-    theme.appColors.backgroundColor};
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
 const Image = styled.ImageBackground`
@@ -118,7 +116,7 @@ const ImageCover = styled.View`
 `;
 
 const Heading = styled.Text`
-  color: ${({theme}: ILandingViewProps) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 35px;
   font-weight: bold;
 `;
@@ -132,7 +130,7 @@ const TextMessagesContainer = styled.View`
 const TextMessage = styled.Text`
   font-size: 22px;
   padding: 4px 0px;
-  color: ${({theme}: ILandingViewProps) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
   text-align: center;
 `;
 

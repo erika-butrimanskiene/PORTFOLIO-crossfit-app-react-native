@@ -38,6 +38,7 @@ function* handleRegistration(action: {
           email: `${response.email}`,
           name: action.payload.userName,
           surname: action.payload.userSurname,
+          admin: false,
         })
         .then(() => console.log('Data set.'));
       yield put(actions.messages.clearMessages());

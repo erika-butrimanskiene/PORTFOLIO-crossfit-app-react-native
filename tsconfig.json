@@ -30,7 +30,7 @@
     ],
     "jsx": "react",
     "strict": false,
-    "types": [],
+    "types": ["styled-components-react-native"],
     "declaration": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,

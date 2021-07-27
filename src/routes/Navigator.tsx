@@ -17,6 +17,7 @@ import RegisterView from '../containers/AuthFlow/RegisterView';
 import ForgotPasswordView from '../containers/AuthFlow/ForgotPasswordView';
 import HomeView from '../containers/HomeScreenFlow/HomeView';
 import ProfileView from '../containers/UserFlow/ProfileView';
+import CreateWorkoutView from '../containers/AdminFlow/CreateWorkoutView';
 
 import {RootStackParamList} from './Interface';
 
@@ -45,6 +46,7 @@ const Navigator: React.FC = () => {
               name: snapshot.val().name,
               surname: snapshot.val().surname,
               email: snapshot.val().email,
+              admin: snapshot.val().admin,
               uid: authUser.uid,
             }),
           );
@@ -94,6 +96,10 @@ const Navigator: React.FC = () => {
           }}>
           <Stack.Screen name={ROUTES.Home} component={HomeView} />
           <Stack.Screen name={ROUTES.Profile} component={ProfileView} />
+          <Stack.Screen
+            name={ROUTES.CreateWorkout}
+            component={CreateWorkoutView}
+          />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator

@@ -1,6 +1,6 @@
-import {IDefaultTheme} from './interface';
+import {DefaultTheme} from 'styled-components/native';
 
-export const theme: IDefaultTheme = {
+export const theme: DefaultTheme = {
   appColors: {
     backgroundColor: '#212121',
     backgroundColorDarken: '#121212',

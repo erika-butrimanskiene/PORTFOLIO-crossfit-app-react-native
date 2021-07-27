@@ -34,6 +34,7 @@ export default function* watchUser(uid: string) {
             surname: user.surname,
             email: user.email,
             uid: uid,
+            admin: user.admin,
           }),
         );
       }

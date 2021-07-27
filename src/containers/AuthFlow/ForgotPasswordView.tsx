@@ -1,19 +1,16 @@
 import React, {useState} from 'react';
 import {
-  View,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
+  View
 } from 'react-native';
-import styled, {withTheme} from 'styled-components/native';
+import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useTranslation} from 'react-i18next';
-import {IDefaultTheme} from '../../assets/styles/interface';
 
 //COMPONENTS
 import Button from '../../components/Button';
 
 interface IForgotPasswordViewProps {
-  theme: IDefaultTheme;
+  theme: DefaultTheme;
 }
 
 const ForgotPasswordView: React.FC<IForgotPasswordViewProps> = ({theme}) => {
@@ -22,7 +19,7 @@ const ForgotPasswordView: React.FC<IForgotPasswordViewProps> = ({theme}) => {
   const [email, setEmail] = useState('');
 
   return (
-    <ResetPasswordContainer>
+    <Container>
       <View>
         <AntDesign
           name={'questioncircleo'}
@@ -30,7 +27,7 @@ const ForgotPasswordView: React.FC<IForgotPasswordViewProps> = ({theme}) => {
           color={`${theme.appColors.accentColor}`}
         />
       </View>
-      <ResetPasswordHeading>{t('forgotPassword:message')}</ResetPasswordHeading>
+      <Heading>{t('forgotPassword:message')}</Heading>
       <InputField
         value={email}
         numberOfLines={1}
@@ -43,30 +40,28 @@ const ForgotPasswordView: React.FC<IForgotPasswordViewProps> = ({theme}) => {
         bgColor={`${theme.appColors.primaryColorLighter}`}
         onPress={() => alert('Reset password')}
       />
-    </ResetPasswordContainer>
+    </Container>
   );
 };
 
-const ResetPasswordContainer = styled.View`
-  background-color: ${({theme}: IForgotPasswordViewProps) =>
-    theme.appColors.backgroundColor};
+const Container = styled.View`
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 100px;
   font-size: 20px;
   align-items: center;
 `;
 
-const ResetPasswordHeading = styled.Text`
+const Heading = styled.Text`
   width: 85%;
   margin: 15px 0px 25px 0px;
-  color: ${({theme}: IForgotPasswordViewProps) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 25px;
   text-align: center;
 `;
 
 const InputField = styled.TextInput`
-  background-color: ${({theme}: IForgotPasswordViewProps) =>
-    theme.appColors.whiteColor};
+  background-color: ${({theme}) => theme.appColors.whiteColor};
   margin-bottom: 50px;
   border-radius: 5px;
   padding: 0px 10px;

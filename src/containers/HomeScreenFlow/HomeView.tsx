@@ -1,24 +1,20 @@
-import React, {useContext} from 'react';
-import {
-  StatusBar,
-  ActivityIndicator,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
-import styled, {withTheme} from 'styled-components/native';
+import React from 'react';
+import {StatusBar, ActivityIndicator, TouchableOpacity} from 'react-native';
+import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootState} from 'src/state/reducers';
+import SwitchSelector from 'react-native-switch-selector';
 
 import {actions} from '../../state/actions';
-import {AuthContext} from '../../routes/AuthProvider';
-import {IDefaultTheme} from '../../assets/styles/interface';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 
-//COMPONENTS
-import Button from '../../components/Button';
+const options = [
+  {label: 'EN', value: 'en'},
+  {label: 'LT', value: 'lt'},
+];
 
 type HomeViewScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,21 +22,43 @@ type HomeViewScreenNavigationProp = StackNavigationProp<
 >;
 
 interface IHomeViewProps {
-  theme: IDefaultTheme;
+  theme: DefaultTheme;
   navigation: HomeViewScreenNavigationProp;
 }
 
 const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
-  const {t} = useTranslation();
-  //const {logout} = useContext(AuthContext);
+  const {t, i18n} = useTranslation();
 
   const onSync = useSelector((state: RootState) => state.ui.authOnSync);
   const user = useSelector((state: RootState) => state.user.user);
-
   const dispatch = useDispatch();
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <>
+          <HeaderActions>
+            <Logout onPress={() => dispatch(actions.user.logoutUser())}>
+              <LogoutText>LOGOUT</LogoutText>
+            </Logout>
+            <SwitchSelector
+              options={options}
+              hasPadding
+              initial={0}
+              buttonColor={theme.appColors.accentColor}
+              style={{width: 70}}
+              onPress={(language: string) => {
+                i18n.changeLanguage(language);
+              }}
+            />
+          </HeaderActions>
+        </>
+      ),
+    });
+  }, [navigation]);
+
   return (
-    <HomeContainer>
+    <Container>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
 
       {onSync ? (
@@ -50,33 +68,51 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
           <Heading>Welcome To Home Page</Heading>
           <Heading>{user.email}</Heading>
           <Heading>{onSync}</Heading>
-          <Button
-            text="Logout"
-            bgColor={`${theme.appColors.primaryColorLighter}`}
-            onPress={() => dispatch(actions.user.logoutUser())}
-          />
-
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Profile)}>
-            <Text>{t('user:userProfile')}</Text>
+            <Profile>{t('user:userProfile')}</Profile>
           </TouchableOpacity>
+          {user.admin && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ROUTES.CreateWorkout)}>
+              <Profile>{t('admin:createWorkout')}</Profile>
+            </TouchableOpacity>
+          )}
         </>
       )}
-    </HomeContainer>
+    </Container>
   );
 };
 
-const HomeContainer = styled.View`
+const HeaderActions = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const Logout = styled(TouchableOpacity)`
+  padding-right: 20px;
+`;
+
+const LogoutText = styled.Text`
+  font-size: 20px;
+  color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const Container = styled.View`
   flex: 1;
   padding-top: 60px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}: IHomeViewProps) =>
-    theme.appColors.backgroundColor};
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
 const Heading = styled.Text`
-  color: ${({theme}: IHomeViewProps) => theme.appColors.whiteColor}; ;
+  color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const Profile = styled.Text`
+  color: ${({theme}) => theme.appColors.whiteColor};
+  font-size: 25px;
 `;
 
 export default withTheme(HomeView);

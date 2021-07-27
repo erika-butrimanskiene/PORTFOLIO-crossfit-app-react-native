@@ -2,12 +2,11 @@ import React, {useEffect} from 'react';
 import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import styled, {withTheme} from 'styled-components/native';
+import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {Formik} from 'formik';
 
 import {actions} from '../../state/actions';
 import {registerSchema} from '../../utils/formsValidations';
-import {IDefaultTheme} from '../../assets/styles/interface';
 import {RootState} from 'src/state/reducers';
 
 //COMPONENTS
@@ -16,7 +15,7 @@ import SocialButton from '../../components/SocialButton';
 import Button from '../../components/Button';
 
 interface IRegisterViewProps {
-  theme: IDefaultTheme;
+  theme: DefaultTheme;
 }
 
 const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
@@ -32,14 +31,14 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
   }, []);
 
   return (
-    <RegisterContainer>
+    <Container>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
           <ScrollView>
-            <RegisterHeading>MyCrossfit</RegisterHeading>
+            <Heading>MyCrossfit</Heading>
             <Formik
               initialValues={{
                 userName: '',
@@ -70,7 +69,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
               {formikProps => {
                 return (
                   <>
-                    <RegisterInputs>
+                    <Inputs>
                       <AuthFormInput
                         labelValue={formikProps.values.userName}
                         bgColor={`${theme.appColors.backgroundColorDarken}`}
@@ -158,7 +157,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
                               formikProps.errors.passwordConfirm}
                           </ErrorText>
                         )}
-                    </RegisterInputs>
+                    </Inputs>
                     {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
                     <SignUpButtonContainer>
                       <Button
@@ -193,13 +192,12 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme}) => {
           </ScrollView>
         </>
       )}
-    </RegisterContainer>
+    </Container>
   );
 };
 
-const RegisterContainer = styled.View`
-  background-color: ${({theme}: IRegisterViewProps) =>
-    theme.appColors.backgroundColor};
+const Container = styled.View`
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 60px;
   font-size: 20px;
@@ -207,9 +205,9 @@ const RegisterContainer = styled.View`
   justify-content: center;
 `;
 
-const RegisterHeading = styled.Text`
+const Heading = styled.Text`
   margin: 15px 0px 25px 0px;
-  color: ${({theme}: IRegisterViewProps) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 30px;
   text-align: center;
 `;
@@ -219,7 +217,7 @@ const SignUpButtonContainer = styled.View`
   width: 100%;
 `;
 
-const RegisterInputs = styled.View`
+const Inputs = styled.View`
   margin-bottom: 20px;
   align-items: center;
 `;
@@ -230,7 +228,7 @@ const SocialButtons = styled.View`
 `;
 
 const ErrorText = styled.Text`
-  color: ${({theme}: IRegisterViewProps) => theme.appColors.accentColor};
+  color: ${({theme}) => theme.appColors.accentColor};
   font-size: 17px;
   padding-bottom: 10px;
 `;

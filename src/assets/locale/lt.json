@@ -45,6 +45,10 @@
     "auth/unknown": "Nežinoma klaida"
   },
   "user": {
-    "userProfile": "User Profile"
+    "userProfile": "Profilis"
+  },
+  "admin": {
+    "createWorkout": "Sukurti pratimų"
   }
+
 }

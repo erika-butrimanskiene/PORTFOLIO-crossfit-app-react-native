@@ -1,15 +1,14 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import styled, {DefaultTheme} from 'styled-components/native';
 import {TouchableOpacity, GestureResponderEvent} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {IDefaultTheme} from '../assets/styles/interface';
 
 interface ISocialButtonProps {
   text: string;
   btnType: string;
   iconColor: string;
   onPress: (event: GestureResponderEvent) => void;
-  theme?: IDefaultTheme;
+  theme?: DefaultTheme;
 }
 
 const SocialButton: React.FC<ISocialButtonProps> = ({
@@ -38,12 +37,11 @@ const CustomButton = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}: ISocialButtonProps) =>
-    theme.appColors.whiteColor};
+  background-color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 const Title = styled.Text`
-  color: ${({theme}: ISocialButtonProps) => theme.appColors.textColorDarkGray};
+  color: ${({theme}) => theme.appColors.textColorDarkGray};
   font-weight: bold;
   text-transform: uppercase;
   text-align: center;
