@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {View, TouchableOpacity, ScrollView} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
-import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {RootState} from 'src/state/reducers';
-import {Formik, useFormik} from 'formik';
-import {database} from '../../utils/database';
+import {Formik, FieldArray} from 'formik';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import {database} from '../../utils/database';
 import {createWorkoutSchema} from '../../utils/formsValidations';
-import {actions} from '../../state/actions';
 
 import Button from '../../components/Button';
+import FormInput from '../../components/FormInput';
 
 interface ICreateWorkoutViewProps {
   theme: DefaultTheme;
@@ -18,86 +18,156 @@ interface ICreateWorkoutViewProps {
 const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({theme}) => {
   const {t, i18n} = useTranslation();
 
-  const [isNameInputActive, setIsNameInputActive] = useState<boolean>(false);
-  const [isDefinitionInputActive, setIsDefinitionInputActive] =
-    useState<boolean>(false);
-
   return (
     <Container>
-      <Heading>{t('admin:createNewWorkout')}</Heading>
-      <Formik
-        initialValues={{workoutName: '', workout: ''}}
-        validationSchema={createWorkoutSchema}
-        onSubmit={(values, {resetForm}) => {
-          const {workoutName, workout} = values;
-          try {
-            const newReference = database.ref('/workouts').push();
-            newReference
-              .set({
-                name: workoutName,
-                definition: workout,
-              })
-              .then(() => console.log('Data updated.'));
-            resetForm();
-          } catch (e) {
-            console.log(e);
-          }
-        }}>
-        {formikProps => {
-          return (
-            <>
-              <Form>
-                <Input
-                  focus={isNameInputActive}
-                  value={formikProps.values.workoutName}
-                  onChangeText={formikProps.handleChange('workoutName')}
-                  placeholder={t('admin:workoutName')}
-                  placeholderTextColor={theme.appColors.textColorLightGray}
-                  onFocus={() => setIsNameInputActive(true)}
-                  onBlur={() => setIsNameInputActive(false)}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  underlineColorAndroid="transparent"
-                />
+      <ScrollView>
+        <Heading>{t('admin:createNewWorkout')}</Heading>
+        <Formik
+          initialValues={{
+            workoutName: '',
+            workoutWeights: '',
+            countResultOf: '',
+            workoutType: '',
+            exercises: [''],
+          }}
+          validationSchema={createWorkoutSchema}
+          onSubmit={(values, {resetForm}) => {
+            const {
+              workoutName,
+              workoutWeights,
+              workoutType,
+              countResultOf,
+              exercises,
+            } = values;
+            try {
+              const newReference = database.ref('/workouts').push();
+              newReference
+                .set({
+                  name: workoutName,
+                  workoutType: workoutType,
+                  countResultOf: countResultOf,
+                  workoutWeights: workoutWeights,
+                  exercises: exercises,
+                })
+                .then(() => console.log('Data updated.'));
+              resetForm();
+            } catch (e) {
+              console.log(e);
+            }
+          }}>
+          {formikProps => {
+            return (
+              <>
+                <Form>
+                  <FormInput
+                    value={formikProps.values.workoutName}
+                    onChangeText={formikProps.handleChange('workoutName')}
+                    placeholderText={t('admin:workoutName')}
+                    placeholderColor={theme.appColors.backgroundColorDarken}
+                    isListInput={false}
+                    bgColor={theme.appColors.accentColor}
+                  />
 
-                {formikProps.touched.workoutName &&
-                  formikProps.errors.workoutName && (
-                    <ErrorText>
-                      {formikProps.touched.workoutName &&
-                        formikProps.errors.workoutName}
-                    </ErrorText>
-                  )}
-                <TextArea
-                  focus={isDefinitionInputActive}
-                  multiline={true}
-                  numberOfLines={8}
-                  value={formikProps.values.workout}
-                  onChangeText={formikProps.handleChange('workout')}
-                  placeholder={t('admin:workoutDefinition')}
-                  placeholderTextColor={theme.appColors.textColorLightGray}
-                  onFocus={() => setIsDefinitionInputActive(true)}
-                  onBlur={() => setIsDefinitionInputActive(false)}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  underlineColorAndroid="transparent"
-                />
+                  {formikProps.touched.workoutName &&
+                    formikProps.errors.workoutName && (
+                      <ErrorText>{formikProps.errors.workoutName}</ErrorText>
+                    )}
+                  <FormInput
+                    value={formikProps.values.workoutWeights}
+                    onChangeText={formikProps.handleChange('workoutWeights')}
+                    placeholderText={t('admin:workoutWeights')}
+                    placeholderColor={theme.appColors.textColorLightGray}
+                    isListInput={false}
+                    bgColor={theme.appColors.backgroundColorLighter}
+                  />
+                  {formikProps.touched.workoutWeights &&
+                    formikProps.errors.workoutWeights && (
+                      <ErrorText>{formikProps.errors.workoutWeights}</ErrorText>
+                    )}
+                  <FormInput
+                    value={formikProps.values.workoutType}
+                    onChangeText={formikProps.handleChange('workoutType')}
+                    placeholderText={t('admin:workoutType')}
+                    placeholderColor={theme.appColors.textColorLightGray}
+                    isListInput={false}
+                    bgColor={theme.appColors.backgroundColorLighter}
+                  />
+                  {formikProps.touched.workoutType &&
+                    formikProps.errors.workoutType && (
+                      <ErrorText>{formikProps.errors.workoutType}</ErrorText>
+                    )}
 
-                {formikProps.touched.workout && formikProps.errors.workout && (
-                  <ErrorText>
-                    {formikProps.touched.workout && formikProps.errors.workout}
-                  </ErrorText>
-                )}
-              </Form>
+                  <FormInput
+                    value={formikProps.values.countResultOf}
+                    onChangeText={formikProps.handleChange('countResultOf')}
+                    placeholderText={t('admin:countResult')}
+                    placeholderColor={theme.appColors.textColorLightGray}
+                    isListInput={false}
+                    bgColor={theme.appColors.backgroundColorLighter}
+                  />
+                  {formikProps.touched.countResultOf &&
+                    formikProps.errors.countResultOf && (
+                      <ErrorText>{formikProps.errors.countResultOf}</ErrorText>
+                    )}
 
-              <Button
-                text={'Create'}
-                bgColor={`${theme.appColors.primaryColorLighter}`}
-                onPress={formikProps.handleSubmit}
-              />
-            </>
-          );
-        }}
-      </Formik>
+                  <FieldArray name="exercises">
+                    {fieldArrayProps => {
+                      const {push, remove, form} = fieldArrayProps;
+                      const {values} = form;
+                      const {exercises} = values;
+                      return (
+                        <ExercisesInputs>
+                          {exercises.map((exercise: string, index: number) => (
+                            <ExerciseInput key={index}>
+                              <FormInput
+                                value={formikProps.values.exercises[index]}
+                                onChangeText={formikProps.handleChange(
+                                  `exercises[${index}]`,
+                                )}
+                                placeholderText={t('admin:exerciseDefinition')}
+                                placeholderColor={
+                                  theme.appColors.textColorLightGray
+                                }
+                                isListInput={true}
+                                bgColor={theme.appColors.backgroundColorLighter}
+                                onPress={() => {
+                                  if (exercises.length > 1) remove(index);
+                                }}
+                              />
+                              {formikProps.touched.exercises &&
+                                formikProps.errors.exercises && (
+                                  <ErrorText>
+                                    {formikProps.errors.exercises[index]}
+                                  </ErrorText>
+                                )}
+                            </ExerciseInput>
+                          ))}
+                          <AddExerciseBtnContainer>
+                            <AddExerciseBtn onPress={() => push('')}>
+                              <MaterialIcons
+                                name={'add'}
+                                size={35}
+                                color={theme.appColors.whiteColor}
+                              />
+                            </AddExerciseBtn>
+                          </AddExerciseBtnContainer>
+                        </ExercisesInputs>
+                      );
+                    }}
+                  </FieldArray>
+                </Form>
+                <CreateButtonContainer>
+                  <Button
+                    text={'Create'}
+                    bgColor={`${theme.appColors.primaryColorLighter}`}
+                    onPress={formikProps.handleSubmit}
+                  />
+                </CreateButtonContainer>
+              </>
+            );
+          }}
+        </Formik>
+      </ScrollView>
     </Container>
   );
 };
@@ -114,6 +184,7 @@ const Container = styled.View`
 const Heading = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 30px;
+  text-align: center;
 `;
 
 const Form = styled.View`
@@ -123,36 +194,40 @@ const Form = styled.View`
   width: 100%;
 `;
 
-const Input = styled.TextInput<{focus: boolean}>`
-  color: ${({theme}) => theme.appColors.whiteColor};
-  background-color: ${({theme}) => theme.appColors.backgroundColorDarken};
-  border-width: ${({focus}) => (focus ? '1px' : '0px')};
-  border-color: ${({theme}) => theme.appColors.primaryColorLighter};
-  text-decoration: none;
-  margin-top: 10px;
-  padding-left: 10px;
-  width: 90%;
-  font-size: 20px;
-  border-radius: 10px;
+const ExercisesInputs = styled.View`
+  align-items: center;
+  width: 100%;
 `;
 
-const TextArea = styled.TextInput<{focus: boolean}>`
-  text-align-vertical: top;
-  color: ${({theme}) => theme.appColors.whiteColor};
-  background-color: ${({theme}) => theme.appColors.backgroundColorDarken};
-  border-width: ${({focus}) => (focus ? '1px' : '0px')};
-  border-color: ${({theme}) => theme.appColors.primaryColorLighter};
-  margin-top: 10px;
-  padding-left: 10px;
-  width: 90%;
-  font-size: 20px;
-  border-radius: 10px;
+const ExerciseInput = styled.View`
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ErrorText = styled.Text`
   color: ${({theme}) => theme.appColors.accentColor};
   font-size: 17px;
   padding-bottom: 15px;
+`;
+
+const CreateButtonContainer = styled.View`
+  align-items: center;
+  width: 100%;
+`;
+const AddExerciseBtnContainer = styled.TouchableOpacity`
+  width: 90%;
+  align-items: center;
+`;
+const AddExerciseBtn = styled.TouchableOpacity`
+  margin: 20px 0px 10px 0px;
+  height: 40px;
+  width: 60px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: ${({theme}) => theme.appColors.backgroundColorVeryLight};
 `;
 
 export default withTheme(CreateWorkoutView);

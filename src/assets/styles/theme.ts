@@ -2,9 +2,10 @@ import {DefaultTheme} from 'styled-components/native';
 
 export const theme: DefaultTheme = {
   appColors: {
-    backgroundColor: '#242424',
+    backgroundColor: '#1c1c1c',
     backgroundColorDarken: '#121212',
     backgroundColorLighter: '#2E2E2E',
+    backgroundColorVeryLight: '#4d4d4d',
     primaryColorDarken: '#2c298c',
     primaryColorLighter: '#5853F2',
     accentColor: '#ff3ca5',

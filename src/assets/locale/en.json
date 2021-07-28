@@ -52,9 +52,15 @@
     "createNewWorkout": "Create New Workout",
     "formsErrors": {
       "workoutNameRequired": "Workout name required",
-      "workoutDefinitionRequired": "Workout definition required"
+      "workoutTypeRequired": "Workout type required",
+      "workoutWeightsRequired": "Workout weights required",
+      "countResultOfRequired": "Count result of required",
+      "exerciseDefinitionRequired": "Exercise definition required"
     },
     "workoutName": "Workout name",
-    "workoutDefinition": "Workout definition"
+    "workoutWeights": "Workout weights",
+    "workoutType": "Workout type",
+    "countResult": "Count result of",
+    "exerciseDefinition": "Exercise definition"
   }
 }

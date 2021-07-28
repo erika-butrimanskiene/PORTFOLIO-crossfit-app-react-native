@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import i18n from 'i18next';
+import {string} from 'yup/lib/locale';
 
 export const loginSchema = yup.object({
   email: yup
@@ -32,7 +33,22 @@ export const createWorkoutSchema = yup.object({
   workoutName: yup
     .string()
     .required(() => i18n.t('admin:formsErrors:workoutNameRequired')),
-  workout: yup
+  workoutWeights: yup
     .string()
-    .required(() => i18n.t('admin:formsErrors:workoutDefinitionRequired')),
+    .required(() => i18n.t('admin:formsErrors:workoutWeightsRequired')),
+  workoutType: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:workoutTypeRequired')),
+  countResultOf: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:countResultOfRequired')),
+  exercises: yup
+    .array()
+    .of(
+      yup
+        .string()
+        .required(() => i18n.t('admin:formsErrors:exerciseDefinitionRequired')),
+    )
+    .min(1, () => 'required min 1')
+    .max(10, () => 'required max'),
 });

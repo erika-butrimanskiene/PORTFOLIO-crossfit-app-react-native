@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
-import styled, {withTheme} from 'styled-components/native';
+import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {DefaultTheme} from 'styled-components/native';
 
 interface IAutFormInputProps {
   labelValue: string;
   placeholderText: string;
   iconType: string;
   bgColor: string;
-  focus?: boolean;
   theme: DefaultTheme;
-  onChangeText: any;
+  onChangeText: (text: string) => void;
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   autoCorrect?: boolean;

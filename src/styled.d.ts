@@ -6,6 +6,7 @@ declare module 'styled-components/native' {
       backgroundColor?: string;
       backgroundColorDarken?: string;
       backgroundColorLighter?: string;
+      backgroundColorVeryLight?: string;
       primaryColorDarken?: string;
       primaryColorLighter?: string;
       accentColor?: string;

@@ -51,10 +51,16 @@
     "createWorkout": "Sukurti pratimą",
     "createNewWorkout": "Sukurti naują pratimą",
     "formsErrors": {
-      "workoutNameRequired": "Pratimo pavadinimas yra privalomas",
-      "workoutDefinitionRequired": "Pratimo aprašymas yra privalomas"
+      "workoutNameRequired": "Treniruotės pavadinimas yra privalomas",
+      "workoutTypeRequired": "Treniruotės tipas yra privalomas",
+      "workoutWeightsRequired": "Privaloma nurodyti treniruotės svorius",
+      "countResultOfRequired": "Privaloma nurodyti kieno rezultatą skaičiuoti",
+      "exerciseDefinitionRequired": "Pratimo aprašymas yra privalomas"
     },
-    "workoutName": "Pratimo pavadinimas",
-    "workoutDefinition": "Pratimo aprašymas"
+    "workoutName": "Treniruotės pavadinimas",
+    "workoutWeights": "Treniruotės svoriai",
+    "workoutType": "Treniruotės tipas",
+    "countResult": "Kieno rezultatą skaičiuoti",
+    "exerciseDefinition": "Pratimo aprašymas"
   }
 }
