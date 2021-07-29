@@ -44,10 +44,14 @@
     "auth/wrong-password": "Neteisingas slaptažodis",
     "auth/unknown": "Nežinoma klaida"
   },
+  "succesNotifications": {
+    "successCreate": "Sėkmingai sukurta." 
+  },
   "user": {
     "userProfile": "Profilis"
   },
   "admin": {
+    "workoutsList": "Treniruočių sąrašas",
     "createWorkout": "Sukurti pratimą",
     "createNewWorkout": "Sukurti naują pratimą",
     "formsErrors": {

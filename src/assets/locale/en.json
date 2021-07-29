@@ -44,10 +44,14 @@
     "auth/wrong-password": "Wrong password",
     "auth/unknown": "Unknown error"
   },
+  "succesNotifications": {
+    "successCreate": "Successfully created." 
+  },
   "user": {
     "userProfile": "Profile"
   },
   "admin": {
+    "workoutsList": "Workouts List",
     "createWorkout": "Create Workout",
     "createNewWorkout": "Create New Workout",
     "formsErrors": {

@@ -5,7 +5,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {RootState} from 'src/state/reducers';
-import styled from 'styled-components/native';
 
 import ROUTES from './Routes';
 import {actions} from '../state/actions';
@@ -19,6 +18,7 @@ import ForgotPasswordView from '../containers/AuthFlow/ForgotPasswordView';
 import HomeView from '../containers/HomeScreenFlow/HomeView';
 import ProfileView from '../containers/UserFlow/ProfileView';
 import CreateWorkoutView from '../containers/AdminFlow/CreateWorkoutView';
+import WorkoutsListView from '../containers/AdminFlow/WorkoutsListView';
 
 import NotificationModal from '../components/NotificationModal';
 
@@ -30,9 +30,13 @@ const Navigator: React.FC = () => {
 
   const dispatch = useDispatch();
   const error = useSelector((state: RootState) => state.messages.authErrorMsg);
+  const successMsg = useSelector(
+    (state: RootState) => state.messages.successMsg,
+  );
   const user = useSelector((state: RootState) => state.user.user);
 
   const errorText = t(`authErrors:${error}`);
+  const successMsgText = t(`succesNotifications:${successMsg}`);
 
   const onAuthStateChanged = (authUser: any) => {
     if (authUser) {
@@ -79,6 +83,14 @@ const Navigator: React.FC = () => {
           onPress={() => dispatch(actions.messages.clearMessages())}
         />
       )}
+      {successMsgText !== '' && (
+        <NotificationModal
+          notificationIcon={'check-circle-outline'}
+          bgColor={'#0b965a'}
+          errorText={successMsgText}
+          onPress={() => dispatch(actions.messages.clearMessages())}
+        />
+      )}
       {Object.keys(user).length !== 0 ? (
         <Stack.Navigator
           screenOptions={{
@@ -94,6 +106,10 @@ const Navigator: React.FC = () => {
           <Stack.Screen
             name={ROUTES.CreateWorkout}
             component={CreateWorkoutView}
+          />
+          <Stack.Screen
+            name={ROUTES.WorkoutsList}
+            component={WorkoutsListView}
           />
         </Stack.Navigator>
       ) : (
@@ -115,18 +131,5 @@ const Navigator: React.FC = () => {
     </NavigationContainer>
   );
 };
-
-const ErrorBar = styled.View`
-  flex-direction: row;
-  padding: 10px 10px;
-  background-color: #bf283b;
-  font-size: 17px;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ErrorText = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
 
 export default Navigator;

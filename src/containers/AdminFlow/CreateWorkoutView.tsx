@@ -1,22 +1,44 @@
-import React from 'react';
-import {View, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useEffect} from 'react';
+import {ScrollView} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {Formik, FieldArray} from 'formik';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch} from 'react-redux';
+import {StackNavigationProp} from '@react-navigation/stack';
 
+import ROUTES from '../../routes/Routes';
 import {database} from '../../utils/database';
 import {createWorkoutSchema} from '../../utils/formsValidations';
+import {actions} from '../../state/actions';
+import {RootStackParamList} from 'src/routes/Interface';
 
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
 
+type CreateWorkoutViewNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.CreateWorkout
+>;
 interface ICreateWorkoutViewProps {
   theme: DefaultTheme;
+  navigation: CreateWorkoutViewNavigationProp;
 }
 
-const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({theme}) => {
+const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
+  theme,
+  navigation,
+}) => {
   const {t, i18n} = useTranslation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      dispatch(actions.messages.clearMessages());
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <Container>
@@ -50,6 +72,10 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({theme}) => {
                   exercises: exercises,
                 })
                 .then(() => console.log('Data updated.'));
+              dispatch(actions.messages.setSuccessMessage('successCreate'));
+              setTimeout(() => {
+                dispatch(actions.messages.clearMessages());
+              }, 2000);
               resetForm();
             } catch (e) {
               console.log(e);

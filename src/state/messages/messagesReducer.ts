@@ -3,12 +3,12 @@ import {messagesActionsType} from './messagesActions';
 
 export interface IMessagesState {
   authErrorMsg: string;
-  authSuccessMsg: string;
+  successMsg: string;
 }
 
 const initialMessagesState = {
   authErrorMsg: '',
-  authSuccessMsg: '',
+  successMsg: '',
 };
 
 const messagesReducer = (
@@ -24,13 +24,13 @@ const messagesReducer = (
     case constants.messages.SET_SUCCESS_MESSAGE:
       return {
         ...state,
-        authSuccessMsg: action.payload,
+        successMsg: action.payload,
       };
     case constants.messages.CLEAR_MESSAGES:
       return {
         ...state,
         authErrorMsg: '',
-        authSuccessMsg: '',
+        successMsg: '',
       };
     default:
       return state;

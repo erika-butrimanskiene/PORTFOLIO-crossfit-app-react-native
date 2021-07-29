@@ -72,10 +72,16 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
             <Profile>{t('user:userProfile')}</Profile>
           </TouchableOpacity>
           {user.admin && (
-            <TouchableOpacity
-              onPress={() => navigation.navigate(ROUTES.CreateWorkout)}>
-              <Profile>{t('admin:createWorkout')}</Profile>
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.CreateWorkout)}>
+                <Profile>{t('admin:createWorkout')}</Profile>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.WorkoutsList)}>
+                <Profile>{t('admin:workoutsList')}</Profile>
+              </TouchableOpacity>
+            </>
           )}
         </>
       )}
