@@ -65,6 +65,10 @@
     "workoutWeights": "Workout weights",
     "workoutType": "Workout type",
     "countResult": "Count result of",
-    "exerciseDefinition": "Exercise definition"
+    "exerciseDefinition": "Exercise definition",
+    "createBtn": "Create",
+    "createNewWorkoutBtn": "Create new",
+    "details": "DETAILS",
+    "search": "Search"
   }
 }

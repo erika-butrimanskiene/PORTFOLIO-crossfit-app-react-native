@@ -1,9 +1,6 @@
 import {constants} from '../constants';
 import {workoutsActionsType} from './workoutsActions';
-
-export interface IWorkoutsState {
-  workouts: object[];
-}
+import {IWorkoutsState} from './workoutsInterface';
 
 const initialWorkoutsState: IWorkoutsState = {
   workouts: [],

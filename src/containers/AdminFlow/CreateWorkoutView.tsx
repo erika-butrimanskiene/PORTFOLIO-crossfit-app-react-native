@@ -8,10 +8,10 @@ import {useDispatch} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 import ROUTES from '../../routes/Routes';
+import {RootStackParamList} from 'src/routes/Interface';
 import {database} from '../../utils/database';
 import {createWorkoutSchema} from '../../utils/formsValidations';
 import {actions} from '../../state/actions';
-import {RootStackParamList} from 'src/routes/Interface';
 
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
@@ -184,7 +184,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                 </Form>
                 <CreateButtonContainer>
                   <Button
-                    text={'Create'}
+                    text={t('admin:createBtn')}
                     bgColor={`${theme.appColors.primaryColorLighter}`}
                     onPress={formikProps.handleSubmit}
                   />

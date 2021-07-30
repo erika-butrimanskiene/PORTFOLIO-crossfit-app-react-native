@@ -1,14 +1,9 @@
 import {constants} from '../constants';
-
-export interface IgetWorkoutsList {
-  type: string;
-  payload?: null;
-}
-
-export interface IsetWorkoutsList {
-  type: string;
-  payload: Array<object>;
-}
+import {
+  IWorkoutState,
+  IgetWorkoutsList,
+  IsetWorkoutsList,
+} from './workoutsInterface';
 
 const getWorkoutsList = (): IgetWorkoutsList => {
   return {
@@ -16,7 +11,7 @@ const getWorkoutsList = (): IgetWorkoutsList => {
   };
 };
 
-const setWorkoutsList = (workoutsList: Array<object>): IsetWorkoutsList => {
+const setWorkoutsList = (workoutsList: IWorkoutState[]): IsetWorkoutsList => {
   return {
     type: constants.workouts.SET_WORKOUTS_LIST,
     payload: workoutsList,

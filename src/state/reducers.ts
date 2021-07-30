@@ -1,7 +1,8 @@
 import {CombinedState, combineReducers} from 'redux';
 import userReducer from './user/userReducer';
 import uiReducer, {IUiState} from './ui/uiReducer';
-import workoutsReducer, {IWorkoutsState} from './workouts/workoutsReducer';
+import {IWorkoutsState} from './workouts/workoutsInterface';
+import workoutsReducer from './workouts/workoutsReducer';
 import messagesReducer, {IMessagesState} from './messages/messagesReducer';
 import {IUserState} from './user/userInterface';
 

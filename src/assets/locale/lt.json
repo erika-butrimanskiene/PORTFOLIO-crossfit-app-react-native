@@ -65,6 +65,10 @@
     "workoutWeights": "Treniruotės svoriai",
     "workoutType": "Treniruotės tipas",
     "countResult": "Kieno rezultatą skaičiuoti",
-    "exerciseDefinition": "Pratimo aprašymas"
+    "exerciseDefinition": "Pratimo aprašymas",
+    "createBtn": "Sukurti",
+    "createNewWorkoutBtn": "Sukurti naują",
+    "details": "DETALIAU",
+    "search": "Ieškoti"
   }
 }
