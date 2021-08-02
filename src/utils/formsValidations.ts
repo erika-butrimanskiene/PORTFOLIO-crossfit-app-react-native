@@ -52,3 +52,21 @@ export const createWorkoutSchema = yup.object({
     .min(1, () => 'required min 1')
     .max(10, () => 'required max'),
 });
+
+export const createWodSchema = yup.object({
+  wodDate: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:wodDateRequired')),
+  couchName: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:couchNameRequired')),
+  wodRoom: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:wodRoomRequired')),
+  attendeesNumber: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:attendeesNumberRequired')),
+  wodName: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:wodNameRequired')),
+});

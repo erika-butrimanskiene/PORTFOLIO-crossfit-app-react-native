@@ -4,6 +4,17 @@ import {IWorkoutsState} from './workoutsInterface';
 
 const initialWorkoutsState: IWorkoutsState = {
   workouts: [],
+  initSelection: false,
+  selectedWorkout: {
+    id: '',
+    data: {
+      name: '',
+      countOfResult: '',
+      workoutType: '',
+      workoutWeights: '',
+      exercises: [],
+    },
+  },
 };
 
 const workoutsReducer = (
@@ -16,6 +27,26 @@ const workoutsReducer = (
         ...state,
         workouts: [...action.payload],
       };
+
+    case constants.workouts.INIT_WORKOUT_SELECTION:
+      return {
+        ...state,
+        initSelection: action.payload,
+      };
+
+    case constants.workouts.SELECT_WORKOUT:
+      return {
+        ...state,
+        initSelection: false,
+        selectedWorkout: {...action.payload},
+      };
+
+    case constants.workouts.CLEAR_SELECTED_WORKOUT:
+      return {
+        ...state,
+        selectedWorkout: {...initialWorkoutsState.selectedWorkout},
+      };
+
     default:
       return state;
   }

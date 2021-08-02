@@ -74,16 +74,20 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
           <Heading>{user.email}</Heading>
           <Heading>{onSync}</Heading>
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Profile)}>
-            <Profile>{t('user:userProfile')}</Profile>
+            <LinkText>{t('user:userProfile')}</LinkText>
           </TouchableOpacity>
           {user.admin && (
             <>
               <TouchableOpacity
                 onPress={() => navigation.navigate(ROUTES.CreateWorkout)}>
-                <Profile>{t('admin:createWorkout')}</Profile>
+                <LinkText>{t('admin:createWorkout')}</LinkText>
               </TouchableOpacity>
               <TouchableOpacity onPress={seeWorkoutsList}>
-                <Profile>{t('admin:workoutsList')}</Profile>
+                <LinkText>{t('admin:workoutsList')}</LinkText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.CreateWod)}>
+                <LinkText>{t('admin:createWod')}</LinkText>
               </TouchableOpacity>
             </>
           )}
@@ -120,7 +124,7 @@ const Heading = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
-const Profile = styled.Text`
+const LinkText = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 25px;
 `;

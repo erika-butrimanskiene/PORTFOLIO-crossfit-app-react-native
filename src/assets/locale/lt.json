@@ -53,13 +53,19 @@
   "admin": {
     "workoutsList": "Treniruočių sąrašas",
     "createWorkout": "Sukurti pratimą",
+    "createWod": "Sukurti dienos treniruotę",
     "createNewWorkout": "Sukurti naują pratimą",
     "formsErrors": {
       "workoutNameRequired": "Treniruotės pavadinimas yra privalomas",
       "workoutTypeRequired": "Treniruotės tipas yra privalomas",
       "workoutWeightsRequired": "Privaloma nurodyti treniruotės svorius",
       "countResultOfRequired": "Privaloma nurodyti kieno rezultatą skaičiuoti",
-      "exerciseDefinitionRequired": "Pratimo aprašymas yra privalomas"
+      "exerciseDefinitionRequired": "Pratimo aprašymas yra privalomas",
+      "wodDateRequired": "Nurodykite treniruotės datą ir laiką",
+      "couchNameRequired": "Nurodykite trenerio vardą",
+      "wodRoomRequired": "Nurodykite salę",
+      "attendeesNumberRequired": "Nurodykite dalyvių skaičių",
+      "wodNameRequired": "Pasirinkite treniruotę"
     },
     "workoutName": "Treniruotės pavadinimas",
     "workoutWeights": "Treniruotės svoriai",
@@ -68,7 +74,15 @@
     "exerciseDefinition": "Pratimo aprašymas",
     "createBtn": "Sukurti",
     "createNewWorkoutBtn": "Sukurti naują",
-    "details": "DETALIAU",
-    "search": "Ieškoti"
+    "details": "Detaliau",
+    "delete": "Ištrinti",
+    "workoutDelete": "Treniruotė bus ištrinta iš sąrašo.",
+    "search": "Ieškoti",
+    "selectWodDate": "Pasirinkti treniruotės datą ir laiką",
+    "typeCouchName": "Nurodyti trenerio vardą",
+    "selectRoom": "Pasirinkite salę",
+    "typeAttendeesNumber": "Nurodyti dalyvių skaičių",
+    "selectWod": "Pasirinkite treniruotę",
+    "addToWod": "WOD"
   }
 }

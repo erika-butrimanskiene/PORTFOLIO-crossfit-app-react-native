@@ -7,11 +7,13 @@ interface IFormInputProps {
   theme: DefaultTheme;
   value: string;
   placeholderText: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   onPress?: ((event: GestureResponderEvent) => void) | any;
-  isListInput: boolean;
+  isInputWithAction: boolean;
   bgColor: string;
   placeholderColor: string;
+  iconName?: string;
+  editable?: boolean;
 }
 
 const FormInput: React.FC<IFormInputProps> = ({
@@ -21,8 +23,10 @@ const FormInput: React.FC<IFormInputProps> = ({
   placeholderText,
   placeholderColor,
   onPress,
-  isListInput,
+  isInputWithAction,
   bgColor,
+  iconName,
+  editable,
 }) => {
   const [isInputActive, setIsInputActive] = useState(false);
   return (
@@ -37,11 +41,12 @@ const FormInput: React.FC<IFormInputProps> = ({
         autoCapitalize="none"
         autoCorrect={false}
         underlineColorAndroid="transparent"
+        editable={editable}
       />
-      {isListInput && (
+      {isInputWithAction && (
         <Icon onPress={onPress}>
           <MaterialIcons
-            name={'close'}
+            name={iconName}
             size={30}
             color={theme.appColors.primaryColorLighter}
           />

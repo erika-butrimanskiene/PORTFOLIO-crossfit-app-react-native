@@ -2,16 +2,20 @@ import React, {useState, useEffect} from 'react';
 import {FlatList} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../state/reducers';
+import {useSelector, useDispatch} from 'react-redux';
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
+import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';
+import {actions} from '../../state/actions';
+import {RootState} from '../../state/reducers';
 
 import Button from '../../components/Button';
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 type WorkoutsListViewNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -27,15 +31,28 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
   navigation,
 }) => {
   const {t, i18n} = useTranslation();
+  const dispatch = useDispatch();
   const workouts: IWorkoutState[] = useSelector(
     (state: RootState) => state.workouts.workouts,
   );
+  const isWorkoutSelection: boolean = useSelector(
+    (state: RootState) => state.workouts.initSelection,
+  );
+
   const [search, setSearch] = useState('');
   const [filteredWorkouts, setFilteredWorkouts] = useState(workouts);
 
   useEffect(() => {
     handleFilter(search);
   }, [workouts]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      dispatch(actions.workouts.initWorkoutSelection(false));
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   interface Iitem {
     item: IWorkoutState;
@@ -53,14 +70,51 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
     setSearch(text);
   };
 
+  const handleDelete = (id: string) => {
+    showAlert({
+      alertType: 'custom',
+      customAlert: (
+        <ConfirmationModal
+          confirmText={t('admin:delete')}
+          alertText={t('admin:workoutDelete')}
+          onCancelPress={() => closeAlert()}
+          onConfirmPress={() => {
+            deleteWorkout(id);
+            closeAlert();
+          }}
+        />
+      ),
+    });
+  };
+
   const renderItem = ({item}: Iitem) => {
     return (
       <WorkoutItem>
         <TextsContainer>
           <WorkoutName>{item.data.name}</WorkoutName>
           <WorkoutType>{item.data.workoutType}</WorkoutType>
-          <SeeMore>{t('admin:details')}</SeeMore>
+          <Actions>
+            <SeeMore>{t('admin:details')}</SeeMore>
+            <DeleteAction onPress={() => handleDelete(item.id)}>
+              <Delete>{t('admin:delete').toUpperCase()}</Delete>
+            </DeleteAction>
+          </Actions>
         </TextsContainer>
+        {isWorkoutSelection && (
+          <Icon
+            onPress={() => {
+              console.log(item);
+              dispatch(actions.workouts.selectWorkout(item));
+              navigation.navigate(ROUTES.CreateWod);
+            }}>
+            <MaterialIcons
+              name={'add'}
+              size={30}
+              color={theme.appColors.accentColor}
+            />
+            <IconText>WOD</IconText>
+          </Icon>
+        )}
       </WorkoutItem>
     );
   };
@@ -134,6 +188,10 @@ const Input = styled.TextInput`
 
 const Icon = styled.TouchableOpacity``;
 
+const IconText = styled.Text`
+  color: ${({theme}) => theme.appColors.primaryColorLighter};
+`;
+
 const ButtonContainer = styled.View`
   margin: 15px 0px;
 `;
@@ -144,6 +202,8 @@ const FlatListContainer = styled.View`
 `;
 
 const WorkoutItem = styled.View`
+  flex-direction: row;
+  align-items: center;
   margin: 10px 0px;
   border-radius: 3px;
   border-left-width: 10px;
@@ -169,7 +229,19 @@ const WorkoutType = styled.Text`
   padding-bottom: 10px;
 `;
 
+const Actions = styled.View`
+  flex-direction: row;
+`;
+
 const SeeMore = styled.Text`
+  padding-right: 17px;
+  font-size: 17px;
+  color: ${({theme}) => theme.appColors.textColorLightGray};
+`;
+
+const DeleteAction = styled.TouchableOpacity``;
+
+const Delete = styled.Text`
   font-size: 17px;
   color: ${({theme}) => theme.appColors.textColorLightGray};
 `;

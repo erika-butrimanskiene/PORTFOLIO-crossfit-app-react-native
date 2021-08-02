@@ -9,9 +9,9 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
-import {database} from '../../utils/database';
 import {createWorkoutSchema} from '../../utils/formsValidations';
 import {actions} from '../../state/actions';
+import {createWorkout} from '../../utils/firebaseDatabaseAPI';
 
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
@@ -62,16 +62,14 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
               exercises,
             } = values;
             try {
-              const newReference = database.ref('/workouts').push();
-              newReference
-                .set({
-                  name: workoutName,
-                  workoutType: workoutType,
-                  countResultOf: countResultOf,
-                  workoutWeights: workoutWeights,
-                  exercises: exercises,
-                })
-                .then(() => console.log('Data updated.'));
+              createWorkout(
+                workoutName,
+                workoutType,
+                countResultOf,
+                workoutWeights,
+                exercises,
+              );
+
               dispatch(actions.messages.setSuccessMessage('successCreate'));
               setTimeout(() => {
                 dispatch(actions.messages.clearMessages());
@@ -90,7 +88,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                     onChangeText={formikProps.handleChange('workoutName')}
                     placeholderText={t('admin:workoutName')}
                     placeholderColor={theme.appColors.backgroundColorDarken}
-                    isListInput={false}
+                    isInputWithAction={false}
                     bgColor={theme.appColors.accentColor}
                   />
 
@@ -103,7 +101,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                     onChangeText={formikProps.handleChange('workoutWeights')}
                     placeholderText={t('admin:workoutWeights')}
                     placeholderColor={theme.appColors.textColorLightGray}
-                    isListInput={false}
+                    isInputWithAction={false}
                     bgColor={theme.appColors.backgroundColorLighter}
                   />
                   {formikProps.touched.workoutWeights &&
@@ -115,7 +113,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                     onChangeText={formikProps.handleChange('workoutType')}
                     placeholderText={t('admin:workoutType')}
                     placeholderColor={theme.appColors.textColorLightGray}
-                    isListInput={false}
+                    isInputWithAction={false}
                     bgColor={theme.appColors.backgroundColorLighter}
                   />
                   {formikProps.touched.workoutType &&
@@ -128,7 +126,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                     onChangeText={formikProps.handleChange('countResultOf')}
                     placeholderText={t('admin:countResult')}
                     placeholderColor={theme.appColors.textColorLightGray}
-                    isListInput={false}
+                    isInputWithAction={false}
                     bgColor={theme.appColors.backgroundColorLighter}
                   />
                   {formikProps.touched.countResultOf &&
@@ -154,8 +152,9 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                                 placeholderColor={
                                   theme.appColors.textColorLightGray
                                 }
-                                isListInput={true}
+                                isInputWithAction={true}
                                 bgColor={theme.appColors.backgroundColorLighter}
+                                iconName={'close'}
                                 onPress={() => {
                                   if (exercises.length > 1) remove(index);
                                 }}

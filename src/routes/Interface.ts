@@ -9,4 +9,5 @@ export type RootStackParamList = {
   [ROUTES.Register]: undefined;
   [ROUTES.CreateWorkout]: undefined;
   [ROUTES.WorkoutsList]: undefined;
+  [ROUTES.CreateWod]: undefined;
 };

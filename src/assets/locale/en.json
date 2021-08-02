@@ -53,13 +53,19 @@
   "admin": {
     "workoutsList": "Workouts List",
     "createWorkout": "Create Workout",
+    "createWod": "Create WOD",
     "createNewWorkout": "Create New Workout",
     "formsErrors": {
       "workoutNameRequired": "Workout name required",
       "workoutTypeRequired": "Workout type required",
       "workoutWeightsRequired": "Workout weights required",
       "countResultOfRequired": "Count result of required",
-      "exerciseDefinitionRequired": "Exercise definition required"
+      "exerciseDefinitionRequired": "Exercise definition required",
+      "wodDateRequired": "WOD date and time required",
+      "couchNameRequired": "Couch name required",
+      "wodRoomRequired": "WOD room required",
+      "attendeesNumberRequired": "Attendees number required",
+      "wodNameRequired": "WOD selection required"
     },
     "workoutName": "Workout name",
     "workoutWeights": "Workout weights",
@@ -68,7 +74,15 @@
     "exerciseDefinition": "Exercise definition",
     "createBtn": "Create",
     "createNewWorkoutBtn": "Create new",
-    "details": "DETAILS",
-    "search": "Search"
+    "details": "Details",
+    "delete": "Delete",
+    "workoutDelete": "Workout will be delete from the list.",
+    "search": "Search",
+    "selectWodDate": "Select WOD date and time",
+    "typeCouchName": "Type couch name",
+    "selectRoom": "Select room",
+    "typeAttendeesNumber": "Type attendees number",
+    "selectWod": "Select WOD",
+    "addToWod": "WOD"
   }
 }

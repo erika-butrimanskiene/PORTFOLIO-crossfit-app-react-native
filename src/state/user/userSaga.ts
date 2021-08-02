@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from 'redux-saga/effects';
+import {call, put, takeLatest, fork} from 'redux-saga/effects';
 import {actions} from '../actions';
 import {constants} from '../constants';
 import {database} from '../../utils/database';
@@ -9,6 +9,7 @@ import {
   logout,
   IFirebaseAuth,
 } from '../../utils/firebaseAuthAPI';
+import watchUser from './userWatcherSaga';
 import {AnyAction} from 'redux';
 
 function* handleRegistration(action: {
@@ -42,6 +43,7 @@ function* handleRegistration(action: {
         })
         .then(() => console.log('Data set.'));
       yield put(actions.messages.clearMessages());
+      yield fork(watchUser, response.uid);
     }
 
     if (response.status === false) {
@@ -73,6 +75,7 @@ function* handleLogin({payload: {email, password}}: AnyAction) {
     if (response.status === true) {
       console.log(response);
       yield put(actions.messages.clearMessages());
+      yield fork(watchUser, response.uid);
     }
     if (response.status === false) {
       throw response;
@@ -106,6 +109,8 @@ function* handleLoginFacebook() {
           surname: `${response.surname}`,
         })
         .then(() => console.log('Data set.'));
+
+      yield fork(watchUser, response.uid);
     }
 
     if (response.status === false) {

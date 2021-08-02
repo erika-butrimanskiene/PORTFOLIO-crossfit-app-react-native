@@ -1,3 +1,5 @@
+import {StringLocale} from 'yup/lib/locale';
+
 export interface IWorkoutState {
   id: string;
   data: {
@@ -10,6 +12,8 @@ export interface IWorkoutState {
 }
 export interface IWorkoutsState {
   workouts: IWorkoutState[];
+  initSelection: boolean;
+  selectedWorkout: IWorkoutState;
 }
 
 export interface IgetWorkoutsList {
@@ -20,4 +24,9 @@ export interface IgetWorkoutsList {
 export interface IsetWorkoutsList {
   type: string;
   payload: IWorkoutState[];
+}
+
+export interface IselectWorkout {
+  type: string;
+  payload: IWorkoutState;
 }
