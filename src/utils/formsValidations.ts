@@ -57,6 +57,15 @@ export const createWodSchema = yup.object({
   wodDate: yup
     .string()
     .required(() => i18n.t('admin:formsErrors:wodDateRequired')),
+  wodName: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:wodNameRequired')),
+});
+
+export const createTimeSchema = yup.object({
+  wodTime: yup
+    .string()
+    .required(() => i18n.t('admin:formsErrors:wodTimeRequired')),
   coachName: yup
     .string()
     .required(() => i18n.t('admin:formsErrors:coachNameRequired')),
@@ -66,7 +75,4 @@ export const createWodSchema = yup.object({
   attendeesNumber: yup
     .string()
     .required(() => i18n.t('admin:formsErrors:attendeesNumberRequired')),
-  wodName: yup
-    .string()
-    .required(() => i18n.t('admin:formsErrors:wodNameRequired')),
 });

@@ -49,20 +49,25 @@ export const createWorkout = async (
 
 export const createWod = async (
   date: string,
-  coach: string,
-  numberOfAttendees: string,
-  room: string,
-  time: string,
+  times: object[],
   workout: IWorkoutState,
 ): Promise<any> => {
-  const newReference = database.ref(`/WODs/${date}`).push();
-  newReference
+  // const newReference = database.ref(`/WODs/${date}`).push();
+  // newReference
+  //   .set({
+  //     coach,
+  //     numberOfAttendees,
+  //     room,
+  //     time,
+  //     workout,
+  //   })
+  //   .then(() => console.log('Data updated.'));
+
+  database
+    .ref(`/WODs/${date}/crossfit`)
     .set({
-      coach,
-      numberOfAttendees,
-      room,
-      time,
       workout,
+      times,
     })
-    .then(() => console.log('Data updated.'));
+    .then(() => console.log('Data set.'));
 };

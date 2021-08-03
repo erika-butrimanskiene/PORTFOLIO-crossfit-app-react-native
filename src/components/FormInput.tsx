@@ -48,7 +48,7 @@ const FormInput: React.FC<IFormInputProps> = ({
           <MaterialIcons
             name={iconName}
             size={30}
-            color={theme.appColors.primaryColorLighter}
+            color={theme.appColors.whiteColor}
           />
         </Icon>
       )}
