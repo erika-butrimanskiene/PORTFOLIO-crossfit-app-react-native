@@ -49,7 +49,7 @@ export const createWorkout = async (
 
 export const createWod = async (
   date: string,
-  couch: string,
+  coach: string,
   numberOfAttendees: string,
   room: string,
   time: string,
@@ -58,7 +58,7 @@ export const createWod = async (
   const newReference = database.ref(`/WODs/${date}`).push();
   newReference
     .set({
-      couch,
+      coach,
       numberOfAttendees,
       room,
       time,

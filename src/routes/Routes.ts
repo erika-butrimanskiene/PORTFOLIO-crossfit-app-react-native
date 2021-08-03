@@ -8,6 +8,7 @@ enum ROUTES {
   CreateWorkout = 'CreateWorkout',
   WorkoutsList = 'WorkoutsList',
   CreateWod = 'CreateWod',
+  WodsList = 'WodsList',
 }
 
 export default ROUTES;

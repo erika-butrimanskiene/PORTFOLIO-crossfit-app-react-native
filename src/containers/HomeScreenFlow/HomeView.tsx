@@ -4,9 +4,9 @@ import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootState} from 'src/state/reducers';
 import SwitchSelector from 'react-native-switch-selector';
 
+import {RootState} from 'src/state/reducers';
 import {actions} from '../../state/actions';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
@@ -75,6 +75,10 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
           <Heading>{onSync}</Heading>
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Profile)}>
             <LinkText>{t('user:userProfile')}</LinkText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ROUTES.WodsList)}>
+            <LinkText>{t('wods:wodsList')}</LinkText>
           </TouchableOpacity>
           {user.admin && (
             <>

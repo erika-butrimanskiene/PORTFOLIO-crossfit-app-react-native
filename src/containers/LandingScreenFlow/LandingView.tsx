@@ -113,7 +113,7 @@ const Image = styled.ImageBackground`
 const ImageCover = styled.View`
   flex: 1;
   padding-top: 70px;
-  background-color: #212121a0;
+  background-color: ${({theme}) => theme.appColors.backgroundColor_opacity50};
   align-items: center;
 `;
 

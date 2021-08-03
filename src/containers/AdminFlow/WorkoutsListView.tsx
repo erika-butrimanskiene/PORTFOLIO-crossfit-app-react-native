@@ -186,9 +186,13 @@ const Input = styled.TextInput`
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
-const Icon = styled.TouchableOpacity``;
+const Icon = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+`;
 
 const IconText = styled.Text`
+  font-size: 18px;
   color: ${({theme}) => theme.appColors.primaryColorLighter};
 `;
 

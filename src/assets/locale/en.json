@@ -62,7 +62,7 @@
       "countResultOfRequired": "Count result of required",
       "exerciseDefinitionRequired": "Exercise definition required",
       "wodDateRequired": "WOD date and time required",
-      "couchNameRequired": "Couch name required",
+      "coachNameRequired": "Coach name required",
       "wodRoomRequired": "WOD room required",
       "attendeesNumberRequired": "Attendees number required",
       "wodNameRequired": "WOD selection required"
@@ -79,10 +79,14 @@
     "workoutDelete": "Workout will be delete from the list.",
     "search": "Search",
     "selectWodDate": "Select WOD date and time",
-    "typeCouchName": "Type couch name",
+    "typeCoachName": "Type coach name",
     "selectRoom": "Select room",
     "typeAttendeesNumber": "Type attendees number",
     "selectWod": "Select WOD",
     "addToWod": "WOD"
+  },
+  "wods": {
+    "wodsList": "WODs",
+    "todayWod": "Today's WOD"
   }
 }

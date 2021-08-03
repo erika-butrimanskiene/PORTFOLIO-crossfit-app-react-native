@@ -57,9 +57,9 @@ export const createWodSchema = yup.object({
   wodDate: yup
     .string()
     .required(() => i18n.t('admin:formsErrors:wodDateRequired')),
-  couchName: yup
+  coachName: yup
     .string()
-    .required(() => i18n.t('admin:formsErrors:couchNameRequired')),
+    .required(() => i18n.t('admin:formsErrors:coachNameRequired')),
   wodRoom: yup
     .string()
     .required(() => i18n.t('admin:formsErrors:wodRoomRequired')),

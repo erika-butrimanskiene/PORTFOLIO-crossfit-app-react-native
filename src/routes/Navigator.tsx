@@ -20,6 +20,7 @@ import ProfileView from '../containers/UserFlow/ProfileView';
 import CreateWorkoutView from '../containers/AdminFlow/CreateWorkoutView';
 import WorkoutsListView from '../containers/AdminFlow/WorkoutsListView';
 import CreateWodView from '../containers/AdminFlow/CreateWodView';
+import WodsListView from '../containers/WodsFlow/WodsListView';
 
 import NotificationModal from '../components/NotificationModal';
 
@@ -113,6 +114,7 @@ const Navigator: React.FC = () => {
             component={WorkoutsListView}
           />
           <Stack.Screen name={ROUTES.CreateWod} component={CreateWodView} />
+          <Stack.Screen name={ROUTES.WodsList} component={WodsListView} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator
