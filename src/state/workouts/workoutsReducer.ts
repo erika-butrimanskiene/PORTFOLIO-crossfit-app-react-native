@@ -1,6 +1,6 @@
 import {constants} from '../constants';
 import {workoutsActionsType} from './workoutsActions';
-import {IWorkoutsState} from './workoutsInterface';
+import {IWorkoutsState, IWorkoutState} from './workoutsInterface';
 
 const initialWorkoutsState: IWorkoutsState = {
   workouts: [],
@@ -25,20 +25,20 @@ const workoutsReducer = (
     case constants.workouts.SET_WORKOUTS_LIST:
       return {
         ...state,
-        workouts: [...action.payload],
+        workouts: [...(action.payload as IWorkoutState[])],
       };
 
     case constants.workouts.INIT_WORKOUT_SELECTION:
       return {
         ...state,
-        initSelection: action.payload,
+        initSelection: action.payload as boolean,
       };
 
     case constants.workouts.SELECT_WORKOUT:
       return {
         ...state,
         initSelection: false,
-        selectedWorkout: {...action.payload},
+        selectedWorkout: action.payload as IWorkoutState,
       };
 
     case constants.workouts.CLEAR_SELECTED_WORKOUT:

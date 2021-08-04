@@ -42,7 +42,8 @@
     "auth/user-not-found": "User not found",
     "auth/weak-password": "Weak password",
     "auth/wrong-password": "Wrong password",
-    "auth/unknown": "Unknown error"
+    "auth/unknown": "Unknown error",
+    "forgotWodTimes": "At least one WOD time is required"
   },
   "succesNotifications": {
     "successCreate": "Successfully created." 
@@ -90,6 +91,8 @@
   },
   "wods": {
     "wodsList": "WODs",
-    "todayWod": "Today's WOD"
+    "todayWod": "Today's WOD",
+    "coach": "Coach",
+    "room": "room"
   }
 }

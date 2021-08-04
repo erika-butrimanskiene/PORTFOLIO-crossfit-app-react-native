@@ -57,11 +57,6 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
     });
   }, [navigation]);
 
-  const seeWorkoutsList = () => {
-    dispatch(actions.workouts.getWorkoutsList());
-    navigation.navigate(ROUTES.WorkoutsList);
-  };
-
   return (
     <Container>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
@@ -86,12 +81,19 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
                 onPress={() => navigation.navigate(ROUTES.CreateWorkout)}>
                 <LinkText>{t('admin:createWorkout')}</LinkText>
               </TouchableOpacity>
-              <TouchableOpacity onPress={seeWorkoutsList}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.WorkoutsList)}>
                 <LinkText>{t('admin:workoutsList')}</LinkText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate(ROUTES.CreateWod)}>
                 <LinkText>{t('admin:createWod')}</LinkText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(actions.wods.getWodsList());
+                }}>
+                <LinkText>{'test getWods'}</LinkText>
               </TouchableOpacity>
             </>
           )}

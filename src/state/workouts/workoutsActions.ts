@@ -4,6 +4,8 @@ import {
   IgetWorkoutsList,
   IsetWorkoutsList,
   IselectWorkout,
+  IinitWorkoutSelection,
+  IclearSelectedWorkout,
 } from './workoutsInterface';
 
 const getWorkoutsList = (): IgetWorkoutsList => {
@@ -19,10 +21,12 @@ const setWorkoutsList = (workoutsList: IWorkoutState[]): IsetWorkoutsList => {
   };
 };
 
-const initWorkoutSelection = (boolean: boolean) => {
+const initWorkoutSelection = (
+  workoutSelection: boolean,
+): IinitWorkoutSelection => {
   return {
     type: constants.workouts.INIT_WORKOUT_SELECTION,
-    payload: boolean,
+    payload: workoutSelection,
   };
 };
 
@@ -33,7 +37,7 @@ const selectWorkout = (selectedWorkout: IWorkoutState): IselectWorkout => {
   };
 };
 
-const clearSelectedWorkout = () => {
+const clearSelectedWorkout = (): IclearSelectedWorkout => {
   return {
     type: constants.workouts.CLEAR_SELECTED_WORKOUT,
   };
@@ -47,4 +51,9 @@ export const workoutsActions = {
   clearSelectedWorkout,
 };
 
-export type workoutsActionsType = IgetWorkoutsList | IsetWorkoutsList;
+export type workoutsActionsType =
+  | IgetWorkoutsList
+  | IsetWorkoutsList
+  | IinitWorkoutSelection
+  | IselectWorkout
+  | IclearSelectedWorkout;

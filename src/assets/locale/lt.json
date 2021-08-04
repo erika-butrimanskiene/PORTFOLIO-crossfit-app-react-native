@@ -42,7 +42,8 @@
     "auth/user-not-found": "Vartotojas nerastas",
     "auth/weak-password": "Silpnas slaptazodis",
     "auth/wrong-password": "Neteisingas slaptažodis",
-    "auth/unknown": "Nežinoma klaida"
+    "auth/unknown": "Nežinoma klaida",
+    "forgotWodTimes": "Nepridėjote nei vieno treniruotės laiko"
   },
   "succesNotifications": {
     "successCreate": "Sėkmingai sukurta." 
@@ -90,6 +91,8 @@
   },
   "wods": {
     "wodsList": "WODs",
-    "todayWod": "Šiandienos WOD"
+    "todayWod": "Šiandienos WOD",
+    "coach": "Treneris",
+    "room": "salė"
   }
 }

@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Formik} from 'formik';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {createWodSchema} from '../../utils/formsValidations';
 import ROUTES from '../../routes/Routes';
@@ -88,7 +89,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                 setWodsTimes([]);
                 resetForm();
               } else {
-                dispatch(actions.messages.setErrorMessage('You failed'));
+                dispatch(actions.messages.setErrorMessage('forgotWodTimes'));
               }
             } catch (e) {
               console.log(e);
@@ -139,9 +140,29 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                 )}
 
                 {wodsTimes.map((item, index) => (
-                  <View key={index}>
-                    <Text>{item.wodTime}</Text>
-                  </View>
+                  <WodTimeItem key={index}>
+                    <WodTimeItemContent>
+                      <WodTime>{item.wodTime}</WodTime>
+                      <WodCoach>
+                        {t('wod:coach')} {item.coachName},{' '}
+                      </WodCoach>
+                      <WodRoom>
+                        {item.wodRoom} {t('wod:room')}
+                      </WodRoom>
+                    </WodTimeItemContent>
+                    <DeleteTime
+                      onPress={() => {
+                        const newWodsTimes = [...wodsTimes];
+                        newWodsTimes.splice(index, 1);
+                        setWodsTimes(newWodsTimes);
+                      }}>
+                      <MaterialIcons
+                        name={'close'}
+                        size={30}
+                        color={theme.appColors.backgroundColorLighter}
+                      />
+                    </DeleteTime>
+                  </WodTimeItem>
                 ))}
 
                 <CreateWodTimesForm
@@ -181,14 +202,14 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 50px;
+  padding-top: 40px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
 `;
 
 const Heading = styled.Text`
-  margin: 15px 0px;
+  margin: 15px 0px 5px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 30px;
   text-align: center;
@@ -211,6 +232,42 @@ const ErrorText = styled.Text`
   color: ${({theme}) => theme.appColors.accentColor};
   font-size: 17px;
   padding-bottom: 15px;
+`;
+
+const WodTimeItem = styled.View`
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5px 0px;
+  padding: 10px;
+  border-radius: 10px;
+  width: 90%;
+  background-color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const WodTimeItemContent = styled.View`
+  width: 80%;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const WodTime = styled.Text`
+  padding-right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const WodCoach = styled.Text`
+  font-size: 17px;
+`;
+
+const WodRoom = styled.Text`
+  font-size: 17px;
+`;
+
+const DeleteTime = styled.TouchableOpacity`
+  align-items: flex-end;
+  width: 20%;
 `;
 
 export default withTheme(CreateWodView);

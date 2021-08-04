@@ -1,4 +1,5 @@
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
+import {IWodState} from '../state/wods/wodsInterface';
 import {database} from './database';
 
 export const convertWorkoutsObjectToArray = (
@@ -52,17 +53,6 @@ export const createWod = async (
   times: object[],
   workout: IWorkoutState,
 ): Promise<any> => {
-  // const newReference = database.ref(`/WODs/${date}`).push();
-  // newReference
-  //   .set({
-  //     coach,
-  //     numberOfAttendees,
-  //     room,
-  //     time,
-  //     workout,
-  //   })
-  //   .then(() => console.log('Data updated.'));
-
   database
     .ref(`/WODs/${date}/crossfit`)
     .set({
@@ -70,4 +60,35 @@ export const createWod = async (
       times,
     })
     .then(() => console.log('Data set.'));
+};
+
+export const convertWodsObjectToArray = (
+  dataFromDatabase: any,
+): IWodState[] => {
+  return Object.keys(dataFromDatabase).map(date => {
+    let wodType: string = Object.keys(dataFromDatabase[date])[0];
+    return {
+      date: date,
+      data: {
+        type: wodType,
+        times: dataFromDatabase[date][wodType].times, //add
+        workout: dataFromDatabase[date][wodType].workout, //change
+      },
+    };
+  });
+};
+
+export const getWods = async (): Promise<any> => {
+  let dataArray: IWodState[] = [];
+  await database
+    .ref('/WODs')
+    .once('value')
+    .then(snapshot => {
+      let dataFromDatabase = snapshot.val();
+      console.log(dataFromDatabase);
+      dataArray = convertWodsObjectToArray(dataFromDatabase);
+      console.log(dataArray);
+    });
+
+  return dataArray;
 };
