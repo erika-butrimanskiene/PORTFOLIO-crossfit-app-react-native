@@ -3,11 +3,11 @@ import {FlatList} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {useSelector, useDispatch} from 'react-redux';
-import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import {StackNavigationProp} from '@react-navigation/stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
+import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';

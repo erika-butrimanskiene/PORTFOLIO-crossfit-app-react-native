@@ -1,119 +1,147 @@
-import React from 'react';
-import {Text, TouchableOpacity, View, ImageBackground} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {RootState} from 'src/state/reducers';
+import {formatDateToDate} from '../../utils/dateFormating';
+import {IWodTime} from 'src/state/wods/wodsInterface';
 
 interface IWodsListViewProps {
   theme: DefaultTheme;
 }
 
+interface Iitem {
+  item: IWodTime;
+}
+
 const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   const {t} = useTranslation();
   const user = useSelector((state: RootState) => state.user.user);
+  const wods = useSelector((state: RootState) => state.wods.wods);
+  const [showWodIndex, setShowWodIndex] = useState(null);
+  const [disabledLeft, setDisabledLeft] = useState(false);
+  const [disabledRight, setDisabledRight] = useState(false);
+
+  const today = new Date();
+  const todayDate = formatDateToDate(today);
+  const sortedWodsByDate = wods.sort((a, b) => {
+    return a.date < b.date ? -1 : 1;
+  });
+
+  const todayWod = wods.filter(wod => wod.date.includes(todayDate));
+  console.log(todayWod);
+
+  const todayWodIndex = sortedWodsByDate.indexOf(todayWod[0]);
+  console.log(todayWodIndex);
+
+  useEffect(() => {
+    setShowWodIndex(todayWodIndex);
+  }, []);
+
+  const renderItem = ({item}: Iitem) => {
+    return (
+      <ScheduleItem>
+        <Info>
+          <Time>{item.wodTime}</Time>
+          <CouchInfo>
+            <CouchName>
+              {t('wods:coach')} {item.coachName},
+            </CouchName>
+            <Room>
+              {item.wodRoom} {t('wods:room')}
+            </Room>
+          </CouchInfo>
+        </Info>
+        <ScheduleActions>
+          <RegisterBtn>
+            <RegisterText>{t('wods:register')}</RegisterText>
+          </RegisterBtn>
+          {user.admin && (
+            <AdminBtn>
+              <AdminText>Admin</AdminText>
+            </AdminBtn>
+          )}
+        </ScheduleActions>
+      </ScheduleItem>
+    );
+  };
+
   return (
     <Container>
       <Heading>{t('wods:todayWod')}</Heading>
-      <NavigateDayContainer>
-        <NavigateIcon>
-          <AntDesign
-            name={'left'}
-            size={30}
-            color={theme.appColors.accentColor}
-          />
-        </NavigateIcon>
-        <Day>2021 - 08 - 03</Day>
-        <NavigateIcon>
-          <AntDesign
-            name={'right'}
-            size={30}
-            color={theme.appColors.accentColor}
-          />
-        </NavigateIcon>
-      </NavigateDayContainer>
-      <ImageContainer>
-        <Image
-          source={{
-            uri: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          }}
-          resizeMode="cover">
-          <ImageOverlay>
-            <WodInfo>
-              <WodName>DEATH ROW</WodName>
-              <WodType>EMOM20</WodType>
-            </WodInfo>
-            <Actions>
-              <DetailsBtn onPress={() => {}}>
-                <DetailsText>Details</DetailsText>
-              </DetailsBtn>
-            </Actions>
-          </ImageOverlay>
-        </Image>
-      </ImageContainer>
-      <ScheduleList>
-        <ScheduleItem>
-          <Info>
-            <Time>07:00</Time>
-            <CouchInfo>
-              <CouchName>Couch Denis</CouchName>
-              <Room>3 room</Room>
-            </CouchInfo>
-          </Info>
-          <ScheduleActions>
-            <RegisterBtn>
-              <RegisterText>Register</RegisterText>
-            </RegisterBtn>
-            {false && (
-              <AdminBtn>
-                <AdminText>Admin</AdminText>
-              </AdminBtn>
-            )}
-          </ScheduleActions>
-        </ScheduleItem>
-
-        <ScheduleItem>
-          <Info>
-            <Time>09:00</Time>
-            <CouchInfo>
-              <CouchName>Couch Mantas</CouchName>
-              <Room>3 room</Room>
-            </CouchInfo>
-          </Info>
-          <ScheduleActions>
-            <RegisterBtn>
-              <RegisterText>Register</RegisterText>
-            </RegisterBtn>
-            {false && (
-              <AdminBtn>
-                <AdminText>Admin</AdminText>
-              </AdminBtn>
-            )}
-          </ScheduleActions>
-        </ScheduleItem>
-
-        <ScheduleItem>
-          <Info>
-            <Time>12:00</Time>
-            <CouchInfo>
-              <CouchName>Couch Mantas</CouchName>
-              <Room>5 room</Room>
-            </CouchInfo>
-          </Info>
-          <ScheduleActions>
-            <RegisterBtn>
-              <RegisterText>Register</RegisterText>
-            </RegisterBtn>
-            {user.admin && (
-              <AdminBtn>
-                <AdminText>Admin</AdminText>
-              </AdminBtn>
-            )}
-          </ScheduleActions>
-        </ScheduleItem>
-      </ScheduleList>
+      {showWodIndex !== null && (
+        <>
+          <NavigateDayContainer>
+            <NavigateIcon
+              disabled={disabledLeft}
+              onPress={() => {
+                if (showWodIndex > 0) {
+                  setShowWodIndex(showWodIndex - 1);
+                } else {
+                  setDisabledLeft(true);
+                }
+              }}>
+              <AntDesign
+                name={'left'}
+                size={30}
+                color={theme.appColors.accentColor}
+              />
+            </NavigateIcon>
+            <Day>{sortedWodsByDate[showWodIndex].date}</Day>
+            <NavigateIcon
+              disabled={disabledRight}
+              onPress={() => {
+                if (showWodIndex < sortedWodsByDate.length - 1) {
+                  setShowWodIndex(showWodIndex + 1);
+                } else {
+                  setDisabledRight(true);
+                }
+              }}>
+              <AntDesign
+                name={'right'}
+                size={30}
+                color={theme.appColors.accentColor}
+              />
+            </NavigateIcon>
+          </NavigateDayContainer>
+          <ImageContainer>
+            <Image
+              source={{
+                uri: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+              }}
+              resizeMode="cover">
+              <ImageOverlay>
+                <WodInfo>
+                  <WodName>
+                    {sortedWodsByDate[showWodIndex].data.workout.data.name}
+                  </WodName>
+                  <WodType>
+                    {
+                      sortedWodsByDate[showWodIndex].data.workout.data
+                        .workoutType
+                    }
+                  </WodType>
+                </WodInfo>
+                <Actions>
+                  <DetailsBtn onPress={() => {}}>
+                    <DetailsText>Details</DetailsText>
+                  </DetailsBtn>
+                </Actions>
+              </ImageOverlay>
+            </Image>
+          </ImageContainer>
+          <ScheduleList>
+            <FlatList
+              data={sortedWodsByDate[showWodIndex].data.times}
+              keyExtractor={item => item.wodTime}
+              renderItem={renderItem}
+            />
+          </ScheduleList>
+        </>
+      )}
     </Container>
   );
 };
@@ -208,6 +236,7 @@ const DetailsText = styled.Text`
 
 const ScheduleList = styled.View`
   width: 90%;
+  margin-bottom: 360px;
 `;
 
 const ScheduleItem = styled.View`

@@ -5,6 +5,7 @@ import wodsSaga from './wods/wodsSaga';
 import auth from '@react-native-firebase/auth';
 import watchUser from './user/userWatcherSaga';
 import watchWorkouts from './workouts/workoutsWatcherSaga';
+import watchWods from './wods/wodsWatcherSaga';
 
 export function* rootSaga() {
   yield all([fork(userSaga), fork(workoutsSaga), fork(wodsSaga)]);
@@ -13,4 +14,5 @@ export function* rootSaga() {
     yield fork(watchUser, user._user.uid);
   }
   yield fork(watchWorkouts);
+  yield fork(watchWods);
 }
