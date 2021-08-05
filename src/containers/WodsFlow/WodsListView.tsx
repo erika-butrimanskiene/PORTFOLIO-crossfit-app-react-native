@@ -8,6 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {RootState} from 'src/state/reducers';
 import {formatDateToDate} from '../../utils/dateFormating';
 import {IWodTime} from 'src/state/wods/wodsInterface';
+import {addAttendee} from '../../utils/firebaseDatabaseAPI';
 
 interface IWodsListViewProps {
   theme: DefaultTheme;
@@ -15,15 +16,22 @@ interface IWodsListViewProps {
 
 interface Iitem {
   item: IWodTime;
+  index: number;
 }
 
 const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   const {t} = useTranslation();
   const user = useSelector((state: RootState) => state.user.user);
   const wods = useSelector((state: RootState) => state.wods.wods);
-  const [showWodIndex, setShowWodIndex] = useState(null);
-  const [disabledLeft, setDisabledLeft] = useState(false);
-  const [disabledRight, setDisabledRight] = useState(false);
+
+  const imagesURI = [
+    'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    'https://images.pexels.com/photos/7676548/pexels-photo-7676548.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    'https://images.pexels.com/photos/7674488/pexels-photo-7674488.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  ];
+
+  const randomNumber = Math.floor(Math.random() * 3);
+  const randomImage = imagesURI[randomNumber];
 
   const today = new Date();
   const todayDate = formatDateToDate(today);
@@ -32,16 +40,12 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   });
 
   const todayWod = wods.filter(wod => wod.date.includes(todayDate));
-  console.log(todayWod);
-
   const todayWodIndex = sortedWodsByDate.indexOf(todayWod[0]);
-  console.log(todayWodIndex);
+  const [disabledLeft, setDisabledLeft] = useState(false);
+  const [disabledRight, setDisabledRight] = useState(false);
+  const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
 
-  useEffect(() => {
-    setShowWodIndex(todayWodIndex);
-  }, []);
-
-  const renderItem = ({item}: Iitem) => {
+  const renderItem = ({item, index}: Iitem) => {
     return (
       <ScheduleItem>
         <Info>
@@ -56,7 +60,15 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
           </CouchInfo>
         </Info>
         <ScheduleActions>
-          <RegisterBtn>
+          <RegisterBtn
+            onPress={() => {
+              const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
+              addAttendee(url, {
+                uid: user.uid,
+                name: user.name,
+                surname: user.surname,
+              });
+            }}>
             <RegisterText>{t('wods:register')}</RegisterText>
           </RegisterBtn>
           {user.admin && (
@@ -72,76 +84,71 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   return (
     <Container>
       <Heading>{t('wods:todayWod')}</Heading>
-      {showWodIndex !== null && (
-        <>
-          <NavigateDayContainer>
-            <NavigateIcon
-              disabled={disabledLeft}
-              onPress={() => {
-                if (showWodIndex > 0) {
-                  setShowWodIndex(showWodIndex - 1);
-                } else {
-                  setDisabledLeft(true);
-                }
-              }}>
-              <AntDesign
-                name={'left'}
-                size={30}
-                color={theme.appColors.accentColor}
-              />
-            </NavigateIcon>
-            <Day>{sortedWodsByDate[showWodIndex].date}</Day>
-            <NavigateIcon
-              disabled={disabledRight}
-              onPress={() => {
-                if (showWodIndex < sortedWodsByDate.length - 1) {
-                  setShowWodIndex(showWodIndex + 1);
-                } else {
-                  setDisabledRight(true);
-                }
-              }}>
-              <AntDesign
-                name={'right'}
-                size={30}
-                color={theme.appColors.accentColor}
-              />
-            </NavigateIcon>
-          </NavigateDayContainer>
-          <ImageContainer>
-            <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-              }}
-              resizeMode="cover">
-              <ImageOverlay>
-                <WodInfo>
-                  <WodName>
-                    {sortedWodsByDate[showWodIndex].data.workout.data.name}
-                  </WodName>
-                  <WodType>
-                    {
-                      sortedWodsByDate[showWodIndex].data.workout.data
-                        .workoutType
-                    }
-                  </WodType>
-                </WodInfo>
-                <Actions>
-                  <DetailsBtn onPress={() => {}}>
-                    <DetailsText>Details</DetailsText>
-                  </DetailsBtn>
-                </Actions>
-              </ImageOverlay>
-            </Image>
-          </ImageContainer>
-          <ScheduleList>
-            <FlatList
-              data={sortedWodsByDate[showWodIndex].data.times}
-              keyExtractor={item => item.wodTime}
-              renderItem={renderItem}
-            />
-          </ScheduleList>
-        </>
-      )}
+      <NavigateDayContainer>
+        <NavigateIcon
+          disabled={disabledLeft}
+          onPress={() => {
+            setDisabledRight(false);
+            if (showWodIndex > 0) {
+              setShowWodIndex(showWodIndex - 1);
+            } else {
+              setDisabledLeft(true);
+            }
+          }}>
+          <AntDesign
+            name={'left'}
+            size={30}
+            color={theme.appColors.accentColor}
+          />
+        </NavigateIcon>
+        <Day>{sortedWodsByDate[showWodIndex].date}</Day>
+        <NavigateIcon
+          disabled={disabledRight}
+          onPress={() => {
+            setDisabledLeft(false);
+            if (showWodIndex < sortedWodsByDate.length - 1) {
+              setShowWodIndex(showWodIndex + 1);
+            } else {
+              setDisabledRight(true);
+            }
+          }}>
+          <AntDesign
+            name={'right'}
+            size={30}
+            color={theme.appColors.accentColor}
+          />
+        </NavigateIcon>
+      </NavigateDayContainer>
+      <ImageContainer>
+        <Image
+          source={{
+            uri: randomImage,
+          }}
+          resizeMode="cover">
+          <ImageOverlay>
+            <WodInfo>
+              <WodName>
+                {sortedWodsByDate[showWodIndex].data.workout.data.name}
+              </WodName>
+              <WodType>
+                {sortedWodsByDate[showWodIndex].data.workout.data.workoutType}
+              </WodType>
+            </WodInfo>
+            <Actions>
+              <DetailsBtn onPress={() => {}}>
+                <DetailsText>Details</DetailsText>
+              </DetailsBtn>
+            </Actions>
+          </ImageOverlay>
+        </Image>
+      </ImageContainer>
+      <ScheduleList>
+        <FlatList
+          data={sortedWodsByDate[showWodIndex].data.times}
+          keyExtractor={item => item.wodTime}
+          renderItem={renderItem}
+        />
+      </ScheduleList>
     </Container>
   );
 };

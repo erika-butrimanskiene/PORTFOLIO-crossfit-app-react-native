@@ -1,5 +1,5 @@
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
-import {IWodState} from '../state/wods/wodsInterface';
+import {IWodState, IAttendee, IWodTime} from '../state/wods/wodsInterface';
 import {database} from './database';
 
 export const convertWorkoutsObjectToArray = (
@@ -71,10 +71,33 @@ export const convertWodsObjectToArray = (
       date: date,
       data: {
         type: wodType,
-        times: dataFromDatabase[date][wodType].times, //add
+        times: convertWodsTimesAttendeesObjectToArray(
+          dataFromDatabase[date][wodType].times,
+        ), //add
         workout: dataFromDatabase[date][wodType].workout, //change
       },
     };
+  });
+};
+
+const convertWodsTimesAttendeesObjectToArray = (times: any[]): IWodTime[] => {
+  return times.map(time => {
+    if (time.attendees) {
+      return {
+        ...time,
+        attendees: Object.keys(time.attendees).map(attendee => {
+          return {
+            ...time.attendees[attendee],
+            attendeeId: attendee,
+          };
+        }),
+      };
+    } else {
+      return {
+        ...time,
+        attendees: [],
+      };
+    }
   });
 };
 
@@ -91,4 +114,13 @@ export const getWods = async (): Promise<any> => {
     });
 
   return dataArray;
+};
+
+export const addAttendee = async (
+  url: string,
+  attendee: IAttendee,
+): Promise<any> => {
+  const newReference = database.ref(`${url}`).push();
+
+  newReference.set(attendee).then(() => console.log('Data updated.'));
 };

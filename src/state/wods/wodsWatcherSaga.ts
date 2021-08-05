@@ -29,6 +29,7 @@ export default function* watchWods() {
       console.log('wods are updated by watcher');
       console.log(wods);
       const wodsArray: IWodState[] = convertWodsObjectToArray(wods);
+      console.log(wodsArray);
       if (wods) {
         yield put(actions.wods.setWodsList(wodsArray));
       }
