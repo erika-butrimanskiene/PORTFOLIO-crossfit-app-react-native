@@ -1,4 +1,5 @@
 import {constants} from '../constants';
+import {IuserWod} from '../wods/wodsInterface';
 import {
   IUser,
   IgetUserAtFbLogin,
@@ -7,6 +8,7 @@ import {
   IlogoutUser,
   IsetUserSuccess,
   IsetUserClear,
+  IsetUserWods,
 } from './userInterface';
 
 const getUserAtLogin = (email: string, password: string): IgetUserAtLogin => {
@@ -53,9 +55,17 @@ const setUserSuccess = (user: IUser): IsetUserSuccess => {
     payload: user,
   };
 };
+
 const setUserClear = (): IsetUserClear => {
   return {
     type: constants.user.SET_USER_CLEAR,
+  };
+};
+
+const setUserWods = (wods: IuserWod[]): IsetUserWods => {
+  return {
+    type: constants.user.SET_USER_WODS,
+    payload: wods,
   };
 };
 
@@ -66,4 +76,5 @@ export const userActions = {
   logoutUser,
   setUserSuccess,
   setUserClear,
+  setUserWods,
 };

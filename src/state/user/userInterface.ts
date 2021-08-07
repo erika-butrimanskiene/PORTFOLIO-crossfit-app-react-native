@@ -1,3 +1,5 @@
+import {IuserWod} from '../wods/wodsInterface';
+
 export interface IUser {
   uid?: string;
   email?: string;
@@ -13,6 +15,7 @@ export interface IsetUserSuccess {
 
 export interface IUserState {
   user: IUser;
+  userWods: IuserWod[];
 }
 
 export interface IgetUserAtLoginPayload {
@@ -53,10 +56,16 @@ export interface IsetUserClear {
   payload?: null;
 }
 
+export interface IsetUserWods {
+  type: string;
+  payload: IuserWod[];
+}
+
 export type userActionsType =
   | IgetUserAtFbLogin
   | IgetUserAtLogin
   | IgetUserAtRegister
   | IlogoutUser
   | IsetUserSuccess
-  | IsetUserClear;
+  | IsetUserClear
+  | IsetUserWods;

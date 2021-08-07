@@ -27,12 +27,15 @@ export interface IWodsState {
   wods: IWodState[];
 }
 
-export interface IgetWodsList {
-  type: string;
-  payload?: null;
-}
-
 export interface IsetWodsList {
   type: string;
   payload: IWodState[];
+}
+
+export interface IuserWod {
+  wodDate: string;
+  wodTimes: IWodTime[];
+  workoutId: string;
+  workoutName: string;
+  workoutType: string;
 }

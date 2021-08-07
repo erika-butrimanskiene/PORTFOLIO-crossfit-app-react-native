@@ -3,6 +3,7 @@ import {EventChannel, eventChannel} from 'redux-saga';
 import {call, take, put} from 'redux-saga/effects';
 import {actions} from '../actions';
 import {convertWodsObjectToArray} from '../../utils/firebaseDatabaseAPI';
+
 import {IWodState} from './wodsInterface';
 
 const wodsChannel = () => {

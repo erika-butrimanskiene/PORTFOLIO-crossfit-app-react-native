@@ -95,6 +95,9 @@
     "coach": "Coach",
     "room": "room",
     "register": "Register",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "yesCancel": "Yes",
+    "willBeRegister": "You will be register to WOD",
+    "willBeUnregister": "Your regsitration to WOD will be canceled"
   }
 }

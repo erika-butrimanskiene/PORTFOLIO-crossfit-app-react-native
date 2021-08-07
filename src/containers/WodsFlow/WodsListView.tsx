@@ -4,11 +4,13 @@ import {useSelector} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
 import {RootState} from 'src/state/reducers';
 import {formatDateToDate} from '../../utils/dateFormating';
-import {IWodTime} from 'src/state/wods/wodsInterface';
+import {IWodTime, IuserWod} from 'src/state/wods/wodsInterface';
 import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 interface IWodsListViewProps {
   theme: DefaultTheme;
@@ -45,22 +47,48 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 3) * 3;
 
   const handleRegister = (index: number) => {
-    const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
-    addAttendee(url, {
-      uid: user.uid,
-      name: user.name,
-      surname: user.surname,
+    showAlert({
+      alertType: 'custom',
+      customAlert: (
+        <ConfirmationModal
+          confirmText={t('wods:register')}
+          alertText={t('wods:willBeRegister')}
+          onCancelPress={() => closeAlert()}
+          onConfirmPress={() => {
+            const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
+            addAttendee(url, {
+              uid: user.uid,
+              name: user.name,
+              surname: user.surname,
+            });
+            closeAlert();
+          }}
+        />
+      ),
     });
   };
 
   const handleUnregister = (index: number) => {
-    const deleteAttendeeObjectAtArray = Object.values(
-      sortedWodsByDate[showWodIndex].data.times[index].attendees,
-    ).filter(item => item.uid === user.uid);
-    const deleteAttendeeId = deleteAttendeeObjectAtArray[0].attendeeId;
-    console.log(deleteAttendeeId);
-    const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees/${deleteAttendeeId}`;
-    removeAattendee(url);
+    showAlert({
+      alertType: 'custom',
+      customAlert: (
+        <ConfirmationModal
+          confirmText={t('wods:yesCancel')}
+          alertText={t('wods:willBeUnregister')}
+          onCancelPress={() => closeAlert()}
+          onConfirmPress={() => {
+            const deleteAttendeeObjectAtArray = Object.values(
+              sortedWodsByDate[showWodIndex].data.times[index].attendees,
+            ).filter(item => item.uid === user.uid);
+            const deleteAttendeeId = deleteAttendeeObjectAtArray[0].attendeeId;
+            console.log(deleteAttendeeId);
+            const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees/${deleteAttendeeId}`;
+            removeAattendee(url);
+            closeAlert();
+          }}
+        />
+      ),
+    });
   };
 
   const renderItem = ({item, index}: Iitem) => {

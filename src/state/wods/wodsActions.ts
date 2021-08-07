@@ -1,11 +1,5 @@
 import {constants} from '../constants';
-import {IWodState, IgetWodsList, IsetWodsList} from './wodsInterface';
-
-const getWodsList = (): IgetWodsList => {
-  return {
-    type: constants.wods.GET_WODS_LIST,
-  };
-};
+import {IWodState, IsetWodsList} from './wodsInterface';
 
 const setWodsList = (wodsList: IWodState[]): IsetWodsList => {
   return {
@@ -15,8 +9,7 @@ const setWodsList = (wodsList: IWodState[]): IsetWodsList => {
 };
 
 export const wodsActions = {
-  getWodsList,
   setWodsList,
 };
 
-export type wodsActionsType = IgetWodsList | IsetWodsList;
+export type wodsActionsType = IsetWodsList;

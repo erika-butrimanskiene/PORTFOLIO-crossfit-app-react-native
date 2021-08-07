@@ -122,7 +122,7 @@ export const addAttendee = async (
 ): Promise<any> => {
   const newReference = database.ref(`${url}`).push();
 
-  newReference.set(attendee).then(() => console.log('Data updated.'));
+  newReference.set(attendee).then(() => console.log('Attendee added.'));
 };
 
 export const removeAattendee = async (url: string): Promise<any> => {

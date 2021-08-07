@@ -95,6 +95,9 @@
     "coach": "Treneris",
     "room": "salė",
     "register": "Registruotis",
-    "cancel": "Atšaukti"
+    "cancel": "Atšaukti",
+    "yesCancel": "Taip",
+    "willBeRegister": "Būsi užregsitruotas į WOD",
+    "willBeUnregister": "Tavo registracija bus panaikinta"
   }
 }
