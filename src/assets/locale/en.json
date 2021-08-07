@@ -94,6 +94,7 @@
     "todayWod": "Today's WOD",
     "coach": "Coach",
     "room": "room",
-    "register": "Register"
+    "register": "Register",
+    "cancel": "Cancel"
   }
 }

@@ -8,7 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {RootState} from 'src/state/reducers';
 import {formatDateToDate} from '../../utils/dateFormating';
 import {IWodTime} from 'src/state/wods/wodsInterface';
-import {addAttendee} from '../../utils/firebaseDatabaseAPI';
+import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
 
 interface IWodsListViewProps {
   theme: DefaultTheme;
@@ -30,9 +30,6 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
     'https://images.pexels.com/photos/7674488/pexels-photo-7674488.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
   ];
 
-  const randomNumber = Math.floor(Math.random() * 3);
-  const randomImage = imagesURI[randomNumber];
-
   const today = new Date();
   const todayDate = formatDateToDate(today);
   const sortedWodsByDate = wods.sort((a, b) => {
@@ -44,6 +41,27 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   const [disabledLeft, setDisabledLeft] = useState(false);
   const [disabledRight, setDisabledRight] = useState(false);
   const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
+
+  const imageIndex = showWodIndex - Math.floor(showWodIndex / 3) * 3;
+
+  const handleRegister = (index: number) => {
+    const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
+    addAttendee(url, {
+      uid: user.uid,
+      name: user.name,
+      surname: user.surname,
+    });
+  };
+
+  const handleUnregister = (index: number) => {
+    const deleteAttendeeObjectAtArray = Object.values(
+      sortedWodsByDate[showWodIndex].data.times[index].attendees,
+    ).filter(item => item.uid === user.uid);
+    const deleteAttendeeId = deleteAttendeeObjectAtArray[0].attendeeId;
+    console.log(deleteAttendeeId);
+    const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees/${deleteAttendeeId}`;
+    removeAattendee(url);
+  };
 
   const renderItem = ({item, index}: Iitem) => {
     return (
@@ -60,17 +78,24 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
           </CouchInfo>
         </Info>
         <ScheduleActions>
-          <RegisterBtn
-            onPress={() => {
-              const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
-              addAttendee(url, {
-                uid: user.uid,
-                name: user.name,
-                surname: user.surname,
-              });
-            }}>
-            <RegisterText>{t('wods:register')}</RegisterText>
-          </RegisterBtn>
+          {Object.values(
+            sortedWodsByDate[showWodIndex].data.times[index].attendees,
+          ).filter(item => item.uid === user.uid).length === 0 ? (
+            <RegisterBtn
+              onPress={() => {
+                handleRegister(index);
+              }}>
+              <RegisterText>{t('wods:register')}</RegisterText>
+            </RegisterBtn>
+          ) : (
+            <UnregisterBtn
+              onPress={() => {
+                handleUnregister(index);
+              }}>
+              <UnregisterText>{t('wods:cancel')}</UnregisterText>
+            </UnregisterBtn>
+          )}
+
           {user.admin && (
             <AdminBtn>
               <AdminText>Admin</AdminText>
@@ -122,7 +147,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
       <ImageContainer>
         <Image
           source={{
-            uri: randomImage,
+            uri: imagesURI[imageIndex],
           }}
           resizeMode="cover">
           <ImageOverlay>
@@ -294,6 +319,15 @@ const RegisterBtn = styled.TouchableOpacity`
   background-color: ${({theme}) => theme.appColors.primaryColorLighter};
 `;
 
+const UnregisterBtn = styled.TouchableOpacity`
+  margin: 7px 0px;
+  border-radius: 30px;
+  padding: 5px 15px;
+  background-color: ${({theme}) => theme.appColors.backgroundColor_opacity50};
+  border-width: 2px;
+  border-color: ${({theme}) => theme.appColors.accentColor_opacity50};
+`;
+
 const AdminBtn = styled.TouchableOpacity`
   margin: 7px 0px;
   border-radius: 30px;
@@ -302,6 +336,12 @@ const AdminBtn = styled.TouchableOpacity`
 `;
 
 const RegisterText = styled.Text`
+  font-size: 18px;
+  text-align: center;
+  color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const UnregisterText = styled.Text`
   font-size: 18px;
   text-align: center;
   color: ${({theme}) => theme.appColors.whiteColor};

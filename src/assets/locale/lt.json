@@ -94,6 +94,7 @@
     "todayWod": "Šiandienos WOD",
     "coach": "Treneris",
     "room": "salė",
-    "register": "Registruotis"
+    "register": "Registruotis",
+    "cancel": "Atšaukti"
   }
 }

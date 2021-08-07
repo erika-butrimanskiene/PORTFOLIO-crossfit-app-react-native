@@ -124,3 +124,7 @@ export const addAttendee = async (
 
   newReference.set(attendee).then(() => console.log('Data updated.'));
 };
+
+export const removeAattendee = async (url: string): Promise<any> => {
+  database.ref(`${url}`).remove();
+};
