@@ -2,7 +2,7 @@ export interface IWorkoutState {
   id: string;
   data: {
     name: string;
-    countOfResult: string;
+    countResultOf: string;
     workoutType: string;
     workoutWeights: string;
     exercises: string[];

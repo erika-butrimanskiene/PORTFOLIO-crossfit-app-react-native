@@ -1,19 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
 import {RootState} from 'src/state/reducers';
 import {formatDateToDate} from '../../utils/dateFormating';
-import {IWodTime, IuserWod} from 'src/state/wods/wodsInterface';
+import {IWodTime} from 'src/state/wods/wodsInterface';
 import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
 import ConfirmationModal from '../../components/ConfirmationModal';
+import ROUTES from '../../routes/Routes';
+import {RootStackParamList} from 'src/routes/Interface';
 
+type WodsListScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.WodsList
+>;
 interface IWodsListViewProps {
   theme: DefaultTheme;
+  navigation: WodsListScreenNavigationProp;
 }
 
 interface Iitem {
@@ -21,7 +29,7 @@ interface Iitem {
   index: number;
 }
 
-const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
+const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
   const user = useSelector((state: RootState) => state.user.user);
   const wods = useSelector((state: RootState) => state.wods.wods);
@@ -30,6 +38,8 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
     'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     'https://images.pexels.com/photos/7676548/pexels-photo-7676548.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     'https://images.pexels.com/photos/7674488/pexels-photo-7674488.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    'https://images.pexels.com/photos/7676556/pexels-photo-7676556.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    'https://images.pexels.com/photos/7672101/pexels-photo-7672101.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
   ];
 
   const today = new Date();
@@ -44,7 +54,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
   const [disabledRight, setDisabledRight] = useState(false);
   const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
 
-  const imageIndex = showWodIndex - Math.floor(showWodIndex / 3) * 3;
+  const imageIndex = showWodIndex - Math.floor(showWodIndex / 5) * 5;
 
   const handleRegister = (index: number) => {
     showAlert({
@@ -188,7 +198,15 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme}) => {
               </WodType>
             </WodInfo>
             <Actions>
-              <DetailsBtn onPress={() => {}}>
+              <DetailsBtn
+                onPress={() => {
+                  let data = sortedWodsByDate[showWodIndex].data.workout;
+                  navigation.navigate(ROUTES.WodDetail, {
+                    workout: data,
+                    date: sortedWodsByDate[showWodIndex].date,
+                    image: imagesURI[imageIndex],
+                  });
+                }}>
                 <DetailsText>Details</DetailsText>
               </DetailsBtn>
             </Actions>

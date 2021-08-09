@@ -98,6 +98,10 @@
     "cancel": "Atšaukti",
     "yesCancel": "Taip",
     "willBeRegister": "Būsi užregsitruotas į WOD",
-    "willBeUnregister": "Tavo registracija bus panaikinta"
+    "willBeUnregister": "Tavo registracija bus panaikinta",
+    "weights": "Svoriai",
+    "exercises": "Pratimai",
+    "result": "Rezultatas",
+    "seeResults": "Rezultatai"
   }
 }
