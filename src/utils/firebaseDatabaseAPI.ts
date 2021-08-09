@@ -51,7 +51,7 @@ export const createWorkout = async (
 export const createWod = async (
   date: string,
   times: object[],
-  workout: IWorkoutState,
+  workout: {id: string},
 ): Promise<any> => {
   database
     .ref(`/WODs/${date}/crossfit`)
@@ -62,22 +62,26 @@ export const createWod = async (
     .then(() => console.log('Data set.'));
 };
 
-export const convertWodsObjectToArray = (
+export const convertWodsObjectToArray = async (
   dataFromDatabase: any,
-): IWodState[] => {
-  return Object.keys(dataFromDatabase).map(date => {
-    let wodType: string = Object.keys(dataFromDatabase[date])[0];
-    return {
-      date: date,
-      data: {
-        type: wodType,
-        times: convertWodsTimesAttendeesObjectToArray(
-          dataFromDatabase[date][wodType].times,
-        ), //add
-        workout: dataFromDatabase[date][wodType].workout, //change
-      },
-    };
-  });
+): Promise<IWodState[]> => {
+  return await Promise.all(
+    Object.keys(dataFromDatabase).map(async date => {
+      let wodType: string = Object.keys(dataFromDatabase[date])[0];
+      return {
+        date: date,
+        data: {
+          type: wodType,
+          times: convertWodsTimesAttendeesObjectToArray(
+            dataFromDatabase[date][wodType].times,
+          ),
+          workout: await getWorkoutById(
+            dataFromDatabase[date][wodType].workout.id,
+          ),
+        },
+      };
+    }),
+  );
 };
 
 const convertWodsTimesAttendeesObjectToArray = (times: any[]): IWodTime[] => {
@@ -106,14 +110,25 @@ export const getWods = async (): Promise<any> => {
   await database
     .ref('/WODs')
     .once('value')
-    .then(snapshot => {
+    .then(async snapshot => {
       let dataFromDatabase = snapshot.val();
       console.log(dataFromDatabase);
-      dataArray = convertWodsObjectToArray(dataFromDatabase);
+      dataArray = await convertWodsObjectToArray(dataFromDatabase);
       console.log(dataArray);
     });
 
   return dataArray;
+};
+
+export const getWorkoutById = async (id: string): Promise<IWorkoutState> => {
+  let wodById;
+  await database
+    .ref(`/workouts/${id}`)
+    .once('value')
+    .then(snapshot => {
+      wodById = snapshot.val();
+    });
+  return {id: id, data: wodById};
 };
 
 export const addAttendee = async (

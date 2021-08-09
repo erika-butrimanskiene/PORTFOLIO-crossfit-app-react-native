@@ -14,7 +14,7 @@ const WodDetailView: React.FC<IWodDetailViewProps> = ({theme, route}) => {
   const {t} = useTranslation();
   const workout: IWorkoutState = route.params.workout;
   const image: string = route.params.image;
-  console.log(workout.data);
+  console.log(workout);
   return (
     <Container>
       <Scroll>

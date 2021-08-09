@@ -49,7 +49,10 @@
     "successCreate": "Successfully created." 
   },
   "user": {
-    "userProfile": "Profile"
+    "userProfile": "Profile",
+    "activityBoard": "Activity board",
+    "welcomeBack": "Welcome,",
+    "upcomingWods": "Your upcoming WOD's"
   },
   "admin": {
     "workoutsList": "Workouts List",
@@ -90,7 +93,7 @@
     "addToWod": "WOD"
   },
   "wods": {
-    "wodsList": "WODs",
+    "wodsList": "Schedule",
     "todayWod": "Today's WOD",
     "coach": "Coach",
     "room": "room",

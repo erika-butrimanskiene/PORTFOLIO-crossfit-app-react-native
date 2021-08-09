@@ -89,6 +89,10 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
                 onPress={() => navigation.navigate(ROUTES.CreateWod)}>
                 <LinkText>{t('admin:createWod')}</LinkText>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.ActivityBoard)}>
+                <LinkText>{t('user:activityBoard')}</LinkText>
+              </TouchableOpacity>
             </>
           )}
         </>

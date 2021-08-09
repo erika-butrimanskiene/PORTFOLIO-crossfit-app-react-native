@@ -49,7 +49,10 @@
     "successCreate": "Sėkmingai sukurta." 
   },
   "user": {
-    "userProfile": "Profilis"
+    "userProfile": "Profilis",
+    "activityBoard": "Veiklos lenta",
+    "welcomeBack": "Labas, ",
+    "upcomingWods": "Tavo būsimos treniruotės"
   },
   "admin": {
     "workoutsList": "Treniruočių sąrašas",
@@ -90,7 +93,7 @@
     "addToWod": "WOD"
   },
   "wods": {
-    "wodsList": "WODs",
+    "wodsList": "Tvarkaraštis",
     "todayWod": "Šiandienos WOD",
     "coach": "Treneris",
     "room": "salė",

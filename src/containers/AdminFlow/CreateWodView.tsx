@@ -63,7 +63,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
   };
 
   const handleCreateFormSubmit = () => {
-    createWod(formatDateToDate(wodDate), wodsTimes, wod);
+    createWod(formatDateToDate(wodDate), wodsTimes, {id: wod.id});
     dispatch(actions.messages.setSuccessMessage('successCreate'));
     setTimeout(() => {
       dispatch(actions.messages.clearMessages());
