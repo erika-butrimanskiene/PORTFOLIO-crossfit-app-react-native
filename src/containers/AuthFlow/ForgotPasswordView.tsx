@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useTranslation} from 'react-i18next';
 
+//LIBRARIES
+import AntDesign from 'react-native-vector-icons/AntDesign';
 //COMPONENTS
 import Button from '../../components/Button';
 

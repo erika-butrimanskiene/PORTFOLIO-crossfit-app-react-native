@@ -3,15 +3,17 @@ import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
-import {Formik} from 'formik';
 import {StackNavigationProp} from '@react-navigation/stack';
 
+//LIBRARIES
+import {Formik} from 'formik';
+//ROUTES
 import ROUTES from '../../routes/Routes';
 import {actions} from '../../state/actions';
-import {registerSchema} from '../../utils/formsValidations';
 import {RootStackParamList} from 'src/routes/Interface';
 import {RootState} from 'src/state/reducers';
-
+//UTILS
+import {registerSchema} from '../../utils/formsValidations';
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
@@ -28,11 +30,10 @@ interface IRegisterViewProps {
 
 const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
-
-  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
-  const error = useSelector((state: RootState) => state.messages.authErrorMsg);
-
   const dispatch = useDispatch();
+
+  //STATES
+  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -170,7 +171,6 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
                           </ErrorText>
                         )}
                     </Inputs>
-                    {error !== '' && <Text>{t(`authErrors:${error}`)}</Text>}
                     <SignUpButtonContainer>
                       <Button
                         text={t('signup:SignUp')}

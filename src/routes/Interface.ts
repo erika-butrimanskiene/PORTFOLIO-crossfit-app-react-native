@@ -1,8 +1,4 @@
-import {IWodsState} from 'src/state/wods/wodsInterface';
-import {
-  IWorkoutsState,
-  IWorkoutState,
-} from 'src/state/workouts/workoutsInterface';
+import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import ROUTES from './Routes';
 
 export type RootStackParamList = {

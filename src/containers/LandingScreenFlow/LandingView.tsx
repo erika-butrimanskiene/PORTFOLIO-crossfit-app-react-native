@@ -1,19 +1,19 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StatusBar, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
+
+//ROUTES
 import {RootState} from 'src/state/reducers';
-
 import ROUTES from '../../routes/Routes';
-import {actions} from '../../state/actions';
 import {RootStackParamList} from 'src/routes/Interface';
-
 //COMPONENTS
 import Button from '../../components/Button';
 
+//VARIABLES
 const options = [
   {label: 'EN', value: 'en'},
   {label: 'LT', value: 'lt'},
@@ -23,7 +23,6 @@ type LandingViewScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   ROUTES.Landing
 >;
-
 interface ILandingViewProps {
   theme: DefaultTheme;
   navigation: LandingViewScreenNavigationProp;
@@ -31,8 +30,9 @@ interface ILandingViewProps {
 
 const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
   const {t, i18n} = useTranslation();
+
+  //STATES
   const onSync = useSelector((state: RootState) => state.ui.authOnSync);
-  const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

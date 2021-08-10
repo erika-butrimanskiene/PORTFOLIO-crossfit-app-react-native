@@ -1,22 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, ScrollView, View, Text} from 'react-native';
+import {TouchableOpacity, ScrollView} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
+
+//LIBRARIES
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Formik} from 'formik';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import {createWodSchema} from '../../utils/formsValidations';
+//ROUTES
 import ROUTES from '../../routes/Routes';
-import {RootStackParamList} from 'src/routes/Interface';
 import {actions} from '../../state/actions';
 import {RootState} from '../../state/reducers';
-import {createWod} from '../../utils/firebaseDatabaseAPI';
+import {RootStackParamList} from 'src/routes/Interface';
+//UTILS
+import {createWodSchema} from '../../utils/formsValidations';
 import {formatDateToDate} from '../../utils/dateFormating';
+//UTILS-DATABASE
+import {createWod} from '../../utils/firebaseDatabaseAPI';
+//INTERFACES
 import {IWorkoutState} from '../../state/workouts/workoutsInterface';
-
+//COMPONENTS
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
 import CreateWodTimesForm from '../../components/Formik/CreateWodTimesForm';
@@ -32,23 +37,25 @@ interface ICreateWodViewProps {
 
 const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [wodDate, setWodDate] = useState(null);
-  const [wodsTimes, setWodsTimes] = useState([]);
+  const dispatch = useDispatch();
 
+  //STATES
   const wod: IWorkoutState = useSelector(
     (state: RootState) => state.workouts.selectedWorkout,
   );
-  const dispatch = useDispatch();
+
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [wodDate, setWodDate] = useState(null);
+  const [wodsTimes, setWodsTimes] = useState([]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.workouts.clearSelectedWorkout());
     });
-
     return unsubscribe;
   }, [navigation]);
 
+  //DATE TIME PICKER
   const showDateTimePicker = () => {
     setIsDatePickerVisible(true);
   };
@@ -62,6 +69,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
     hideDateTimePicker();
   };
 
+  //FORM SUBMIT
   const handleCreateFormSubmit = () => {
     createWod(formatDateToDate(wodDate), wodsTimes, {id: wod.id});
     dispatch(actions.messages.setSuccessMessage('successCreate'));

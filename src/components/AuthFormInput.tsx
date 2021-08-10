@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-interface IAutFormInputProps {
+interface IAuthFormInputProps {
   labelValue: string;
   placeholderText: string;
   iconType: string;
@@ -15,7 +15,7 @@ interface IAutFormInputProps {
   secureTextEntry?: boolean;
 }
 
-const AuthFormInput: React.FC<IAutFormInputProps> = ({
+const AuthFormInput: React.FC<IAuthFormInputProps> = ({
   labelValue,
   placeholderText,
   iconType,
@@ -24,6 +24,7 @@ const AuthFormInput: React.FC<IAutFormInputProps> = ({
   ...rest
 }) => {
   const [isInputActive, setIsInputActive] = useState(false);
+
   return (
     <InputContainer bgColor={bgColor} focus={isInputActive}>
       <Icon>

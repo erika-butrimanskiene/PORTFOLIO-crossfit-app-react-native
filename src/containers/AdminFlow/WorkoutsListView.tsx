@@ -4,16 +4,20 @@ import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {useSelector, useDispatch} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
+
+//LIBRARIES
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
-
-import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
+//ROUTES
 import ROUTES from '../../routes/Routes';
-import {RootStackParamList} from 'src/routes/Interface';
-import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';
 import {actions} from '../../state/actions';
 import {RootState} from '../../state/reducers';
-
+import {RootStackParamList} from 'src/routes/Interface';
+//UTILS-DATABASE
+import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';
+//INTERFACES
+import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
+//COMPONENTS
 import Button from '../../components/Button';
 import ConfirmationModal from '../../components/ConfirmationModal';
 
@@ -32,6 +36,8 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
 }) => {
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
+
+  //STATES
   const workouts: IWorkoutState[] = useSelector(
     (state: RootState) => state.workouts.workouts,
   );
@@ -50,7 +56,6 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.workouts.initWorkoutSelection(false));
     });
-
     return unsubscribe;
   }, [navigation]);
 

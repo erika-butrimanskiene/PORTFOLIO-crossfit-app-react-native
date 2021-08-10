@@ -3,19 +3,24 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
+//LIBRARIES
+import AntDesign from 'react-native-vector-icons/AntDesign';
+//ROUTES
 import {RootState} from 'src/state/reducers';
-import {getUserUpcomingWods} from '../../utils/getUserUpcomingWods';
-import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
+//UTILS
+import {getUserUpcomingWods} from '../../utils/getUserUpcomingWods';
 import {imagesURI} from '../../utils/workoutsImages';
+//UTILS-DATABASE
+import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
 import {removeAattendee} from '../../utils/firebaseDatabaseAPI';
-
-import ConfirmationModal from '../../components/ConfirmationModal';
+//INTERFACES
 import {IWodState} from 'src/state/wods/wodsInterface';
+//COMPONENTS
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 type ActivityBoardtScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,13 +37,14 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
   navigation,
 }) => {
   const {t} = useTranslation();
+
+  //STATES
   const wods = useSelector((state: RootState) => state.wods.wods);
   const userWods = useSelector((state: RootState) => state.user.userWods);
   const user = useSelector((state: RootState) => state.user.user);
-  console.log(userWods);
 
+  //VARIABLES
   const filteredWodsList = getUserUpcomingWods(userWods);
-  console.log(filteredWodsList);
 
   const handleUnregister = (
     wodDate: string,
@@ -55,7 +61,6 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
           onCancelPress={() => closeAlert()}
           onConfirmPress={() => {
             const url = `/WODs/${wodDate}/${workoutType}/times/${timeIndex}/attendees/${deleteAttendeeId}`;
-            console.log(url);
             removeAattendee(url);
             closeAlert();
           }}
@@ -137,7 +142,7 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
                         image: image,
                       });
                     }}>
-                    <About>About workout</About>
+                    <About>{t('wods:aboutWorkout')}</About>
                     <AntDesign
                       name={'right'}
                       size={20}

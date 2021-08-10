@@ -49,6 +49,9 @@
   "succesNotifications": {
     "successCreate": "Sėkmingai sukurta." 
   },
+  "confirmationModal": {
+    "areSure": "Ar esate tikri?"
+  },
   "user": {
     "userProfile": "Profilis",
     "activityBoard": "Veiklos lenta",
@@ -106,6 +109,7 @@
     "weights": "Svoriai",
     "exercises": "Pratimai",
     "result": "Rezultatas",
-    "seeResults": "Rezultatai"
+    "seeResults": "Rezultatai",
+    "aboutWorkout": "Apie treniruotę"
   }
 }

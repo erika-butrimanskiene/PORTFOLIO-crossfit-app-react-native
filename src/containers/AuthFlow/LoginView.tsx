@@ -1,22 +1,19 @@
 import React, {useEffect} from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  StatusBar,
-  ActivityIndicator,
-} from 'react-native';
+import {TouchableOpacity, StatusBar, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
-import {Formik} from 'formik';
 import {StackNavigationProp} from '@react-navigation/stack';
 
+//LIBRARIES
+import {Formik} from 'formik';
+//ROUTES
 import ROUTES from '../../routes/Routes';
 import {actions} from '../../state/actions';
-import {loginSchema} from '../../utils/formsValidations';
 import {RootStackParamList} from 'src/routes/Interface';
 import {RootState} from 'src/state/reducers';
-
+//UTILS
+import {loginSchema} from '../../utils/formsValidations';
 //COMPONENTS
 import AuthFormInput from '../../components/AuthFormInput';
 import SocialButton from '../../components/SocialButton';
@@ -26,7 +23,6 @@ type LoginViewScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   ROUTES.Login
 >;
-
 interface ILoginViewProps {
   theme: DefaultTheme;
   navigation: LoginViewScreenNavigationProp;
@@ -34,17 +30,15 @@ interface ILoginViewProps {
 
 const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   const {t} = useTranslation();
-
-  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
-  const error = useSelector((state: RootState) => state.messages.authErrorMsg);
-
   const dispatch = useDispatch();
+
+  //STATES
+  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.messages.clearMessages());
     });
-
     return unsubscribe;
   }, [navigation]);
 

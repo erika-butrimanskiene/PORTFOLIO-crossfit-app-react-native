@@ -2,17 +2,21 @@ import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
-import {Formik, FieldArray} from 'formik';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 
+//LIBRARIES
+import {Formik, FieldArray} from 'formik';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+//ROUTES
 import ROUTES from '../../routes/Routes';
-import {RootStackParamList} from 'src/routes/Interface';
-import {createWorkoutSchema} from '../../utils/formsValidations';
 import {actions} from '../../state/actions';
+import {RootStackParamList} from 'src/routes/Interface';
+//UTILS
+import {createWorkoutSchema} from '../../utils/formsValidations';
+//UTILS-DATABASE
 import {createWorkout} from '../../utils/firebaseDatabaseAPI';
-
+//COMPONENTS
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
 
@@ -36,7 +40,6 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.messages.clearMessages());
     });
-
     return unsubscribe;
   }, [navigation]);
 

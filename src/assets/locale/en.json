@@ -49,6 +49,9 @@
   "succesNotifications": {
     "successCreate": "Successfully created." 
   },
+  "confirmationModal": {
+    "areSure": "Are you sure?"
+  },
   "user": {
     "userProfile": "Profile",
     "activityBoard": "Activity board",
@@ -106,6 +109,7 @@
     "weights": "Weights",
     "exercises": "Exercises",
     "result": "Result",
-    "seeResults": "See results"
+    "seeResults": "See results",
+    "aboutWorkout": "About workout"
   }
 }

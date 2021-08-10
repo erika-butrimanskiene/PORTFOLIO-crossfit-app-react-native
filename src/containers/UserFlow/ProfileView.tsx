@@ -7,10 +7,11 @@ import {
 } from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector} from 'react-redux';
-import {RootState} from 'src/state/reducers';
+
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import ImagePicker from 'react-native-new-image-picker';
 
+import {RootState} from 'src/state/reducers';
 interface IProfileViewProps {
   theme: DefaultTheme;
 }

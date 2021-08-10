@@ -6,11 +6,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {RootState} from 'src/state/reducers';
 
+//ROUTES
 import ROUTES from './Routes';
 import {actions} from '../state/actions';
 import {database} from '../utils/database';
 import {RootStackParamList} from './Interface';
-
+//SCREENS
 import LandingView from '../containers/LandingScreenFlow/LandingView';
 import LoginView from '../containers/AuthFlow/LoginView';
 import RegisterView from '../containers/AuthFlow/RegisterView';
@@ -23,22 +24,23 @@ import CreateWodView from '../containers/AdminFlow/CreateWodView';
 import WodsListView from '../containers/WodsFlow/WodsListView';
 import WodDetailView from '../containers/WodsFlow/WodDetailView';
 import ActivityBoard from '../containers/UserFlow/ActivityBoard';
-
+//COMPONENTS
 import NotificationModal from '../components/NotificationModal';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator: React.FC = () => {
   const {t} = useTranslation();
+  const dispatch = useDispatch();
+  //STATES
   const [initializing, setInitializing] = useState(true);
 
-  const dispatch = useDispatch();
   const error = useSelector((state: RootState) => state.messages.authErrorMsg);
   const successMsg = useSelector(
     (state: RootState) => state.messages.successMsg,
   );
   const user = useSelector((state: RootState) => state.user.user);
-
+  //VARIABLES
   const errorText = t(`authErrors:${error}`);
   const successMsgText = t(`succesNotifications:${successMsg}`);
 
@@ -74,8 +76,8 @@ const Navigator: React.FC = () => {
     return subscriber;
   }, []);
 
+  // not render while user state is not set
   if (initializing) return null;
-  console.log(user);
 
   return (
     <NavigationContainer>

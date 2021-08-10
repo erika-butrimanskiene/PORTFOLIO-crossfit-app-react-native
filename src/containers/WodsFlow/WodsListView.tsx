@@ -3,19 +3,25 @@ import {FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
+//LIBRARIES
+import AntDesign from 'react-native-vector-icons/AntDesign';
+//ROUTES
 import {RootState} from 'src/state/reducers';
-import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
-import {IWodTime} from 'src/state/wods/wodsInterface';
-import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
-import ConfirmationModal from '../../components/ConfirmationModal';
 import ROUTES from '../../routes/Routes';
-import {RootStackParamList} from 'src/routes/Interface';
-import {imagesURI} from '../../utils/workoutsImages';
 import {actions} from '../../state/actions';
+import {RootStackParamList} from 'src/routes/Interface';
+//UTILS
+import {imagesURI} from '../../utils/workoutsImages';
+import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
+//UTILS-DATABASE
+import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
+//INTERFACES
+import {IWodTime} from 'src/state/wods/wodsInterface';
+//COMPONENTS
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,7 +31,6 @@ interface IWodsListViewProps {
   theme: DefaultTheme;
   navigation: WodsListScreenNavigationProp;
 }
-
 interface Iitem {
   item: IWodTime;
   index: number;
@@ -33,25 +38,26 @@ interface Iitem {
 
 const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
-  const user = useSelector((state: RootState) => state.user.user);
-  const wods = useSelector((state: RootState) => state.wods.wods);
   const dispatch = useDispatch();
 
+  //STATES
+  const user = useSelector((state: RootState) => state.user.user);
+  const wods = useSelector((state: RootState) => state.wods.wods);
+
+  const [disabledLeft, setDisabledLeft] = useState(false);
+  const [disabledRight, setDisabledRight] = useState(false);
+  const [disabledRegisterOrCancel, setDisabledRegisterOrCancel] =
+    useState(false);
+  //VARIABLES
   const today = new Date();
   const todayDate = formatDateToDate(today);
   const todayTime = formatDateToTime(today);
   const sortedWodsByDate = wods.sort((a, b) => {
     return a.date < b.date ? -1 : 1;
   });
-
   const todayWod = wods.filter(wod => wod.date.includes(todayDate));
   const todayWodIndex = sortedWodsByDate.indexOf(todayWod[0]);
-  const [disabledLeft, setDisabledLeft] = useState(false);
-  const [disabledRight, setDisabledRight] = useState(false);
   const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
-  const [disabledRegisterOrCancel, setDisabledRegisterOrCancel] =
-    useState(false);
-
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 5) * 5;
 
   useEffect(() => {
@@ -96,7 +102,6 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               sortedWodsByDate[showWodIndex].data.times[index].attendees,
             ).filter(item => item.uid === user.uid);
             const deleteAttendeeId = deleteAttendeeObjectAtArray[0].attendeeId;
-
             const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees/${deleteAttendeeId}`;
             removeAattendee(url);
             closeAlert();

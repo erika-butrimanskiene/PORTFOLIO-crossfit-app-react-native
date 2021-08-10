@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {View, Text, GestureResponderEvent} from 'react-native';
+import {GestureResponderEvent} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 interface IConfirmationModalProps {
   alertText: string;
@@ -15,9 +16,10 @@ const ConfirmationModal: React.FC<IConfirmationModalProps> = ({
   onConfirmPress,
   confirmText,
 }) => {
+  const {t} = useTranslation();
   return (
     <ConfirmationAlert>
-      <Title>Are you sure?</Title>
+      <Title>{t('confirmationModal:areSure')}</Title>
       <AlertText>{alertText}</AlertText>
       <AlertButtonsContainer>
         <CancelButton onPress={onCancelPress}>

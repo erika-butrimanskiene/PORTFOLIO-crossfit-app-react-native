@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {TouchableOpacity, GestureResponderEvent} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {theme} from 'src/assets/styles/theme';
-
 interface INotificationModalProps {
   notificationIcon: string;
   errorText: string;

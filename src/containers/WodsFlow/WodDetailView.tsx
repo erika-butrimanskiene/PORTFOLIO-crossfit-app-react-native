@@ -1,8 +1,10 @@
 import React from 'react';
-import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 
+//INTERFACES
+import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
+//COMPONENTS
 import Button from '../../components/Button';
 
 interface IWodDetailViewProps {
@@ -12,9 +14,10 @@ interface IWodDetailViewProps {
 
 const WodDetailView: React.FC<IWodDetailViewProps> = ({theme, route}) => {
   const {t} = useTranslation();
+
   const workout: IWorkoutState = route.params.workout;
   const image: string = route.params.image;
-  console.log(workout);
+
   return (
     <Container>
       <Scroll>

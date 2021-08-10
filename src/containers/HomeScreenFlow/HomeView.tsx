@@ -6,11 +6,13 @@ import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
 import SwitchSelector from 'react-native-switch-selector';
 
+//ROUTES
 import {RootState} from 'src/state/reducers';
 import {actions} from '../../state/actions';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 
+//VARIABLES
 const options = [
   {label: 'EN', value: 'en'},
   {label: 'LT', value: 'lt'},
@@ -28,10 +30,11 @@ interface IHomeViewProps {
 
 const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
   const {t, i18n} = useTranslation();
+  const dispatch = useDispatch();
 
+  //STATES
   const onSync = useSelector((state: RootState) => state.ui.authOnSync);
   const user = useSelector((state: RootState) => state.user.user);
-  const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

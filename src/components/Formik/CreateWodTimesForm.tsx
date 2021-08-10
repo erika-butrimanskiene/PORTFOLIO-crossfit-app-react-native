@@ -2,16 +2,12 @@ import React from 'react';
 import {GestureResponderEvent} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
-import {useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import {Picker} from '@react-native-picker/picker';
 
 import {createTimeSchema} from '../../utils/formsValidations';
-import {RootState} from '../../state/reducers';
-import {IWorkoutState} from '../../state/workouts/workoutsInterface';
 
 import FormInput from '../../components/FormInput';
-
 interface ICreateWodTimesFormProps {
   theme: DefaultTheme;
   setWodsTimes: any;
@@ -24,10 +20,6 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
   wodsTimes,
 }) => {
   const {t} = useTranslation();
-
-  const wod: IWorkoutState = useSelector(
-    (state: RootState) => state.workouts.selectedWorkout,
-  );
 
   const handleTimesSet = (
     wodTime: string,
@@ -109,6 +101,12 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
                   style={{fontSize: 18}}
                   label="18:00"
                   value={'18:00'}
+                  key={3}
+                />
+                <Picker.Item
+                  style={{fontSize: 18}}
+                  label="19:00"
+                  value={'19:00'}
                   key={3}
                 />
               </StyledPicker>
