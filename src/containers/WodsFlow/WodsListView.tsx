@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -8,13 +8,14 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
 import {RootState} from 'src/state/reducers';
-import {formatDateToDate} from '../../utils/dateFormating';
+import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
 import {IWodTime} from 'src/state/wods/wodsInterface';
 import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 import {imagesURI} from '../../utils/workoutsImages';
+import {actions} from '../../state/actions';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -34,9 +35,11 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
   const user = useSelector((state: RootState) => state.user.user);
   const wods = useSelector((state: RootState) => state.wods.wods);
+  const dispatch = useDispatch();
 
   const today = new Date();
   const todayDate = formatDateToDate(today);
+  const todayTime = formatDateToTime(today);
   const sortedWodsByDate = wods.sort((a, b) => {
     return a.date < b.date ? -1 : 1;
   });
@@ -46,8 +49,17 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const [disabledLeft, setDisabledLeft] = useState(false);
   const [disabledRight, setDisabledRight] = useState(false);
   const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
+  const [disabledRegisterOrCancel, setDisabledRegisterOrCancel] =
+    useState(false);
 
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 5) * 5;
+
+  useEffect(() => {
+    setDisabledRegisterOrCancel(false);
+    if (sortedWodsByDate[showWodIndex].date < todayDate) {
+      setDisabledRegisterOrCancel(true);
+    }
+  }, [showWodIndex]);
 
   const handleRegister = (index: number) => {
     showAlert({
@@ -84,7 +96,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               sortedWodsByDate[showWodIndex].data.times[index].attendees,
             ).filter(item => item.uid === user.uid);
             const deleteAttendeeId = deleteAttendeeObjectAtArray[0].attendeeId;
-            console.log(deleteAttendeeId);
+
             const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees/${deleteAttendeeId}`;
             removeAattendee(url);
             closeAlert();
@@ -114,14 +126,30 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
           ).filter(item => item.uid === user.uid).length === 0 ? (
             <RegisterBtn
               onPress={() => {
-                handleRegister(index);
+                if (
+                  disabledRegisterOrCancel ||
+                  sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
+                    todayTime
+                ) {
+                  dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
+                } else {
+                  handleRegister(index);
+                }
               }}>
               <RegisterText>{t('wods:register')}</RegisterText>
             </RegisterBtn>
           ) : (
             <UnregisterBtn
               onPress={() => {
-                handleUnregister(index);
+                if (
+                  disabledRegisterOrCancel ||
+                  sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
+                    todayTime
+                ) {
+                  dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
+                } else {
+                  handleUnregister(index);
+                }
               }}>
               <UnregisterText>{t('wods:cancel')}</UnregisterText>
             </UnregisterBtn>

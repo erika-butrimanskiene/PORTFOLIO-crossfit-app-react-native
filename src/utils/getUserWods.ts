@@ -1,4 +1,5 @@
-import {IuserWod, IWodState, IWodTime} from 'src/state/wods/wodsInterface';
+import {IWodState, IWodTime} from 'src/state/wods/wodsInterface';
+import {IuserWod} from 'src/state/user/userInterface';
 
 export const getUserWods = (wods: IWodState[], userUid: string) => {
   let userWods: IuserWod[] = [];
@@ -46,6 +47,7 @@ const updateUserWodsListArray = (
   } else {
     const object = {
       wodDate: wod.date,
+      wodType: wod.data.type,
       wodTimes: [time],
       workoutId: wod.data.workout.id,
       workoutName: wod.data.workout.data.name,

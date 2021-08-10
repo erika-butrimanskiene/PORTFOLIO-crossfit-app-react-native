@@ -1,5 +1,4 @@
 import {constants} from '../constants';
-import {IuserWod} from '../wods/wodsInterface';
 import {
   IUser,
   IgetUserAtFbLogin,
@@ -9,6 +8,7 @@ import {
   IsetUserSuccess,
   IsetUserClear,
   IsetUserWods,
+  IuserWod,
 } from './userInterface';
 
 const getUserAtLogin = (email: string, password: string): IgetUserAtLogin => {

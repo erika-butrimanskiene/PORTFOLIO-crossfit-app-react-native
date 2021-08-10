@@ -22,9 +22,9 @@ const NotificationModal: React.FC<INotificationModalProps> = ({
       <IconContainer bgColor={bgColor}>
         <MaterialIcons name={notificationIcon} size={35} color={'#ffffff'} />
       </IconContainer>
-      <ErrorText bgColor={bgColor}>{errorText}</ErrorText>
+      <ErrorText>{errorText}</ErrorText>
       <TouchableOpacity onPress={onPress}>
-        <MaterialIcons name={'close'} size={27} color={'#7e7d7d'} />
+        <MaterialIcons name={'close'} size={27} color={'#ffffff'} />
       </TouchableOpacity>
     </ErrorBar>
   );
@@ -34,7 +34,7 @@ const ErrorBar = styled.View<{bgColor: string}>`
   flex-direction: row;
   height: 55px;
   padding-right: 10px;
-  background-color: #ffffff;
+  background-color: ${({bgColor}) => bgColor};
   font-size: 17px;
   align-items: center;
   justify-content: space-between;
@@ -45,9 +45,9 @@ const IconContainer = styled.View<{bgColor: string}>`
   background-color: ${({bgColor}) => bgColor};
 `;
 
-const ErrorText = styled.Text<{bgColor: string}>`
+const ErrorText = styled.Text`
   font-size: 17px;
-  color: ${({bgColor}) => bgColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 export default NotificationModal;

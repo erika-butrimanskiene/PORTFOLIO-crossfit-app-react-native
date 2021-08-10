@@ -31,11 +31,3 @@ export interface IsetWodsList {
   type: string;
   payload: IWodState[];
 }
-
-export interface IuserWod {
-  wodDate: string;
-  wodTimes: IWodTime[];
-  workoutId: string;
-  workoutName: string;
-  workoutType: string;
-}

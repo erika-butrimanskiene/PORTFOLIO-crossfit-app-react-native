@@ -43,7 +43,8 @@
     "auth/weak-password": "Silpnas slaptazodis",
     "auth/wrong-password": "Neteisingas slaptažodis",
     "auth/unknown": "Nežinoma klaida",
-    "forgotWodTimes": "Nepridėjote nei vieno treniruotės laiko"
+    "forgotWodTimes": "Nepridėjote nei vieno treniruotės laiko",
+    "wodTimeIsPassed": "Treniruotės laikas praėjęs"
   },
   "succesNotifications": {
     "successCreate": "Sėkmingai sukurta." 

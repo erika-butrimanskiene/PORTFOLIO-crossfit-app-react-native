@@ -1,6 +1,5 @@
 import {constants} from '../constants';
-import {IuserWod} from '../wods/wodsInterface';
-import {IUser, IUserState, userActionsType} from './userInterface';
+import {IUser, IUserState, userActionsType, IuserWod} from './userInterface';
 
 const initialUserState: IUserState = {
   user: {},

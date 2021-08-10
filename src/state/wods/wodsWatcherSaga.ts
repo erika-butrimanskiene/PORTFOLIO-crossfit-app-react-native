@@ -28,9 +28,7 @@ export default function* watchWods() {
     while (true) {
       const {wods} = yield take(channel);
       console.log('wods are updated by watcher');
-      console.log(wods);
       const wodsArray: IWodState[] = yield call(convertWodsObjectToArray, wods);
-      console.log(wodsArray);
       if (wods) {
         yield put(actions.wods.setWodsList(wodsArray));
       }

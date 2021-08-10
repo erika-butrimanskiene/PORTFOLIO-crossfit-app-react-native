@@ -1,4 +1,4 @@
-import {IuserWod} from '../wods/wodsInterface';
+import {IWodTime} from '../wods/wodsInterface';
 
 export interface IUser {
   uid?: string;
@@ -59,6 +59,14 @@ export interface IsetUserClear {
 export interface IsetUserWods {
   type: string;
   payload: IuserWod[];
+}
+export interface IuserWod {
+  wodType: string;
+  wodDate: string;
+  wodTimes: IWodTime[];
+  workoutId: string;
+  workoutName: string;
+  workoutType: string;
 }
 
 export type userActionsType =

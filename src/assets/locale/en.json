@@ -43,7 +43,8 @@
     "auth/weak-password": "Weak password",
     "auth/wrong-password": "Wrong password",
     "auth/unknown": "Unknown error",
-    "forgotWodTimes": "At least one WOD time is required"
+    "forgotWodTimes": "At least one WOD time is required",
+    "wodTimeIsPassed": "WOD time is passed"
   },
   "succesNotifications": {
     "successCreate": "Successfully created." 
