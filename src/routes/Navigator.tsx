@@ -45,41 +45,6 @@ const Navigator: React.FC = () => {
   const errorText = t(`authErrors:${error}`);
   const successMsgText = t(`succesNotifications:${successMsg}`);
 
-  const onAuthStateChanged = (authUser: any) => {
-    if (authUser) {
-      dispatch(actions.ui.setOnSync(true));
-      database
-        .ref(`/users/${authUser.uid}`)
-        .once('value')
-        .then(snapshot => {
-          dispatch(
-            actions.user.setUserSuccess({
-              name: snapshot.val().name,
-              surname: snapshot.val().surname,
-              email: snapshot.val().email,
-              admin: snapshot.val().admin,
-              uid: authUser.uid,
-            }),
-          );
-          dispatch(actions.ui.setOnSync(false));
-        })
-        .catch(e => {
-          console.log(e);
-          dispatch(actions.ui.setOnSync(false));
-        });
-    }
-
-    if (initializing) setInitializing(false);
-  };
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-
-  // not render while user state is not set
-  if (initializing) return null;
-
   return (
     <NavigationContainer>
       {errorText !== '' && (
