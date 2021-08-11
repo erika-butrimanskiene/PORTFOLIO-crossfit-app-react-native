@@ -54,7 +54,8 @@
   },
   "user": {
     "userProfile": "Profilis",
-    "activityBoard": "Veiklos lenta",
+    "activityBoard": "Būsimi WODs",
+    "activitiesHistory": "WODs istorija",
     "welcomeBack": "Labas, ",
     "upcomingWods": "Tavo būsimos treniruotės"
   },

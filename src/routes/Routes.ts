@@ -11,6 +11,7 @@ enum ROUTES {
   WodsList = 'WodsList',
   WodDetail = 'WodDetail',
   ActivityBoard = 'ActivityBoard',
+  ActivitiesHistory = 'ActivitiesHistory',
 }
 
 export default ROUTES;

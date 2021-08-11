@@ -160,6 +160,7 @@ const Result = styled.Text`
 `;
 
 const ButtonContainer = styled.View`
+  margin-bottom: 40px;
   align-items: center;
   width: 100%;
 `;

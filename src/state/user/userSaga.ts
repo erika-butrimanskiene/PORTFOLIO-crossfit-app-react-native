@@ -24,12 +24,15 @@ function* handleRegistration(action: {
 }) {
   try {
     yield put(actions.ui.setOnSync(true));
+
     const response: IFirebaseAuth = yield call(
       register,
       action.payload.email,
       action.payload.password,
     );
+
     yield put(actions.ui.setOnSync(false));
+
     if (response.status === true) {
       console.log(response);
       //create user in fireabase realtimeDB
@@ -42,7 +45,9 @@ function* handleRegistration(action: {
           admin: false,
         })
         .then(() => console.log('Data set.'));
+
       yield put(actions.messages.clearMessages());
+
       yield fork(watchUser, response.uid);
     }
 
@@ -69,11 +74,12 @@ function* handleRegistration(action: {
 function* handleLogin({payload: {email, password}}: AnyAction) {
   try {
     yield put(actions.ui.setOnSync(true));
+
     const response: IFirebaseAuth = yield call(login, email, password);
+
     yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
-      console.log(response);
       yield put(actions.messages.clearMessages());
       yield fork(watchUser, response.uid);
     }
@@ -98,8 +104,11 @@ function* handleLogin({payload: {email, password}}: AnyAction) {
 function* handleLoginFacebook() {
   try {
     yield put(actions.ui.setOnSync(true));
+
     const response: IFirebaseAuth = yield call(fbLogin);
+
     yield put(actions.ui.setOnSync(false));
+
     if (response.status === true) {
       database
         .ref(`/users/${response.uid}`)

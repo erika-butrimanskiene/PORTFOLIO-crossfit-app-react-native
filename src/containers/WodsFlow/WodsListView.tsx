@@ -22,6 +22,7 @@ import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
 import {IWodTime} from 'src/state/wods/wodsInterface';
 //COMPONENTS
 import ConfirmationModal from '../../components/ConfirmationModal';
+import WodTimeInfo from '../../components/WodTimeInfo';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -114,17 +115,11 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const renderItem = ({item, index}: Iitem) => {
     return (
       <ScheduleItem>
-        <Info>
-          <Time>{item.wodTime}</Time>
-          <CouchInfo>
-            <CouchName>
-              {t('wods:coach')} {item.coachName},
-            </CouchName>
-            <Room>
-              {item.wodRoom} {t('wods:room')}
-            </Room>
-          </CouchInfo>
-        </Info>
+        <WodTimeInfo
+          wodTime={item.wodTime}
+          coachName={item.coachName}
+          wodRoom={item.wodRoom}
+        />
         <ScheduleActions>
           {Object.values(
             sortedWodsByDate[showWodIndex].data.times[index].attendees,
@@ -133,8 +128,10 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               onPress={() => {
                 if (
                   disabledRegisterOrCancel ||
-                  sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
-                    todayTime
+                  (sortedWodsByDate[showWodIndex].date < todayDate &&
+                    sortedWodsByDate[showWodIndex].data.times[index].wodTime +
+                      1 <
+                      todayTime)
                 ) {
                   dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
                 } else {
@@ -148,8 +145,10 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               onPress={() => {
                 if (
                   disabledRegisterOrCancel ||
-                  sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
-                    todayTime
+                  (sortedWodsByDate[showWodIndex].date < todayDate &&
+                    sortedWodsByDate[showWodIndex].data.times[index].wodTime +
+                      1 <
+                      todayTime)
                 ) {
                   dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
                 } else {
@@ -229,7 +228,6 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
                   let data = sortedWodsByDate[showWodIndex].data.workout;
                   navigation.navigate(ROUTES.WodDetail, {
                     workout: data,
-                    date: sortedWodsByDate[showWodIndex].date,
                     image: imagesURI[imageIndex],
                   });
                 }}>
@@ -352,34 +350,6 @@ const ScheduleItem = styled.View`
   border-radius: 5px;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
   width: 100%;
-`;
-
-const Info = styled.View`
-  flex-direction: row;
-`;
-
-const Time = styled.Text`
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 23px;
-  font-weight: bold;
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const CouchInfo = styled.View`
-  padding: 0px 15px;
-  justify-content: center;
-`;
-
-const CouchName = styled.Text`
-  font-size: 15px;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const Room = styled.Text`
-  font-size: 15px;
-  color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 const ScheduleActions = styled.View``;

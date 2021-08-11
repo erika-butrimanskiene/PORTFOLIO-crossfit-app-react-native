@@ -21,6 +21,7 @@ import {removeAattendee} from '../../utils/firebaseDatabaseAPI';
 import {IWodState} from 'src/state/wods/wodsInterface';
 //COMPONENTS
 import ConfirmationModal from '../../components/ConfirmationModal';
+import WodTimeInfo from '../../components/WodTimeInfo';
 
 type ActivityBoardtScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -100,17 +101,11 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
                   <WodTimes>
                     {wod.wodTimes.map((item, index) => (
                       <WodTime key={index}>
-                        <Info>
-                          <Time>{item.wodTime}</Time>
-                          <CouchInfo>
-                            <CouchName>
-                              {t('wods:coach')} {item.coachName},
-                            </CouchName>
-                            <Room>
-                              {item.wodRoom} {t('wods:room')}
-                            </Room>
-                          </CouchInfo>
-                        </Info>
+                        <WodTimeInfo
+                          wodTime={item.wodTime}
+                          coachName={item.coachName}
+                          wodRoom={item.wodRoom}
+                        />
                         <UnregisterBtn
                           onPress={() => {
                             const wodByDate = wods.filter(
@@ -138,7 +133,6 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
 
                       navigation.navigate(ROUTES.WodDetail, {
                         workout: data,
-                        date: wod.wodDate,
                         image: image,
                       });
                     }}>
@@ -203,6 +197,8 @@ const WodDate = styled.Text`
 
 const WodTimes = styled.View`
   width: 100%;
+  justify-content: center;
+  align-items: center;
   color: ${({theme}) => theme.appColors.backgroundColorLighter};
 `;
 
@@ -215,35 +211,6 @@ const WodTime = styled.View`
   flex-direction: row;
   justify-content: space-between;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
-`;
-
-const Info = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const Time = styled.Text`
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 23px;
-  font-weight: bold;
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const CouchInfo = styled.View`
-  padding: 0px 15px;
-  justify-content: center;
-`;
-
-const CouchName = styled.Text`
-  font-size: 15px;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const Room = styled.Text`
-  font-size: 15px;
-  color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 const UnregisterBtn = styled.TouchableOpacity`

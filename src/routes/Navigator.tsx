@@ -24,6 +24,7 @@ import CreateWodView from '../containers/AdminFlow/CreateWodView';
 import WodsListView from '../containers/WodsFlow/WodsListView';
 import WodDetailView from '../containers/WodsFlow/WodDetailView';
 import ActivityBoard from '../containers/UserFlow/ActivityBoard';
+import ActivitiesHistory from '../containers/UserFlow/ActivitiesHistory';
 //COMPONENTS
 import NotificationModal from '../components/NotificationModal';
 
@@ -121,6 +122,10 @@ const Navigator: React.FC = () => {
           <Stack.Screen name={ROUTES.WodsList} component={WodsListView} />
           <Stack.Screen name={ROUTES.WodDetail} component={WodDetailView} />
           <Stack.Screen name={ROUTES.ActivityBoard} component={ActivityBoard} />
+          <Stack.Screen
+            name={ROUTES.ActivitiesHistory}
+            component={ActivitiesHistory}
+          />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator

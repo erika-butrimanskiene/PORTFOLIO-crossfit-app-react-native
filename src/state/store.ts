@@ -13,9 +13,9 @@ export const configStore = (initialState = {}) => {
     const Reactotron = initReactotron();
     sagaMonitor = Reactotron.createSagaMonitor();
     reactorEnhancer = Reactotron.createEnhancer();
-    console.tron = Reactotron;
+    // console.tron = Reactotron;
   } else {
-    console.tron = {log: (): null => null, error: (): null => null};
+    // console.tron = {log: (): null => null, error: (): null => null};
   }
   const sagaMiddleware = createSagaMiddleware({sagaMonitor});
   const appliedMiddleware = applyMiddleware(sagaMiddleware);

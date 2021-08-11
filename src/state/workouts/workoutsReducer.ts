@@ -9,7 +9,7 @@ const initialWorkoutsState: IWorkoutsState = {
     id: '',
     data: {
       name: '',
-      countOfResult: '',
+      countResultOf: '',
       workoutType: '',
       workoutWeights: '',
       exercises: [],

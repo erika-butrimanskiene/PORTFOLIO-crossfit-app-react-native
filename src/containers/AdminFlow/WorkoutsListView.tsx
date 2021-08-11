@@ -13,7 +13,10 @@ import ROUTES from '../../routes/Routes';
 import {actions} from '../../state/actions';
 import {RootState} from '../../state/reducers';
 import {RootStackParamList} from 'src/routes/Interface';
+//UTILS
+import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
+import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
 import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
@@ -61,6 +64,7 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
 
   interface Iitem {
     item: IWorkoutState;
+    index: number;
   }
 
   const handleFilter = (text: string) => {
@@ -92,14 +96,26 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
     });
   };
 
-  const renderItem = ({item}: Iitem) => {
+  const renderItem = ({item, index}: Iitem) => {
+    const imageIndex = index - Math.floor(index / 5) * 5;
+    const image = imagesURI[imageIndex];
     return (
       <WorkoutItem>
         <TextsContainer>
           <WorkoutName>{item.data.name}</WorkoutName>
           <WorkoutType>{item.data.workoutType}</WorkoutType>
           <Actions>
-            <SeeMore>{t('admin:details')}</SeeMore>
+            <SeeMoreLink
+              onPress={async () => {
+                let data = await getWorkoutById(item.id);
+
+                navigation.navigate(ROUTES.WodDetail, {
+                  workout: data,
+                  image: image,
+                });
+              }}>
+              <SeeMore>{t('admin:details')}</SeeMore>
+            </SeeMoreLink>
             <DeleteAction onPress={() => handleDelete(item.id)}>
               <Delete>{t('admin:delete').toUpperCase()}</Delete>
             </DeleteAction>
@@ -241,6 +257,8 @@ const WorkoutType = styled.Text`
 const Actions = styled.View`
   flex-direction: row;
 `;
+
+const SeeMoreLink = styled.TouchableOpacity``;
 
 const SeeMore = styled.Text`
   padding-right: 17px;
