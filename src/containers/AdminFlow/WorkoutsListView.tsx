@@ -62,11 +62,6 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
     return unsubscribe;
   }, [navigation]);
 
-  interface Iitem {
-    item: IWorkoutState;
-    index: number;
-  }
-
   const handleFilter = (text: string) => {
     if (text) {
       const newData = workouts.filter(item => {
@@ -96,7 +91,7 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
     });
   };
 
-  const renderItem = ({item, index}: Iitem) => {
+  const renderItem = ({item, index}: {item: IWorkoutState; index: number}) => {
     const imageIndex = index - Math.floor(index / 5) * 5;
     const image = imagesURI[imageIndex];
     return (

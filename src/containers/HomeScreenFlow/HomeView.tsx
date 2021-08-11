@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar, ActivityIndicator, TouchableOpacity} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';

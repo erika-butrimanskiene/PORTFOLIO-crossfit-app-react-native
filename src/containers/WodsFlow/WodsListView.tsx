@@ -128,7 +128,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               onPress={() => {
                 if (
                   disabledRegisterOrCancel ||
-                  (sortedWodsByDate[showWodIndex].date < todayDate &&
+                  (sortedWodsByDate[showWodIndex].date === todayDate &&
                     sortedWodsByDate[showWodIndex].data.times[index].wodTime +
                       1 <
                       todayTime)
@@ -145,7 +145,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               onPress={() => {
                 if (
                   disabledRegisterOrCancel ||
-                  (sortedWodsByDate[showWodIndex].date < todayDate &&
+                  (sortedWodsByDate[showWodIndex].date === todayDate &&
                     sortedWodsByDate[showWodIndex].data.times[index].wodTime +
                       1 <
                       todayTime)

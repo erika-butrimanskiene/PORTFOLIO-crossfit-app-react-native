@@ -12,13 +12,14 @@ import {RootState} from 'src/state/reducers';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
-import {getUserUpcomingWods} from '../../utils/getUserUpcomingWods';
+import {getUserUpcomingWods} from '../../utils/getUserFilteredWods';
 import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
 import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
 import {removeAattendee} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IWodState} from 'src/state/wods/wodsInterface';
+import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
 import ConfirmationModal from '../../components/ConfirmationModal';
 import WodTimeInfo from '../../components/WodTimeInfo';
@@ -45,7 +46,8 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
   const user = useSelector((state: RootState) => state.user.user);
 
   //VARIABLES
-  const filteredWodsList = getUserUpcomingWods(userWods);
+  const filteredWodsList: IuserWod[] = getUserUpcomingWods(userWods);
+  console.log(filteredWodsList);
 
   const handleUnregister = (
     wodDate: string,
