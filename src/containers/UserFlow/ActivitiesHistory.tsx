@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import {FlatList, Modal, Text} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
@@ -35,8 +35,14 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   const {t} = useTranslation();
   //STATES
   const userWods = useSelector((state: RootState) => state.user.userWods);
+
+  const [showModal, setShowModal] = useState(false);
+  const [wodResult, setWodResult] = useState('');
   //VARIABLES
   const filteredWodsList: IuserWod[] = getUserPreviousWods(userWods);
+
+  //FUNCTIONS
+  const handleWodResultSubmit = () => {};
 
   const renderItem = ({item, index}: {item: IuserWod; index: number}) => {
     const imageIndex = index - Math.floor(index / 5) * 5;
@@ -47,7 +53,10 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
         <WodInfo>
           <WorkoutName>{item.workoutName}</WorkoutName>
           <ButtonContainer>
-            <Button>
+            <Button
+              onPress={() => {
+                setShowModal(true);
+              }}>
               <ButtonText>{t('user:enterResult')}</ButtonText>
             </Button>
           </ButtonContainer>
@@ -82,6 +91,26 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
           renderItem={renderItem}
         />
       </FlatListContainer>
+      <Modal visible={showModal} transparent={true}>
+        <ModalLayout>
+          <ModalDisplay>
+            <ModalTitle>{t('user:enterResult')}</ModalTitle>
+            <ResultInput
+              value={wodResult}
+              onChangeText={text => setWodResult(text)}
+              selectionColor={theme.appColors.whiteColor}
+              underlineColorAndroid={'transparent'}></ResultInput>
+            <ModalActions>
+              <CancelButton onPress={() => setShowModal(false)}>
+                <ModalBtnText>{t('user:cancel')}</ModalBtnText>
+              </CancelButton>
+              <SubmitButton onPress={() => handleWodResultSubmit()}>
+                <ModalBtnText>{t('user:submit')}</ModalBtnText>
+              </SubmitButton>
+            </ModalActions>
+          </ModalDisplay>
+        </ModalLayout>
+      </Modal>
     </Container>
   );
 };
@@ -160,6 +189,63 @@ const ButtonText = styled.Text`
 const Actions = styled.View`
   flex-direction: row;
   justify-content: space-between;
+`;
+
+const ModalLayout = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000099;
+`;
+
+const ModalDisplay = styled.View`
+  padding: 20px 10px;
+  height: 40%;
+  width: 90%;
+  justify-content: center;
+  background-color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const ModalTitle = styled.Text`
+  font-size: 28px;
+  text-align: center;
+  color: ${({theme}) => theme.appColors.backgroundColor};
+`;
+
+const ResultInput = styled.TextInput`
+  margin: 15px 10px;
+  background-color: ${({theme}) => theme.appColors.accentColor};
+  border-radius: 5px;
+  color: ${({theme}) => theme.appColors.whiteColor};
+  font-size: 25px;
+`;
+
+const ModalActions = styled.View`
+  margin: 10px 0px;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const CancelButton = styled.TouchableOpacity`
+  margin: 0px 5px;
+  width: 100px;
+  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
+  align-items: center;
+  border-radius: 30px;
+`;
+
+const SubmitButton = styled.TouchableOpacity`
+  margin: 0px 5px;
+  width: 100px;
+  background-color: ${({theme}) => theme.appColors.primaryColorLighter};
+  align-items: center;
+  border-radius: 30px;
+`;
+
+const ModalBtnText = styled.Text`
+  padding: 5px;
+  font-size: 21px;
+  color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 export default withTheme(ActivitiesHistoryView);

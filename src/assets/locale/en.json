@@ -59,7 +59,9 @@
     "welcomeBack": "Welcome,",
     "upcomingWods": "Your upcoming WOD's",
     "previousWods": "Your WOD's history",
-    "enterResult": "Enter Result"
+    "enterResult": "Enter Result",
+    "cancel": "Cancel",
+    "submit": "Submit"
   },
   "admin": {
     "workoutsList": "Workouts List",

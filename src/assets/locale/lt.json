@@ -59,7 +59,9 @@
     "welcomeBack": "Labas, ",
     "upcomingWods": "Tavo būsimos treniruotės",
     "previousWods": "Tavo praėjusios treniruotės",
-    "enterResult": "Įvesk rezultatą"
+    "enterResult": "Įvesk rezultatą",
+    "cancel": "Atšaukti",
+    "submit": "Pateikti"
   },
   "admin": {
     "workoutsList": "Treniruočių sąrašas",
