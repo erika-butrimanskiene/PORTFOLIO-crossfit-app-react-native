@@ -20,9 +20,9 @@ const Button: React.FC<IButtonProps> = ({text, onPress, bgColor}) => {
 
 const CustomButton = styled.View`
   margin: 10px 0px;
-  width: 200px;
+  width: 190px;
   border-radius: 50px;
-  padding: 10px 14px;
+  padding: 10px 12px;
 `;
 
 const Title = styled.Text`

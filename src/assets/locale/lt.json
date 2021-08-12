@@ -57,7 +57,9 @@
     "activityBoard": "Būsimi WODs",
     "activitiesHistory": "WODs istorija",
     "welcomeBack": "Labas, ",
-    "upcomingWods": "Tavo būsimos treniruotės"
+    "upcomingWods": "Tavo būsimos treniruotės",
+    "previousWods": "Tavo praėjusios treniruotės",
+    "enterResult": "Įvesk rezultatą"
   },
   "admin": {
     "workoutsList": "Treniruočių sąrašas",
@@ -110,6 +112,7 @@
     "weights": "Svoriai",
     "exercises": "Pratimai",
     "result": "Rezultatas",
+    "results": "Rezultatai",
     "seeResults": "Rezultatai",
     "aboutWorkout": "Apie treniruotę"
   }

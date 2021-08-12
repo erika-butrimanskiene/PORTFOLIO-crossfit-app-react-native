@@ -57,7 +57,9 @@
     "activityBoard": "Activity board",
     "activitiesHistory": "Activities history",
     "welcomeBack": "Welcome,",
-    "upcomingWods": "Your upcoming WOD's"
+    "upcomingWods": "Your upcoming WOD's",
+    "previousWods": "Your WOD's history",
+    "enterResult": "Enter Result"
   },
   "admin": {
     "workoutsList": "Workouts List",
@@ -110,6 +112,7 @@
     "weights": "Weights",
     "exercises": "Exercises",
     "result": "Result",
+    "results": "Results",
     "seeResults": "See results",
     "aboutWorkout": "About workout"
   }

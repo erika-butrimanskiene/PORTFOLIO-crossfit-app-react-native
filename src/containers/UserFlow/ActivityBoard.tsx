@@ -5,8 +5,6 @@ import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
-//LIBRARIES
-import AntDesign from 'react-native-vector-icons/AntDesign';
 //ROUTES
 import {RootState} from 'src/state/reducers';
 import ROUTES from '../../routes/Routes';
@@ -23,6 +21,7 @@ import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
 import ConfirmationModal from '../../components/ConfirmationModal';
 import WodTimeInfo from '../../components/WodTimeInfo';
+import Link from '../../components/Link';
 
 type ActivityBoardtScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -129,22 +128,20 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
                       </WodTime>
                     ))}
                   </WodTimes>
-                  <AboutWorkoutLink
-                    onPress={async () => {
-                      let data = await getWorkoutById(wod.workoutId);
+                  <LinkContainer>
+                    <Link
+                      theme={theme}
+                      text={t('wods:aboutWorkout')}
+                      onPress={async () => {
+                        let data = await getWorkoutById(wod.workoutId);
 
-                      navigation.navigate(ROUTES.WodDetail, {
-                        workout: data,
-                        image: image,
-                      });
-                    }}>
-                    <About>{t('wods:aboutWorkout')}</About>
-                    <AntDesign
-                      name={'right'}
-                      size={20}
-                      color={theme.appColors.primaryColorLighter}
+                        navigation.navigate(ROUTES.WodDetail, {
+                          workout: data,
+                          image: image,
+                        });
+                      }}
                     />
-                  </AboutWorkoutLink>
+                  </LinkContainer>
                 </Wod>
               );
             }
@@ -212,6 +209,7 @@ const WodTime = styled.View`
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
 `;
 
@@ -230,17 +228,9 @@ const UnregisterText = styled.Text`
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
-const AboutWorkoutLink = styled.TouchableOpacity`
-  flex-direction: row;
+const LinkContainer = styled.View`
   width: 100%;
-  justify-content: flex-end;
-  align-items: flex-end;
-`;
-
-const About = styled.Text`
-  padding-left: 5px;
-  font-size: 18px;
-  color: ${({theme}) => theme.appColors.primaryColorLighter};
+  justify-content: center;
 `;
 
 export default withTheme(ActivityBoardView);

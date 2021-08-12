@@ -38,6 +38,8 @@ const Time = styled.Text`
   padding: 5px 10px;
   font-size: 23px;
   font-weight: bold;
+  justify-content: center;
+  align-items: center;
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
