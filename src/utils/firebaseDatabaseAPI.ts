@@ -143,3 +143,12 @@ export const addAttendee = async (
 export const removeAattendee = async (url: string): Promise<any> => {
   database.ref(`${url}`).remove();
 };
+
+export const addResult = async (
+  url: string,
+  result: {attendeeId: string; result: string},
+): Promise<any> => {
+  const newReference = database.ref(`${url}`).push();
+
+  newReference.set(result).then(() => console.log('Result added.'));
+};

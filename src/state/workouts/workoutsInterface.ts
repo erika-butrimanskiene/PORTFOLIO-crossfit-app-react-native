@@ -6,8 +6,15 @@ export interface IWorkoutState {
     workoutType: string;
     workoutWeights: string;
     exercises: string[];
+    results: IWorkoutDateResults[];
   };
 }
+
+export interface IWorkoutDateResults {
+  date: string;
+  results: {attendeeId: string; result: string}[];
+}
+
 export interface IWorkoutsState {
   workouts: IWorkoutState[];
   initSelection: boolean;

@@ -13,7 +13,7 @@ import {RootStackParamList} from 'src/routes/Interface';
 import {getUserPreviousWods} from '../../utils/getUserFilteredWods';
 import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
-import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
+import {getWorkoutById, addResult} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
@@ -35,14 +35,23 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   const {t} = useTranslation();
   //STATES
   const userWods = useSelector((state: RootState) => state.user.userWods);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const [showModal, setShowModal] = useState(false);
+  const [selectedUserWod, setSelectedUserWod] = useState<IuserWod>(null);
   const [wodResult, setWodResult] = useState('');
   //VARIABLES
   const filteredWodsList: IuserWod[] = getUserPreviousWods(userWods);
 
   //FUNCTIONS
-  const handleWodResultSubmit = () => {};
+  const handleWodResultSubmit = (
+    url: string,
+    result: {attendeeId: string; result: string},
+  ) => {
+    if (wodResult !== '') {
+      addResult(url, result);
+    }
+  };
 
   const renderItem = ({item, index}: {item: IuserWod; index: number}) => {
     const imageIndex = index - Math.floor(index / 5) * 5;
@@ -55,6 +64,8 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
           <ButtonContainer>
             <Button
               onPress={() => {
+                console.log(item);
+                setSelectedUserWod(item);
                 setShowModal(true);
               }}>
               <ButtonText>{t('user:enterResult')}</ButtonText>
@@ -104,7 +115,12 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
               <CancelButton onPress={() => setShowModal(false)}>
                 <ModalBtnText>{t('user:cancel')}</ModalBtnText>
               </CancelButton>
-              <SubmitButton onPress={() => handleWodResultSubmit()}>
+              <SubmitButton
+                onPress={() => {
+                  const URL = `/workouts/${selectedUserWod.workoutId}/results/${selectedUserWod.wodDate}`;
+                  const result = {attendeeId: user.uid, result: wodResult};
+                  handleWodResultSubmit(URL, result);
+                }}>
                 <ModalBtnText>{t('user:submit')}</ModalBtnText>
               </SubmitButton>
             </ModalActions>
