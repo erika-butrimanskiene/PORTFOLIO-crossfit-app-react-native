@@ -10,6 +10,7 @@ export interface IWorkoutState {
   };
 }
 
+export interface IWorkoutFromDatabase {}
 export interface IWorkoutDateResults {
   date: string;
   results: {attendeeId: string; result: string}[];

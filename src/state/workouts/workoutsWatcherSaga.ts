@@ -30,6 +30,7 @@ export default function* watchWorkouts() {
       console.log(workouts);
       const workoutsArray: IWorkoutState[] =
         convertWorkoutsObjectToArray(workouts);
+      console.log(workoutsArray);
       if (workouts) {
         yield put(actions.workouts.setWorkoutsList(workoutsArray));
       }
