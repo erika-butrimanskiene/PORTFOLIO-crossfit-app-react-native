@@ -5,40 +5,14 @@ import {
 import {IWodState, IAttendee, IWodTime} from '../state/wods/wodsInterface';
 import {database} from './database';
 
-const convertWorkoutResultsObjectToArray = (
-  resultsObject: any,
-): IWorkoutDateResults[] => {
-  return Object.keys(resultsObject).map(date => {
-    return {
-      date: date,
-      results: resultsObject[date],
-    };
-  });
-};
-
 export const convertWorkoutsObjectToArray = (
   dataFromDatabase: any,
 ): IWorkoutState[] => {
   return Object.keys(dataFromDatabase).map(key => {
-    if (dataFromDatabase[key].results) {
-      return {
-        id: key,
-        data: {
-          ...dataFromDatabase[key],
-          results: convertWorkoutResultsObjectToArray(
-            dataFromDatabase[key].results,
-          ),
-        },
-      };
-    } else {
-      return {
-        id: key,
-        data: {
-          ...dataFromDatabase[key],
-          results: [],
-        },
-      };
-    }
+    return {
+      id: key,
+      data: dataFromDatabase[key],
+    };
   });
 };
 
@@ -179,12 +153,8 @@ export const addResult = async (
   url: string,
   result: {attendeeId: string; result: string},
 ): Promise<any> => {
-  // const newReference = database.ref(`${url}`).push();
-
-  // newReference.set(result).then(() => console.log('Result added.'));
-
   const newReference = database.ref(`${url}`);
-  newReference.transaction(
+  await newReference.transaction(
     (currentResultsArr: {attendeeId: string; result: string}[]) => {
       if (currentResultsArr === null) {
         return {0: result};

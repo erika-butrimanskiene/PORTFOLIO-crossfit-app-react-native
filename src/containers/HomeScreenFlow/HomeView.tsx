@@ -97,7 +97,10 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
                 <LinkText>{t('user:activityBoard')}</LinkText>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.ActivitiesHistory)}>
+                onPress={() => {
+                  dispatch(actions.ui.setOnSync(true));
+                  navigation.navigate(ROUTES.ActivitiesHistory);
+                }}>
                 <LinkText>{t('user:activitiesHistory')}</LinkText>
               </TouchableOpacity>
             </>

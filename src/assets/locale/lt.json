@@ -44,7 +44,8 @@
     "auth/wrong-password": "Neteisingas slaptažodis",
     "auth/unknown": "Nežinoma klaida",
     "forgotWodTimes": "Nepridėjote nei vieno treniruotės laiko",
-    "wodTimeIsPassed": "Treniruotės laikas praėjęs"
+    "wodTimeIsPassed": "Treniruotės laikas praėjęs",
+    "enterResult": "Įveskite rezultatą"
   },
   "succesNotifications": {
     "successCreate": "Sėkmingai sukurta." 
@@ -60,6 +61,7 @@
     "upcomingWods": "Tavo būsimos treniruotės",
     "previousWods": "Tavo praėjusios treniruotės",
     "enterResult": "Įvesk rezultatą",
+    "resultExist": "Rezultatas įvestas",
     "cancel": "Atšaukti",
     "submit": "Pateikti"
   },

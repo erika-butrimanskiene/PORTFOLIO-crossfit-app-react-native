@@ -30,7 +30,7 @@ const NotificationModal: React.FC<INotificationModalProps> = ({
 
 const ErrorBar = styled.View<{bgColor: string}>`
   flex-direction: row;
-  height: 55px;
+  min-height: 55px;
   padding-right: 10px;
   background-color: ${({bgColor}) => bgColor};
   font-size: 17px;
@@ -45,6 +45,8 @@ const IconContainer = styled.View<{bgColor: string}>`
 
 const ErrorText = styled.Text`
   font-size: 17px;
+  width: 80%;
+  text-align: center;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 

@@ -44,7 +44,8 @@
     "auth/wrong-password": "Wrong password",
     "auth/unknown": "Unknown error",
     "forgotWodTimes": "At least one WOD time is required",
-    "wodTimeIsPassed": "WOD time is passed"
+    "wodTimeIsPassed": "WOD time is passed",
+    "enterResult": "Please enter result"
   },
   "succesNotifications": {
     "successCreate": "Successfully created." 
@@ -60,6 +61,7 @@
     "upcomingWods": "Your upcoming WOD's",
     "previousWods": "Your WOD's history",
     "enterResult": "Enter Result",
+    "resultExist": "Result added",
     "cancel": "Cancel",
     "submit": "Submit"
   },
