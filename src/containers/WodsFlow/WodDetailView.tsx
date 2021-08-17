@@ -1,18 +1,31 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
+import {StackNavigationProp} from '@react-navigation/stack';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 
+//ROUTES
+import ROUTES from '../../routes/Routes';
+import {RootStackParamList} from 'src/routes/Interface';
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 //COMPONENTS
 import Button from '../../components/Button';
 
+type WodDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  ROUTES.WodDetail
+>;
 interface IWodDetailViewProps {
   theme: DefaultTheme;
+  navigation: WodDetailScreenNavigationProp;
   route: any;
 }
 
-const WodDetailView: React.FC<IWodDetailViewProps> = ({theme, route}) => {
+const WodDetailView: React.FC<IWodDetailViewProps> = ({
+  theme,
+  route,
+  navigation,
+}) => {
   const {t} = useTranslation();
 
   const workout: IWorkoutState = route.params.workout;
@@ -52,7 +65,11 @@ const WodDetailView: React.FC<IWodDetailViewProps> = ({theme, route}) => {
         <ButtonContainer>
           <Button
             text={t('wods:seeResults')}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate(ROUTES.WorkoutResults, {
+                workout: workout,
+              });
+            }}
             bgColor={theme.appColors.primaryColorLighter}
           />
         </ButtonContainer>
@@ -64,7 +81,7 @@ const WodDetailView: React.FC<IWodDetailViewProps> = ({theme, route}) => {
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 50px;
+  padding-top: 40px;
   font-size: 20px;
   align-items: center;
 `;
@@ -112,7 +129,7 @@ const WodType = styled.Text`
 
 const Info = styled.View`
   width: 90%;
-  padding: 20px 0px 10px 10px;
+  padding: 20px 0px 10px 0px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   justify-content: center;
@@ -122,7 +139,7 @@ const Info = styled.View`
 
 const Exercises = styled.View`
   width: 100%;
-  padding: 10px 10px 25px 10px;
+  padding: 10px 10px 25px 20px;
   align-items: flex-start;
 `;
 
@@ -132,7 +149,7 @@ const Title = styled.Text`
   width: 60%;
   color: ${({theme}) => theme.appColors.whiteColor};
   background-color: ${({theme}) => theme.appColors.backgroundColor};
-  font-size: 25px;
+  font-size: 23px;
   text-align: center;
 `;
 
@@ -140,7 +157,7 @@ const Weights = styled.Text`
   width: 100%;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 19px;
-  padding: 10px 0px 25px 10px;
+  padding: 10px 0px 25px 20px;
   text-align: left;
 `;
 
@@ -156,7 +173,7 @@ const Result = styled.Text`
   justify-content: flex-start;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 19px;
-  padding: 10px 0px 25px 10px;
+  padding: 10px 0px 25px 20px;
 `;
 
 const ButtonContainer = styled.View`

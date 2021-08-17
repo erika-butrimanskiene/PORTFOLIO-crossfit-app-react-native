@@ -38,7 +38,7 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   //STATES
   const userWods = useSelector((state: RootState) => state.user.userWods);
   const user = useSelector((state: RootState) => state.user.user);
-  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const onSync = useSelector((state: RootState) => state.ui.onSync);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedUserWod, setSelectedUserWod] = useState<IuserWod>(null);
@@ -72,7 +72,12 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   //FUNCTIONS
   const handleWodResultSubmit = async (
     url: string,
-    result: {attendeeId: string; result: string},
+    result: {
+      attendeeId: string;
+      attendeeName: string;
+      attendeeSurname: string;
+      result: string;
+    },
   ) => {
     if (wodResult !== '') {
       await addResult(url, result);
@@ -135,7 +140,16 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
               });
             }}
           />
-          <Link theme={theme} text={t('wods:results')} onPress={() => {}} />
+          <Link
+            theme={theme}
+            text={t('wods:results')}
+            onPress={async () => {
+              let data = await getWorkoutById(item.workoutId);
+              navigation.navigate(ROUTES.WorkoutResults, {
+                workout: data,
+              });
+            }}
+          />
         </Actions>
       </WodItem>
     );
@@ -175,7 +189,12 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
                   <SubmitButton
                     onPress={() => {
                       const URL = `/workouts/${selectedUserWod.workoutId}/results/${selectedUserWod.wodDate}`;
-                      const result = {attendeeId: user.uid, result: wodResult};
+                      const result = {
+                        attendeeId: user.uid,
+                        attendeeName: user.name,
+                        attendeeSurname: user.surname,
+                        result: wodResult,
+                      };
                       handleWodResultSubmit(URL, result);
                     }}>
                     <ModalBtnText>{t('user:submit')}</ModalBtnText>

@@ -2,11 +2,11 @@ import {constants} from '../constants';
 import {uiActionsType} from './uiActions';
 
 export interface IUiState {
-  authOnSync: boolean;
+  onSync: boolean;
 }
 
 const initialUiState = {
-  authOnSync: false,
+  onSync: false,
 };
 
 const uiReducer = (state: IUiState = initialUiState, action: uiActionsType) => {

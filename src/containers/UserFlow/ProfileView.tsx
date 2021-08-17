@@ -17,7 +17,7 @@ interface IProfileViewProps {
 }
 
 const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
-  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
 
   const handleChoosePhoto = () => {

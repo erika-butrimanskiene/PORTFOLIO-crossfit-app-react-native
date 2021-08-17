@@ -32,7 +32,7 @@ const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
   const {t, i18n} = useTranslation();
 
   //STATES
-  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const onSync = useSelector((state: RootState) => state.ui.onSync);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

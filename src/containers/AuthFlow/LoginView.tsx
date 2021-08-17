@@ -33,7 +33,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   const dispatch = useDispatch();
 
   //STATES
-  const onSync = useSelector((state: RootState) => state.ui.authOnSync);
+  const onSync = useSelector((state: RootState) => state.ui.onSync);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {

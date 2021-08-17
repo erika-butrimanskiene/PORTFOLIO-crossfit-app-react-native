@@ -12,7 +12,12 @@ export interface IWorkoutState {
 
 export interface IWorkoutFromDatabase {}
 export interface IWorkoutDateResults {
-  [key: string]: {attendeeId: string; result: string}[];
+  [key: string]: {
+    attendeeId: string;
+    attendeeName: string;
+    attendeeSurname: string;
+    result: string;
+  }[];
 }
 
 export interface IWorkoutsState {

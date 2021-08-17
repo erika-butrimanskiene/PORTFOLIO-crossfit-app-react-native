@@ -15,4 +15,5 @@ export type RootStackParamList = {
   [ROUTES.WodDetail]: {workout: IWorkoutState; image: string};
   [ROUTES.ActivityBoard]: undefined;
   [ROUTES.ActivitiesHistory]: undefined;
+  [ROUTES.WorkoutResults]: {workout: IWorkoutState};
 };

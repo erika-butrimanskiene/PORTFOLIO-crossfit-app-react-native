@@ -32,10 +32,6 @@ interface IWodsListViewProps {
   theme: DefaultTheme;
   navigation: WodsListScreenNavigationProp;
 }
-interface Iitem {
-  item: IWodTime;
-  index: number;
-}
 
 const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
@@ -61,6 +57,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 5) * 5;
 
+  //USE-EFFECTS
   useEffect(() => {
     setDisabledRegisterOrCancel(false);
     if (sortedWodsByDate[showWodIndex].date < todayDate) {
@@ -68,6 +65,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
     }
   }, [showWodIndex]);
 
+  //FUNCTIONS
   const handleRegister = (index: number) => {
     showAlert({
       alertType: 'custom',
@@ -112,7 +110,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
     });
   };
 
-  const renderItem = ({item, index}: Iitem) => {
+  const renderItem = ({item, index}: {item: IWodTime; index: number}) => {
     return (
       <ScheduleItem>
         <WodTimeInfo
