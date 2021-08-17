@@ -71,8 +71,7 @@ const WorkoutInfo = styled.View`
 
 const Workout = styled.View`
   padding: 10px;
-  /* background-color: ${({theme}) =>
-    theme.appColors.backgroundColorLighter}; */
+  /* background-color: ${({theme}) => theme.appColors.backgroundColorDarken}; */
   width: 100%;
   justify-content: center;
   align-items: center;

@@ -92,7 +92,7 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
   };
 
   const renderItem = ({item, index}: {item: IWorkoutState; index: number}) => {
-    const imageIndex = index - Math.floor(index / 5) * 5;
+    const imageIndex = index - Math.floor(index / 7) * 7;
     const image = imagesURI[imageIndex];
     return (
       <WorkoutItem>

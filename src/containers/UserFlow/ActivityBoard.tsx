@@ -92,7 +92,7 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
       <Scroll>
         <Wods>
           {filteredWodsList.map((wod, index) => {
-            const imageIndex = index - Math.floor(index / 5) * 5;
+            const imageIndex = index - Math.floor(index / 7) * 7;
             const image = imagesURI[imageIndex];
 
             if (wod.wodTimes.length !== 0) {

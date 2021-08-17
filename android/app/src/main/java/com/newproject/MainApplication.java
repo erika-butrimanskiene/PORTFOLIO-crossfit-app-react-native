@@ -1,5 +1,7 @@
 package com.newproject;
 
+  import com.facebook.react.bridge.JSIModulePackage; // <- add
+  import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -33,6 +35,11 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new ReactNativeFirebaseDatabasePackage());
           return packages;
         }
+
+           @Override
+      protected JSIModulePackage getJSIModulePackage() {
+        return new ReanimatedJSIModulePackage(); // <- add
+      }
 
         @Override
         protected String getJSMainModuleName() {

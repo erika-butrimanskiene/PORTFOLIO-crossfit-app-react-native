@@ -4,6 +4,7 @@ declare module 'styled-components/native' {
   export interface DefaultTheme {
     appColors?: {
       backgroundColor?: string;
+      backgroundColor_opacity80?: string;
       backgroundColor_opacity50?: string;
       backgroundColor_opacity20?: string;
       backgroundColorDarken?: string;
@@ -13,6 +14,7 @@ declare module 'styled-components/native' {
       primaryColorLighter?: string;
       accentColor?: string;
       accentColor_opacity50?: string;
+      primaryColor_opacity20?: string;
       textColorLightGray?: string;
       textColorDarkGray?: string;
       errorColor?: string;

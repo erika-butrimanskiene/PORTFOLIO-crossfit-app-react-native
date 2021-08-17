@@ -1,5 +1,10 @@
-import React, {useEffect} from 'react';
-import {StatusBar, ActivityIndicator, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StatusBar,
+  ActivityIndicator,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -11,6 +16,10 @@ import {RootState} from 'src/state/reducers';
 import {actions} from '../../state/actions';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
+//UTILS
+import {imagesURI} from '../../utils/workoutsImages';
+//COMPONENTS
+import HomeViewLink from '../../components/HomeViewLink';
 
 //VARIABLES
 const options = [
@@ -67,45 +76,64 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
-        <>
-          <Heading>Welcome To Home Page</Heading>
-          <Heading>{user.email}</Heading>
-          <Heading>{onSync}</Heading>
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.Profile)}>
-            <LinkText>{t('user:userProfile')}</LinkText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(ROUTES.WodsList)}>
-            <LinkText>{t('wods:wodsList')}</LinkText>
-          </TouchableOpacity>
+        <ScrollContent>
+          <WelcomeMessage>
+            <WelcomeText>Welcome, </WelcomeText>
+            <WelcomeUser>{user.name}</WelcomeUser>
+          </WelcomeMessage>
+          <HomeViewLink
+            image={imagesURI[1]}
+            onPress={() => navigation.navigate(ROUTES.WodsList)}
+            text={t('wods:wodsList')}
+            admin={false}
+          />
+
+          <HomeViewLink
+            image={imagesURI[6]}
+            onPress={() => navigation.navigate(ROUTES.ActivityBoard)}
+            text={t('user:activityBoard')}
+            admin={false}
+          />
+
+          <HomeViewLink
+            image={imagesURI[3]}
+            onPress={() => navigation.navigate(ROUTES.ActivitiesHistory)}
+            text={t('user:activitiesHistory')}
+            admin={false}
+          />
+
+          <HomeViewLink
+            image={imagesURI[2]}
+            onPress={() => navigation.navigate(ROUTES.Profile)}
+            text={t('user:userProfile')}
+            admin={false}
+          />
+
           {user.admin && (
             <>
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.CreateWorkout)}>
-                <LinkText>{t('admin:createWorkout')}</LinkText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WorkoutsList)}>
-                <LinkText>{t('admin:workoutsList')}</LinkText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.CreateWod)}>
-                <LinkText>{t('admin:createWod')}</LinkText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.ActivityBoard)}>
-                <LinkText>{t('user:activityBoard')}</LinkText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch(actions.ui.setOnSync(true));
-                  navigation.navigate(ROUTES.ActivitiesHistory);
-                }}>
-                <LinkText>{t('user:activitiesHistory')}</LinkText>
-              </TouchableOpacity>
+              <HomeViewLink
+                image={imagesURI[5]}
+                onPress={() => navigation.navigate(ROUTES.CreateWorkout)}
+                text={t('admin:createWorkout')}
+                admin={true}
+              />
+
+              <HomeViewLink
+                image={imagesURI[0]}
+                onPress={() => navigation.navigate(ROUTES.WorkoutsList)}
+                text={t('admin:workoutsList')}
+                admin={true}
+              />
+
+              <HomeViewLink
+                image={imagesURI[4]}
+                onPress={() => navigation.navigate(ROUTES.CreateWod)}
+                text={t('admin:createWod')}
+                admin={true}
+              />
             </>
           )}
-        </>
+        </ScrollContent>
       )}
     </Container>
   );
@@ -127,20 +155,37 @@ const LogoutText = styled.Text`
 
 const Container = styled.View`
   flex: 1;
-  padding-top: 60px;
+  padding-top: 40px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
   background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
-const Heading = styled.Text`
+const WelcomeMessage = styled.View`
+  flex-direction: row;
+  margin: 15px 0px 25px 0px;
+`;
+
+const WelcomeText = styled.Text`
+  font-size: 25px;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
-const LinkText = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
+const WelcomeUser = styled.Text`
   font-size: 25px;
+  color: ${({theme}) => theme.appColors.accentColor};
+  font-style: italic;
+`;
+
+const ScrollContent = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}))`
+  width: 100%;
+  margin: 30px 0px 40px 0px;
 `;
 
 export default withTheme(HomeView);

@@ -55,7 +55,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const todayWod = wods.filter(wod => wod.date.includes(todayDate));
   const todayWodIndex = sortedWodsByDate.indexOf(todayWod[0]);
   const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
-  const imageIndex = showWodIndex - Math.floor(showWodIndex / 5) * 5;
+  const imageIndex = showWodIndex - Math.floor(showWodIndex / 7) * 7;
 
   //USE-EFFECTS
   useEffect(() => {

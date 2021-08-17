@@ -104,7 +104,7 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   };
 
   const renderItem = ({item, index}: {item: IuserWod; index: number}) => {
-    const imageIndex = index - Math.floor(index / 5) * 5;
+    const imageIndex = index - Math.floor(index / 7) * 7;
     const image = imagesURI[imageIndex];
     return (
       <WodItem>
@@ -261,7 +261,7 @@ const WodInfo = styled.View`
 `;
 
 const WorkoutName = styled.Text`
-  font-size: 25px;
+  font-size: 23px;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
