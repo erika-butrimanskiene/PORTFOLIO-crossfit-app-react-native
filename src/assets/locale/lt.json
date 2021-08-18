@@ -63,7 +63,8 @@
     "enterResult": "Įvesk rezultatą",
     "resultExist": "Rezultatas įvestas",
     "cancel": "Atšaukti",
-    "submit": "Pateikti"
+    "submit": "Pateikti",
+    "noActivitiesHistory": "Nėra treniruočių istorijos..."
   },
   "admin": {
     "workoutsList": "Treniruočių sąrašas",

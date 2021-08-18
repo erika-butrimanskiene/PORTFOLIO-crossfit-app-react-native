@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, Modal, ActivityIndicator} from 'react-native';
+import {FlatList, Modal, ActivityIndicator, Text} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
@@ -106,6 +106,7 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   const renderItem = ({item, index}: {item: IuserWod; index: number}) => {
     const imageIndex = index - Math.floor(index / 7) * 7;
     const image = imagesURI[imageIndex];
+
     return (
       <WodItem>
         <WodDate>{item.wodDate}</WodDate>
@@ -155,63 +156,79 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
     );
   };
 
-  return (
-    <Container>
-      {!onSync ? (
-        <>
-          <Title>{t('user:previousWods')}</Title>
+  if (!onSync) {
+    return (
+      <Container>
+        <Title>{t('user:previousWods')}</Title>
+        {filteredWodsList.length > 0 ? (
+          <>
+            <FlatListContainer>
+              <FlatList
+                data={filteredWodsList}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderItem}
+              />
+            </FlatListContainer>
+            <Modal visible={showModal} transparent={true}>
+              <ModalLayout>
+                <ModalDisplay>
+                  <ModalTitle>{t('user:enterResult')}</ModalTitle>
+                  <ResultInput
+                    value={wodResult}
+                    onChangeText={text => setWodResult(text)}
+                    selectionColor={theme.appColors.whiteColor}
+                    underlineColorAndroid={'transparent'}></ResultInput>
+                  {enterResultError !== '' && (
+                    <EnterResultError>
+                      *{t(`authErrors:${enterResultError}`)}
+                    </EnterResultError>
+                  )}
+                  <ModalActions>
+                    <CancelButton onPress={() => setShowModal(false)}>
+                      <ModalBtnText>{t('user:cancel')}</ModalBtnText>
+                    </CancelButton>
+                    <SubmitButton
+                      onPress={() => {
+                        const URL = `/workouts/${selectedUserWod.workoutId}/results/${selectedUserWod.wodDate}`;
+                        const result = {
+                          attendeeId: user.uid,
+                          attendeeName: user.name,
+                          attendeeSurname: user.surname,
+                          result: wodResult,
+                        };
+                        handleWodResultSubmit(URL, result);
+                      }}>
+                      <ModalBtnText>{t('user:submit')}</ModalBtnText>
+                    </SubmitButton>
+                  </ModalActions>
+                </ModalDisplay>
+              </ModalLayout>
+            </Modal>
+          </>
+        ) : (
+          <NoHistoryMessage>{t('user:noActivitiesHistory')}</NoHistoryMessage>
+        )}
+      </Container>
+    );
+  }
 
-          <FlatListContainer>
-            <FlatList
-              data={filteredWodsList}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={renderItem}
-            />
-          </FlatListContainer>
-          <Modal visible={showModal} transparent={true}>
-            <ModalLayout>
-              <ModalDisplay>
-                <ModalTitle>{t('user:enterResult')}</ModalTitle>
-                <ResultInput
-                  value={wodResult}
-                  onChangeText={text => setWodResult(text)}
-                  selectionColor={theme.appColors.whiteColor}
-                  underlineColorAndroid={'transparent'}></ResultInput>
-                {enterResultError !== '' && (
-                  <EnterResultError>
-                    *{t(`authErrors:${enterResultError}`)}
-                  </EnterResultError>
-                )}
-                <ModalActions>
-                  <CancelButton onPress={() => setShowModal(false)}>
-                    <ModalBtnText>{t('user:cancel')}</ModalBtnText>
-                  </CancelButton>
-                  <SubmitButton
-                    onPress={() => {
-                      const URL = `/workouts/${selectedUserWod.workoutId}/results/${selectedUserWod.wodDate}`;
-                      const result = {
-                        attendeeId: user.uid,
-                        attendeeName: user.name,
-                        attendeeSurname: user.surname,
-                        result: wodResult,
-                      };
-                      handleWodResultSubmit(URL, result);
-                    }}>
-                    <ModalBtnText>{t('user:submit')}</ModalBtnText>
-                  </SubmitButton>
-                </ModalActions>
-              </ModalDisplay>
-            </ModalLayout>
-          </Modal>
-        </>
-      ) : (
-        <ActivityIndicator size="large" color="#ffffff" />
-      )}
-    </Container>
+  return (
+    <OnSyncContainer>
+      <ActivityIndicator size={60} color="#ffffff" />
+    </OnSyncContainer>
   );
 };
 
 const Container = styled.View`
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
+  flex: 1;
+  padding-top: 40px;
+  font-size: 20px;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const OnSyncContainer = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
   padding-top: 40px;
@@ -356,6 +373,13 @@ const SubmitButton = styled.TouchableOpacity`
 const ModalBtnText = styled.Text`
   padding: 5px;
   font-size: 21px;
+  color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const NoHistoryMessage = styled.Text`
+  margin: 25px;
+  font-size: 21px;
+  font-style: italic;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 

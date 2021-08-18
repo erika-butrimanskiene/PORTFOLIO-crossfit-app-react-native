@@ -14,7 +14,7 @@ const uiReducer = (state: IUiState = initialUiState, action: uiActionsType) => {
     case constants.ui.SET_ON_SYNC:
       return {
         ...state,
-        authOnSync: action.payload,
+        onSync: action.payload,
       };
     default:
       return state;

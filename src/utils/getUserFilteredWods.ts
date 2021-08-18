@@ -44,7 +44,7 @@ export const getUserPreviousWods = (userWods: IuserWod[]): IuserWod[] => {
     },
   );
 
-  const filteredPreviousWodsList = sortedserWodsCopyToPreviousWods.filter(
+  let filteredPreviousWodsList = sortedserWodsCopyToPreviousWods.filter(
     item => item.wodDate <= todayDate,
   );
 
@@ -57,6 +57,8 @@ export const getUserPreviousWods = (userWods: IuserWod[]): IuserWod[] => {
         });
     }
   }
-
+  filteredPreviousWodsList = filteredPreviousWodsList.filter(
+    item => item.wodTimes.length > 0,
+  );
   return filteredPreviousWodsList;
 };

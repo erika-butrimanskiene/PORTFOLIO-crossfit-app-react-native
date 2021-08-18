@@ -10,6 +10,7 @@ import {
   IFirebaseAuth,
 } from '../../utils/firebaseAuthAPI';
 import watchUser from './userWatcherSaga';
+import watchWods from '../wods/wodsWatcherSaga';
 import {AnyAction} from 'redux';
 
 function* handleRegistration(action: {
@@ -49,6 +50,7 @@ function* handleRegistration(action: {
       yield put(actions.messages.clearMessages());
 
       yield fork(watchUser, response.uid);
+      yield fork(watchWods);
     }
 
     if (response.status === false) {
@@ -82,6 +84,7 @@ function* handleLogin({payload: {email, password}}: AnyAction) {
     if (response.status === true) {
       yield put(actions.messages.clearMessages());
       yield fork(watchUser, response.uid);
+      yield fork(watchWods);
     }
     if (response.status === false) {
       throw response;
@@ -120,6 +123,7 @@ function* handleLoginFacebook() {
         .then(() => console.log('Data set.'));
 
       yield fork(watchUser, response.uid);
+      yield fork(watchWods);
     }
 
     if (response.status === false) {

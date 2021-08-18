@@ -1,7 +1,7 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
 import {actions} from '../actions';
 import {constants} from '../constants';
-import {getWorkouts} from '../../utils/firebaseDatabaseAPI';
+//import {getWorkouts} from '../../utils/firebaseDatabaseAPI';
 import {IWorkoutState} from './workoutsInterface';
 
 // function* handleGetWorkouts() {

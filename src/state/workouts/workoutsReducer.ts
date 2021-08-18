@@ -13,7 +13,7 @@ const initialWorkoutsState: IWorkoutsState = {
       workoutType: '',
       workoutWeights: '',
       exercises: [],
-      results: [],
+      results: {},
     },
   },
 };

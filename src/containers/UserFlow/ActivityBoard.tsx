@@ -52,7 +52,6 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
     wodDate: string,
     workoutType: string,
     timeIndex: number,
-    deleteAttendeeId: string,
   ) => {
     showAlert({
       alertType: 'custom',
@@ -62,8 +61,9 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
           alertText={t('wods:willBeUnregister')}
           onCancelPress={() => closeAlert()}
           onConfirmPress={() => {
-            const url = `/WODs/${wodDate}/${workoutType}/times/${timeIndex}/attendees/${deleteAttendeeId}`;
-            removeAattendee(url);
+            const url = `/WODs/${wodDate}/${workoutType}/times/${timeIndex}/attendees`;
+            console.log(url);
+            removeAattendee(url, user.uid);
             closeAlert();
           }}
         />
@@ -76,14 +76,6 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
       .map(time => time.wodTime)
       .indexOf(wodTime);
     return indexOfTime;
-  };
-
-  const findDeleteAttendeeId = (wodByDate: IWodState[], timeIndex: number) => {
-    const deletAttendeeObjectAtArray = Object.values(
-      wodByDate[0].data.times[timeIndex].attendees,
-    ).filter(item => item.uid === user.uid);
-
-    return deletAttendeeObjectAtArray[0].attendeeId;
   };
 
   return (
@@ -120,7 +112,6 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
                               wod.wodDate,
                               wod.wodType,
                               timeIndex,
-                              findDeleteAttendeeId(wodByDate, timeIndex),
                             );
                           }}>
                           <UnregisterText>{t('wods:cancel')}</UnregisterText>

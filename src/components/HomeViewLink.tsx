@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {GestureResponderEvent} from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
+// import Animated, {
+//   useSharedValue,
+//   useAnimatedStyle,
+//   withSpring,
+//   withTiming,
+// } from 'react-native-reanimated';
 
 interface IHomeViewLinkProps {
   image: string;
@@ -22,13 +23,13 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
 }) => {
   const [isPressed, setIsPressed] = useState(false);
 
-  const scale = useSharedValue(1);
+  // const scale = useSharedValue(1);
 
-  const reanimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{scale: scale.value}],
-    };
-  }, []);
+  // const reanimatedStyle = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [{scale: scale.value}],
+  //   };
+  // }, []);
 
   return (
     <ImageContainer
@@ -39,15 +40,17 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
       <Link
         admin={admin}
         onPress={onPress}
-        onPressIn={() => {
-          scale.value = withSpring(1.7);
-          setIsPressed(true);
-        }}
-        onPressOut={() => {
-          scale.value = withSpring(1);
-          setIsPressed(false);
-        }}>
-        <LinkText style={reanimatedStyle}>{text.toUpperCase()}</LinkText>
+        // onPressIn={() => {
+        //   scale.value = withSpring(1.5);
+        //   setIsPressed(true);
+        // }}
+        // onPressOut={() => {
+        //   scale.value = withSpring(1);
+        //   setIsPressed(false);
+        // }}
+      >
+        {/* <LinkText style={reanimatedStyle}>{text.toUpperCase()}</LinkText> */}
+        <LinkText>{text.toUpperCase()}</LinkText>
       </Link>
     </ImageContainer>
   );
@@ -64,7 +67,8 @@ const Link = styled.TouchableOpacity<{admin: boolean}>`
       : theme.appColors.backgroundColor_opacity50};
 `;
 
-const LinkText = styled(Animated.Text)`
+//const LinkText = styled(Animated.Text)`
+const LinkText = styled.Text`
   width: 70%;
   text-align: center;
   color: ${({theme}) => theme.appColors.whiteColor};

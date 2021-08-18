@@ -1,7 +1,4 @@
-import {
-  IWorkoutDateResults,
-  IWorkoutState,
-} from 'src/state/workouts/workoutsInterface';
+import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import {IWodState, IAttendee, IWodTime} from '../state/wods/wodsInterface';
 import {database} from './database';
 
@@ -77,9 +74,7 @@ export const convertWodsObjectToArray = async (
         date: date,
         data: {
           type: wodType,
-          times: convertWodsTimesAttendeesObjectToArray(
-            dataFromDatabase[date][wodType].times,
-          ),
+          times: dataFromDatabase[date][wodType].times,
           workout: await getWorkoutById(
             dataFromDatabase[date][wodType].workout.id,
           ),
@@ -87,27 +82,6 @@ export const convertWodsObjectToArray = async (
       };
     }),
   );
-};
-
-const convertWodsTimesAttendeesObjectToArray = (times: any[]): IWodTime[] => {
-  return times.map(time => {
-    if (time.attendees) {
-      return {
-        ...time,
-        attendees: Object.keys(time.attendees).map(attendee => {
-          return {
-            ...time.attendees[attendee],
-            attendeeId: attendee,
-          };
-        }),
-      };
-    } else {
-      return {
-        ...time,
-        attendees: [],
-      };
-    }
-  });
 };
 
 export const getWods = async (): Promise<any> => {
@@ -140,13 +114,28 @@ export const addAttendee = async (
   url: string,
   attendee: IAttendee,
 ): Promise<any> => {
-  const newReference = database.ref(`${url}`).push();
-
-  newReference.set(attendee).then(() => console.log('Attendee added.'));
+  const newReference = database.ref(`${url}`);
+  await newReference.transaction((currentAttendeesArr: IAttendee[]) => {
+    if (currentAttendeesArr === null) {
+      return {0: attendee};
+    } else {
+      currentAttendeesArr.push(attendee);
+      return currentAttendeesArr;
+    }
+  });
 };
 
-export const removeAattendee = async (url: string): Promise<any> => {
-  database.ref(`${url}`).remove();
+export const removeAattendee = async (
+  url: string,
+  userUid: string,
+): Promise<any> => {
+  const newReference = database.ref(`${url}`);
+  await newReference.transaction((currentAttendeesArr: IAttendee[]) => {
+    const newAttendeesArr = currentAttendeesArr.filter(
+      item => item.uid !== userUid,
+    );
+    return newAttendeesArr;
+  });
 };
 
 export const addResult = async (

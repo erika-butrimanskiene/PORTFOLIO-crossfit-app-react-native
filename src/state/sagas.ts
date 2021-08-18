@@ -12,7 +12,7 @@ export function* rootSaga() {
   const user: any = auth().currentUser;
   if (user) {
     yield fork(watchUser, user._user.uid);
+    yield fork(watchWods);
   }
   yield fork(watchWorkouts);
-  yield fork(watchWods);
 }

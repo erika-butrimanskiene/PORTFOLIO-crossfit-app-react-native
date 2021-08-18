@@ -1,9 +1,16 @@
 import React from 'react';
 import {FlatList, View, Text} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
+import SwitchSelector from 'react-native-switch-selector';
 
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
+
+//VARIABLES
+const options = [
+  {label: 'Your', value: 'your'},
+  {label: 'All', value: 'all'},
+];
 
 interface IWorkoutResultsViewProps {
   theme: DefaultTheme;
@@ -38,10 +45,28 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
       <WorkoutInfo>
         <Workout>
           <WorkoutName>{workout.data.name}</WorkoutName>
-          <WorkoutType>{workout.data.workoutType}</WorkoutType>
         </Workout>
         <CountResultOf>{workout.data.countResultOf}</CountResultOf>
       </WorkoutInfo>
+
+      <SwitchResults>
+        <SwitchSelector
+          options={options}
+          hasPadding
+          valuePadding={5}
+          fontSize={18}
+          initial={1}
+          borderRadius={2}
+          textColor={theme.appColors.whiteColor}
+          backgroundColor={theme.appColors.backgroundColorVeryLight}
+          buttonColor={theme.appColors.primaryColorLighter}
+          borderColor={theme.appColors.backgroundColorDarken}
+          style={{width: 120}}
+          onPress={() => {
+            return;
+          }}
+        />
+      </SwitchResults>
 
       <ResultsList>
         {workout.data.results && (
@@ -70,33 +95,37 @@ const WorkoutInfo = styled.View`
 `;
 
 const Workout = styled.View`
-  padding: 10px;
-  /* background-color: ${({theme}) => theme.appColors.backgroundColorDarken}; */
+  padding: 5px;
+  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
   width: 100%;
   justify-content: center;
   align-items: center;
-  border-top-color: ${({theme}) => theme.appColors.primaryColorLighter};
-
-  border-top-width: 2px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 const WorkoutName = styled.Text`
   color: ${({theme}) => theme.appColors.accentColor};
-  font-size: 25px;
-`;
-
-const WorkoutType = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
-  font-size: 14px;
+  font-size: 30px;
 `;
 
 const CountResultOf = styled.Text`
   text-align: center;
   width: 100%;
-  background-color: ${({theme}) => theme.appColors.primaryColorLighter};
-  padding: 5px;
+  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
+  padding: 8px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-color: ${({theme}) => theme.appColors.accentColor};
+  border-top-width: 3px;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 20px;
+`;
+
+const SwitchResults = styled.View`
+  width: 90%;
+  margin: 20px 0px 5px 0px;
+  align-items: flex-end;
 `;
 
 const ResultsList = styled.View`

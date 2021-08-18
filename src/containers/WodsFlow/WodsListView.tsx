@@ -19,7 +19,7 @@ import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
 //UTILS-DATABASE
 import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
-import {IWodTime} from 'src/state/wods/wodsInterface';
+import {IAttendee, IWodTime} from 'src/state/wods/wodsInterface';
 //COMPONENTS
 import ConfirmationModal from '../../components/ConfirmationModal';
 import WodTimeInfo from '../../components/WodTimeInfo';
@@ -97,12 +97,8 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
           alertText={t('wods:willBeUnregister')}
           onCancelPress={() => closeAlert()}
           onConfirmPress={() => {
-            const deleteAttendeeObjectAtArray = Object.values(
-              sortedWodsByDate[showWodIndex].data.times[index].attendees,
-            ).filter(item => item.uid === user.uid);
-            const deleteAttendeeId = deleteAttendeeObjectAtArray[0].attendeeId;
-            const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees/${deleteAttendeeId}`;
-            removeAattendee(url);
+            const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
+            removeAattendee(url, user.uid);
             closeAlert();
           }}
         />
@@ -111,6 +107,10 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   };
 
   const renderItem = ({item, index}: {item: IWodTime; index: number}) => {
+    let attendees: IAttendee[] = [];
+    if (sortedWodsByDate[showWodIndex].data.times[index].attendees) {
+      attendees = sortedWodsByDate[showWodIndex].data.times[index].attendees;
+    }
     return (
       <ScheduleItem>
         <WodTimeInfo
@@ -119,9 +119,8 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
           wodRoom={item.wodRoom}
         />
         <ScheduleActions>
-          {Object.values(
-            sortedWodsByDate[showWodIndex].data.times[index].attendees,
-          ).filter(item => item.uid === user.uid).length === 0 ? (
+          {Object.values(attendees).filter(item => item.uid === user.uid)
+            .length === 0 ? (
             <RegisterBtn
               onPress={() => {
                 if (

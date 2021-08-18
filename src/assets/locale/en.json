@@ -63,7 +63,8 @@
     "enterResult": "Enter Result",
     "resultExist": "Result added",
     "cancel": "Cancel",
-    "submit": "Submit"
+    "submit": "Submit",
+    "noActivitiesHistory": "No activities history..."
   },
   "admin": {
     "workoutsList": "Workouts List",

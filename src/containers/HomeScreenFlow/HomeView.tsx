@@ -97,7 +97,10 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
 
           <HomeViewLink
             image={imagesURI[3]}
-            onPress={() => navigation.navigate(ROUTES.ActivitiesHistory)}
+            onPress={() => {
+              dispatch(actions.ui.setOnSync(true));
+              navigation.navigate(ROUTES.ActivitiesHistory);
+            }}
             text={t('user:activitiesHistory')}
             admin={false}
           />

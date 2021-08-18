@@ -17,6 +17,10 @@ const findUserBetweenAttendeesAndUpdateArray = (
   userWods: IuserWod[],
 ) => {
   wod.data.times.map(time => {
+    if (!time.attendees) {
+      return userWods;
+    }
+
     const filtered = time.attendees.filter(attendee => {
       return attendee.uid === userUid;
     });
