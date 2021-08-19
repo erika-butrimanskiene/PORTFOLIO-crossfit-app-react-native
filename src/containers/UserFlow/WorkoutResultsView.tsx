@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, View, Text} from 'react-native';
+import {useSelector} from 'react-redux';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import SwitchSelector from 'react-native-switch-selector';
 
+//ROUTES
+import {RootState} from 'src/state/reducers';
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 
@@ -22,9 +25,34 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
   route,
 }) => {
   const workout: IWorkoutState = route.params.workout;
+  //STATES
+  const user = useSelector((state: RootState) => state.user.user);
+  const [isUserResults, setIsUserResults] = useState(false);
   console.log(workout.data.results);
 
   const renderItem = ({item, index}: {item: string; index: number}) => {
+    const userResults = workout.data.results[item].filter(
+      result => result.attendeeId === user.uid,
+    );
+    console.log(userResults);
+    console.log(workout.data.results[item]);
+
+    if (isUserResults && userResults.length > 0) {
+      return (
+        <ResultByDate>
+          <Date>{item}</Date>
+          {userResults.map(item => (
+            <Result key={item.attendeeId}>
+              <AttendeeInfo>
+                {item.attendeeName} {item.attendeeSurname}
+              </AttendeeInfo>
+              <AttendeeResult>{item.result}</AttendeeResult>
+            </Result>
+          ))}
+        </ResultByDate>
+      );
+    }
+
     return (
       <ResultByDate>
         <Date>{item}</Date>
@@ -63,7 +91,7 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
           borderColor={theme.appColors.backgroundColorDarken}
           style={{width: 120}}
           onPress={() => {
-            return;
+            setIsUserResults(!isUserResults);
           }}
         />
       </SwitchResults>
