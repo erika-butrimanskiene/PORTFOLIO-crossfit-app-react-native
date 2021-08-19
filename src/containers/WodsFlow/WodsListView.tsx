@@ -37,31 +37,36 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
 
-  //STATES
+  //GLOBAL STATES
   const user = useSelector((state: RootState) => state.user.user);
   const wods = useSelector((state: RootState) => state.wods.wods);
 
-  const [disabledLeft, setDisabledLeft] = useState(false);
-  const [disabledRight, setDisabledRight] = useState(false);
+  //STATES
   const [disabledRegisterOrCancel, setDisabledRegisterOrCancel] =
     useState(false);
+  const [scheduleDate, setScheduleDate] = useState(new Date());
+
   //VARIABLES
-  const today = new Date();
+  let today = new Date();
   const todayDate = formatDateToDate(today);
   const todayTime = formatDateToTime(today);
+
   const sortedWodsByDate = wods.sort((a, b) => {
     return a.date < b.date ? -1 : 1;
   });
-  const todayWod = wods.filter(wod => wod.date.includes(todayDate));
-  const todayWodIndex = sortedWodsByDate.indexOf(todayWod[0]);
-  const [showWodIndex, setShowWodIndex] = useState(todayWodIndex);
+  const showWod = wods.filter(wod =>
+    wod.date.includes(formatDateToDate(scheduleDate)),
+  );
+  const showWodIndex = sortedWodsByDate.indexOf(showWod[0]);
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 7) * 7;
 
   //USE-EFFECTS
   useEffect(() => {
     setDisabledRegisterOrCancel(false);
-    if (sortedWodsByDate[showWodIndex].date < todayDate) {
-      setDisabledRegisterOrCancel(true);
+    if (showWodIndex >= 0) {
+      if (sortedWodsByDate[showWodIndex].date < todayDate) {
+        setDisabledRegisterOrCancel(true);
+      }
     }
   }, [showWodIndex]);
 
@@ -171,14 +176,10 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
       <Heading>{t('wods:todayWod')}</Heading>
       <NavigateDayContainer>
         <NavigateIcon
-          disabled={disabledLeft}
           onPress={() => {
-            setDisabledRight(false);
-            if (showWodIndex > 0) {
-              setShowWodIndex(showWodIndex - 1);
-            } else {
-              setDisabledLeft(true);
-            }
+            let currentDate = new Date(scheduleDate);
+            currentDate.setDate(currentDate.getDate() - 1);
+            setScheduleDate(currentDate);
           }}>
           <AntDesign
             name={'left'}
@@ -186,16 +187,12 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
             color={theme.appColors.accentColor}
           />
         </NavigateIcon>
-        <Day>{sortedWodsByDate[showWodIndex].date}</Day>
+        <Day>{formatDateToDate(scheduleDate)}</Day>
         <NavigateIcon
-          disabled={disabledRight}
           onPress={() => {
-            setDisabledLeft(false);
-            if (showWodIndex < sortedWodsByDate.length - 1) {
-              setShowWodIndex(showWodIndex + 1);
-            } else {
-              setDisabledRight(true);
-            }
+            let currentDate = new Date(scheduleDate);
+            currentDate.setDate(currentDate.getDate() + 1);
+            setScheduleDate(currentDate);
           }}>
           <AntDesign
             name={'right'}
@@ -204,43 +201,53 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
           />
         </NavigateIcon>
       </NavigateDayContainer>
-      <ImageContainer>
-        <Image
-          source={{
-            uri: imagesURI[imageIndex],
-          }}
-          resizeMode="cover">
-          <ImageOverlay>
-            <WodInfo>
-              <WodName>
-                {sortedWodsByDate[showWodIndex].data.workout.data.name}
-              </WodName>
-              <WodType>
-                {sortedWodsByDate[showWodIndex].data.workout.data.workoutType}
-              </WodType>
-            </WodInfo>
-            <Actions>
-              <DetailsBtn
-                onPress={() => {
-                  let data = sortedWodsByDate[showWodIndex].data.workout;
-                  navigation.navigate(ROUTES.WodDetail, {
-                    workout: data,
-                    image: imagesURI[imageIndex],
-                  });
-                }}>
-                <DetailsText>Details</DetailsText>
-              </DetailsBtn>
-            </Actions>
-          </ImageOverlay>
-        </Image>
-      </ImageContainer>
-      <ScheduleList>
-        <FlatList
-          data={sortedWodsByDate[showWodIndex].data.times}
-          keyExtractor={item => item.wodTime}
-          renderItem={renderItem}
-        />
-      </ScheduleList>
+
+      {showWodIndex >= 0 ? (
+        <>
+          <ImageContainer>
+            <Image
+              source={{
+                uri: imagesURI[imageIndex],
+              }}
+              resizeMode="cover">
+              <ImageOverlay>
+                <WodInfo>
+                  <WodName>
+                    {sortedWodsByDate[showWodIndex].data.workout.data.name}
+                  </WodName>
+                  <WodType>
+                    {
+                      sortedWodsByDate[showWodIndex].data.workout.data
+                        .workoutType
+                    }
+                  </WodType>
+                </WodInfo>
+                <Actions>
+                  <DetailsBtn
+                    onPress={() => {
+                      let data = sortedWodsByDate[showWodIndex].data.workout;
+                      navigation.navigate(ROUTES.WodDetail, {
+                        workout: data,
+                        image: imagesURI[imageIndex],
+                      });
+                    }}>
+                    <DetailsText>Details</DetailsText>
+                  </DetailsBtn>
+                </Actions>
+              </ImageOverlay>
+            </Image>
+          </ImageContainer>
+          <ScheduleList>
+            <FlatList
+              data={sortedWodsByDate[showWodIndex].data.times}
+              keyExtractor={item => item.wodTime}
+              renderItem={renderItem}
+            />
+          </ScheduleList>
+        </>
+      ) : (
+        <NoWodsMessage>{t('wods:noWodsToday')}</NoWodsMessage>
+      )}
     </Container>
   );
 };
@@ -388,6 +395,13 @@ const UnregisterText = styled.Text`
 
 const AdminText = styled.Text`
   font-size: 18px;
+  text-align: center;
+  color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const NoWodsMessage = styled.Text`
+  margin-top: 40px;
+  font-size: 20px;
   text-align: center;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
