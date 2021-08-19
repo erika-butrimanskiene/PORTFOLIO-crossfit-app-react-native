@@ -46,6 +46,14 @@ const Navigator: React.FC = () => {
   const errorText = t(`authErrors:${error}`);
   const successMsgText = t(`succesNotifications:${successMsg}`);
 
+  useEffect(() => {
+    if (successMsgText !== '') {
+      setTimeout(() => {
+        dispatch(actions.messages.clearMessages());
+      }, 2000);
+    }
+  }, [successMsgText]);
+
   return (
     <NavigationContainer>
       {errorText !== '' && (

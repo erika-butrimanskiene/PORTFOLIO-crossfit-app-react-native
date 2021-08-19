@@ -2,6 +2,16 @@ import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import {IWodState, IAttendee, IWodTime} from '../state/wods/wodsInterface';
 import {database} from './database';
 
+export const editUserProfilePhoto = async (
+  userUid: string,
+  photoUrl: string,
+): Promise<any> => {
+  database
+    .ref(`/users/${userUid}/imageUrl`)
+    .set(photoUrl)
+    .then(() => console.log('Data set.'));
+};
+
 export const convertWorkoutsObjectToArray = (
   dataFromDatabase: any,
 ): IWorkoutState[] => {

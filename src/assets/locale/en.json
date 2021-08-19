@@ -48,7 +48,8 @@
     "enterResult": "Please enter result"
   },
   "succesNotifications": {
-    "successCreate": "Successfully created." 
+    "successCreate": "Successfully created.",
+    "successUpload": "Image successfully uploaded."
   },
   "confirmationModal": {
     "areSure": "Are you sure?"

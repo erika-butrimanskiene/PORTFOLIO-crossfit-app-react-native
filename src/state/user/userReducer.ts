@@ -16,6 +16,7 @@ const userReducer = (
         ...state,
         user: action.payload as IUser,
       };
+
     case constants.user.SET_USER_CLEAR:
       return {
         ...state,

@@ -48,7 +48,8 @@
     "enterResult": "Įveskite rezultatą"
   },
   "succesNotifications": {
-    "successCreate": "Sėkmingai sukurta." 
+    "successCreate": "Sėkmingai sukurta.",
+    "successUpload": "Nuotrauka sėkmingai įkelta."
   },
   "confirmationModal": {
     "areSure": "Ar esate tikri?"

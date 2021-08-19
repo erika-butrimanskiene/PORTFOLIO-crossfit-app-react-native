@@ -43,6 +43,7 @@ function* handleRegistration(action: {
           email: `${response.email}`,
           name: action.payload.userName,
           surname: action.payload.userSurname,
+          imageUrl: '',
           admin: false,
         })
         .then(() => console.log('Data set.'));
@@ -119,6 +120,8 @@ function* handleLoginFacebook() {
           email: `${response.email}`,
           name: `${response.name}`,
           surname: `${response.surname}`,
+          imageUrl: '',
+          admin: false,
         })
         .then(() => console.log('Data set.'));
 
