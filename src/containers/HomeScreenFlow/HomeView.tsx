@@ -19,7 +19,7 @@ import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
 import {imagesURI} from '../../utils/workoutsImages';
 //COMPONENTS
-import HomeViewLink from '../../components/HomeViewLink';
+import HomeViewLink from '../../components/Links/HomeViewLink';
 
 //VARIABLES
 const options = [

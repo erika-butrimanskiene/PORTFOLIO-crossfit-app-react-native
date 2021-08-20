@@ -4,33 +4,45 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   View,
-  ImageBackground,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import storage from '@react-native-firebase/storage';
 
 //LIBRARIES
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
 //ROUTES
 import {actions} from '../../state/actions';
 import {RootState} from 'src/state/reducers';
 //UTILS-DATABASE
-import {editUserProfilePhoto} from '../../utils/firebaseDatabaseAPI';
+import {
+  editUserProfilePhoto,
+  editUserInfo,
+} from '../../utils/firebaseDatabaseAPI';
+//COMPONENTS
+import SmallButton from '../../components/Buttons/SmallBtn';
+import {Keyboard} from 'react-native';
 
 interface IProfileViewProps {
   theme: DefaultTheme;
 }
 
 const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
 
   //GLOBAL STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
-  //STATES
+  //LOCAL STATES
   const [defaultImageFromStorage, setDefaultImageFromStorage] = useState('');
+  const [isInputActive, setIsInputActive] = useState(false);
+  const [userName, setUserName] = useState(user.name);
+  const [userSurname, setUserSurname] = useState(user.surname);
+  const [savingError, setSavingError] = useState('');
 
   useEffect(() => {
     const getUrl = async () => {
@@ -53,10 +65,20 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
         const userPhotoUrl = await storage()
           .ref(`usersPhotos/${user.uid}.jpeg`)
           .getDownloadURL();
-        await editUserProfilePhoto(user.uid, userPhotoUrl);
+        editUserProfilePhoto(user.uid, userPhotoUrl);
         dispatch(actions.messages.setSuccessMessage('successUpload'));
       }
     });
+  };
+
+  const handleSave = () => {
+    if (userName !== '' && userSurname !== '') {
+      editUserInfo(user.uid, userName, userSurname);
+      setIsInputActive(false);
+      Keyboard.dismiss();
+    } else {
+      setSavingError(t('user:inputEmpty'));
+    }
   };
 
   return (
@@ -87,8 +109,43 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
               </Add>
             </TouchableOpacity>
           </View>
-          <Heading>Welcome, {user.name}</Heading>
-          <Text>{user.email}</Text>
+          <UserInfo>
+            <UserInfoItem>
+              <UserNameSurname
+                value={userName}
+                onFocus={() => setIsInputActive(true)}
+                onChangeText={text => setUserName(text)}
+              />
+              <MaterialCommunityIcons
+                name={'account-edit'}
+                size={20}
+                color={`${theme.appColors.whiteColor}`}
+              />
+            </UserInfoItem>
+            <UserInfoItem>
+              <UserNameSurname
+                value={userSurname}
+                onFocus={() => setIsInputActive(true)}
+                onChangeText={text => setUserSurname(text)}
+              />
+              <MaterialCommunityIcons
+                name={'account-edit'}
+                size={20}
+                color={`${theme.appColors.whiteColor}`}
+              />
+            </UserInfoItem>
+            {savingError !== '' && <ErrorMsg>{savingError}</ErrorMsg>}
+          </UserInfo>
+          {isInputActive && (
+            <ButtonContainer>
+              <SmallButton
+                border={false}
+                text={t('user:save')}
+                bgColor={theme.appColors.primaryColorLighter}
+                onPress={handleSave}
+              />
+            </ButtonContainer>
+          )}
         </>
       )}
     </Container>
@@ -104,20 +161,13 @@ const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
-const Heading = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
-  font-size: 30px;
-`;
-
-const Text = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
 const ImageContainer = styled.View`
   width: 100px;
   height: 100px;
   background-color: ${({theme}) => theme.appColors.whiteColor};
   border-radius: 100px;
+  border-width: 1px;
+  border-color: ${({theme}) => theme.appColors.whiteColor};
   overflow: hidden;
 `;
 
@@ -136,6 +186,40 @@ const Add = styled.View`
   border-radius: 30px;
   align-items: center;
   justify-content: center;
+`;
+
+const UserInfo = styled.View`
+  width: 60%;
+  margin: 20px 0px;
+  align-items: center;
+`;
+
+const UserInfoItem = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-bottom-width: 1px;
+  border-bottom-color: ${({theme}) => theme.appColors.backgroundColorVeryLight};
+`;
+
+const UserNameSurname = styled.TextInput`
+  width: 80%;
+  margin: 5px;
+  padding: 3px;
+  color: ${({theme}) => theme.appColors.whiteColor};
+  text-align: center;
+  font-size: 20px;
+`;
+
+const ErrorMsg = styled.Text`
+  padding: 5px 0px;
+  font-style: italic;
+  color: ${({theme}) => theme.appColors.accentColor};
+`;
+
+const ButtonContainer = styled.View`
+  width: 20%;
 `;
 
 export default withTheme(ProfileView);

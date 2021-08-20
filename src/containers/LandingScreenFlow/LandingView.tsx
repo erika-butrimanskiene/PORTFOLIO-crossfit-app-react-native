@@ -11,7 +11,7 @@ import {RootState} from 'src/state/reducers';
 import ROUTES from '../../routes/Routes';
 import {RootStackParamList} from 'src/routes/Interface';
 //COMPONENTS
-import Button from '../../components/Button';
+import Button from '../../components/Buttons/Button';
 
 //VARIABLES
 const options = [

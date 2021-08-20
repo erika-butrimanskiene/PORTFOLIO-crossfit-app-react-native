@@ -2,14 +2,35 @@ import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import {IWodState, IAttendee, IWodTime} from '../state/wods/wodsInterface';
 import {database} from './database';
 
-export const editUserProfilePhoto = async (
-  userUid: string,
-  photoUrl: string,
-): Promise<any> => {
+export const editUserProfilePhoto = (userUid: string, photoUrl: string) => {
   database
     .ref(`/users/${userUid}/imageUrl`)
     .set(photoUrl)
     .then(() => console.log('Data set.'));
+};
+
+export const editUserInfo = (
+  userUid: string,
+  userName: string,
+  userSurname: string,
+) => {
+  database
+    .ref(`/users/${userUid}`)
+    .once('value')
+    .then(async snapshot => {
+      let dataFromDatabase = snapshot.val();
+
+      database
+        .ref(`/users/${userUid}`)
+        .set({
+          admin: dataFromDatabase.admin,
+          email: dataFromDatabase.email,
+          imageUrl: dataFromDatabase.imageUrl,
+          name: userName,
+          surname: userSurname,
+        })
+        .then(() => console.log('Data set.'));
+    });
 };
 
 export const convertWorkoutsObjectToArray = (
@@ -65,7 +86,7 @@ export const createWod = async (
   times: object[],
   workout: {id: string},
 ): Promise<any> => {
-  database
+  await database
     .ref(`/WODs/${date}/crossfit`)
     .set({
       workout,

@@ -7,7 +7,7 @@ import {Picker} from '@react-native-picker/picker';
 
 import {createTimeSchema} from '../../utils/formsValidations';
 
-import FormInput from '../../components/FormInput';
+import FormInput from '../Inputs/FormInput';
 interface ICreateWodTimesFormProps {
   theme: DefaultTheme;
   setWodsTimes: any;

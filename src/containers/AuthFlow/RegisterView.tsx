@@ -15,9 +15,9 @@ import {RootState} from 'src/state/reducers';
 //UTILS
 import {registerSchema} from '../../utils/formsValidations';
 //COMPONENTS
-import AuthFormInput from '../../components/AuthFormInput';
-import SocialButton from '../../components/SocialButton';
-import Button from '../../components/Button';
+import AuthFormInput from '../../components/Inputs/AuthFormInput';
+import SocialButton from '../../components/Buttons/SocialButton';
+import Button from '../../components/Buttons/Button';
 
 type RegisterViewScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

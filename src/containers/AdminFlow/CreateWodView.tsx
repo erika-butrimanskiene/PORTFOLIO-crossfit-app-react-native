@@ -22,8 +22,8 @@ import {createWod} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IWorkoutState} from '../../state/workouts/workoutsInterface';
 //COMPONENTS
-import Button from '../../components/Button';
-import FormInput from '../../components/FormInput';
+import Button from '../../components/Buttons/Button';
+import FormInput from '../../components/Inputs/FormInput';
 import CreateWodTimesForm from '../../components/Formik/CreateWodTimesForm';
 
 type CreateWodScreenNavigationProp = StackNavigationProp<

@@ -65,7 +65,9 @@
     "resultExist": "Rezultatas įvestas",
     "cancel": "Atšaukti",
     "submit": "Pateikti",
-    "noActivitiesHistory": "Nėra treniruočių istorijos..."
+    "save": "Išsaugoti",
+    "noActivitiesHistory": "Nėra treniruočių istorijos...",
+    "inputEmpty": "*Vardas ir pavardė yra privalomi."
   },
   "admin": {
     "workoutsList": "Treniruočių sąrašas",
@@ -85,11 +87,11 @@
       "attendeesNumberRequired": "Nurodykite dalyvių skaičių",
       "wodNameRequired": "Pasirinkite treniruotę"
     },
-    "workoutName": "Treniruotės pavadinimas",
-    "workoutWeights": "Treniruotės svoriai",
-    "workoutType": "Treniruotės tipas",
-    "countResult": "Kieno rezultatą skaičiuoti",
-    "exerciseDefinition": "Pratimo aprašymas",
+    "workoutName": "Pavadinimas, pvz. KAREN",
+    "workoutWeights": "Svoriai, pvz. OP-16/12, F-12/10, W-10/8",
+    "workoutType": "Tipas, pvz. AMRAP 20",
+    "countResult": "Kieno rezultatą skaičiuoti, pvz. Tavo laikas",
+    "exerciseDefinition": "Pratimas, pvz. Wall balls (OP, F-150, W-100)",
     "createBtn": "Sukurti",
     "addTimeBtn": "Pridėti laiką",
     "createNewWorkoutBtn": "Sukurti naują",

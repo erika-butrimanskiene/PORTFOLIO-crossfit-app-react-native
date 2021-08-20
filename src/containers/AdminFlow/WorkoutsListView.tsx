@@ -21,8 +21,8 @@ import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 //COMPONENTS
-import Button from '../../components/Button';
-import ConfirmationModal from '../../components/ConfirmationModal';
+import Button from '../../components/Buttons/Button';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 
 type WorkoutsListViewNavigationProp = StackNavigationProp<
   RootStackParamList,

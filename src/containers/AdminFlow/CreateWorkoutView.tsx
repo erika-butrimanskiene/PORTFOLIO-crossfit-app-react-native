@@ -17,8 +17,8 @@ import {createWorkoutSchema} from '../../utils/formsValidations';
 //UTILS-DATABASE
 import {createWorkout} from '../../utils/firebaseDatabaseAPI';
 //COMPONENTS
-import Button from '../../components/Button';
-import FormInput from '../../components/FormInput';
+import Button from '../../components/Buttons/Button';
+import FormInput from '../../components/Inputs/FormInput';
 
 type CreateWorkoutViewNavigationProp = StackNavigationProp<
   RootStackParamList,

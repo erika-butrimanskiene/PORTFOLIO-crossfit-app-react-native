@@ -65,7 +65,9 @@
     "resultExist": "Result added",
     "cancel": "Cancel",
     "submit": "Submit",
-    "noActivitiesHistory": "No activities history..."
+    "save": "Save",
+    "noActivitiesHistory": "No activities history...",
+    "inputEmpty": "*Name and surname are required."
   },
   "admin": {
     "workoutsList": "Workouts List",
@@ -85,11 +87,11 @@
       "attendeesNumberRequired": "Attendees number required",
       "wodNameRequired": "WOD selection required"
     },
-    "workoutName": "Workout name",
-    "workoutWeights": "Workout weights",
-    "workoutType": "Workout type",
-    "countResult": "Count result of",
-    "exerciseDefinition": "Exercise definition",
+    "workoutName": "Name, ex. KAREN",
+    "workoutWeights": "Weights, ex. OP-16/12, F-12/10, W-10/8",
+    "workoutType": "Type, ex. AMRAP 20",
+    "countResult": "Count result of, ex. Your time",
+    "exerciseDefinition": "Exercise, ex. Wall balls (OP, F-150, W-100)",
     "createBtn": "Create",
     "addTimeBtn": "Add time",
     "createNewWorkoutBtn": "Create new",

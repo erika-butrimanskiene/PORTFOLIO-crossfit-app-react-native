@@ -21,8 +21,9 @@ import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IAttendee, IWodTime} from 'src/state/wods/wodsInterface';
 //COMPONENTS
-import ConfirmationModal from '../../components/ConfirmationModal';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import WodTimeInfo from '../../components/WodTimeInfo';
+import SmallBtn from '../../components/Buttons/SmallBtn';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -126,7 +127,10 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
         <ScheduleActions>
           {Object.values(attendees).filter(item => item.uid === user.uid)
             .length === 0 ? (
-            <RegisterBtn
+            <SmallBtn
+              text={t('wods:register')}
+              bgColor={theme.appColors.primaryColorLighter}
+              border={false}
               onPress={() => {
                 if (
                   disabledRegisterOrCancel ||
@@ -139,11 +143,13 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
                 } else {
                   handleRegister(index);
                 }
-              }}>
-              <RegisterText>{t('wods:register')}</RegisterText>
-            </RegisterBtn>
+              }}
+            />
           ) : (
-            <UnregisterBtn
+            <SmallBtn
+              text={t('wods:cancel')}
+              bgColor={theme.appColors.backgroundColor}
+              border={true}
               onPress={() => {
                 if (
                   disabledRegisterOrCancel ||
@@ -156,15 +162,17 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
                 } else {
                   handleUnregister(index);
                 }
-              }}>
-              <UnregisterText>{t('wods:cancel')}</UnregisterText>
-            </UnregisterBtn>
+              }}
+            />
           )}
 
           {user.admin && (
-            <AdminBtn>
-              <AdminText>Admin</AdminText>
-            </AdminBtn>
+            <SmallBtn
+              text={'Attendees'}
+              bgColor={theme.appColors.primaryColorDarken}
+              border={false}
+              onPress={() => {}}
+            />
           )}
         </ScheduleActions>
       </ScheduleItem>
@@ -357,47 +365,6 @@ const ScheduleItem = styled.View`
 `;
 
 const ScheduleActions = styled.View``;
-
-const RegisterBtn = styled.TouchableOpacity`
-  margin: 7px 0px;
-  border-radius: 30px;
-  padding: 5px 15px;
-  background-color: ${({theme}) => theme.appColors.primaryColorLighter};
-`;
-
-const UnregisterBtn = styled.TouchableOpacity`
-  margin: 7px 0px;
-  border-radius: 30px;
-  padding: 5px 15px;
-  background-color: ${({theme}) => theme.appColors.backgroundColor_opacity50};
-  border-width: 2px;
-  border-color: ${({theme}) => theme.appColors.accentColor_opacity50};
-`;
-
-const AdminBtn = styled.TouchableOpacity`
-  margin: 7px 0px;
-  border-radius: 30px;
-  padding: 5px 15px;
-  background-color: ${({theme}) => theme.appColors.primaryColorDarken};
-`;
-
-const RegisterText = styled.Text`
-  font-size: 18px;
-  text-align: center;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const UnregisterText = styled.Text`
-  font-size: 18px;
-  text-align: center;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const AdminText = styled.Text`
-  font-size: 18px;
-  text-align: center;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
 
 const NoWodsMessage = styled.Text`
   margin-top: 40px;

@@ -33,6 +33,7 @@ const FormInput: React.FC<IFormInputProps> = ({
     <InputContainer focus={isInputActive} bgColor={bgColor}>
       <Input
         value={value}
+        multiline={true}
         onChangeText={onChangeText}
         placeholder={placeholderText}
         placeholderTextColor={placeholderColor}
@@ -74,7 +75,7 @@ const Input = styled.TextInput`
   color: ${({theme}) => theme.appColors.whiteColor};
   text-decoration: none;
   padding-left: 10px;
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const Icon = styled.TouchableOpacity`

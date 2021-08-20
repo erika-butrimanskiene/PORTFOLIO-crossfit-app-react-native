@@ -9,7 +9,7 @@ import {RootStackParamList} from 'src/routes/Interface';
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 //COMPONENTS
-import Button from '../../components/Button';
+import Button from '../../components/Buttons/Button';
 
 type WodDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

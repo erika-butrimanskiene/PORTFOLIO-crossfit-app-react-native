@@ -18,7 +18,7 @@ import {getWorkoutById, addResult} from '../../utils/firebaseDatabaseAPI';
 //INTERFACES
 import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
-import Link from '../../components/Link';
+import Link from '../../components/Links/Link';
 
 type ActivitiesHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

@@ -19,9 +19,9 @@ import {removeAattendee} from '../../utils/firebaseDatabaseAPI';
 import {IWodState} from 'src/state/wods/wodsInterface';
 import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
-import ConfirmationModal from '../../components/ConfirmationModal';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import WodTimeInfo from '../../components/WodTimeInfo';
-import Link from '../../components/Link';
+import Link from '../../components/Links/Link';
 
 type ActivityBoardtScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

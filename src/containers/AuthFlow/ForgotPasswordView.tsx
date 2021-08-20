@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 //LIBRARIES
 import AntDesign from 'react-native-vector-icons/AntDesign';
 //COMPONENTS
-import Button from '../../components/Button';
+import Button from '../../components/Buttons/Button';
 
 interface IForgotPasswordViewProps {
   theme: DefaultTheme;

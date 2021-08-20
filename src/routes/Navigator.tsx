@@ -27,7 +27,7 @@ import ActivityBoard from '../containers/UserFlow/ActivityBoard';
 import ActivitiesHistory from '../containers/UserFlow/ActivitiesHistory';
 import WorkoutResultsView from '../containers/UserFlow/WorkoutResultsView';
 //COMPONENTS
-import NotificationModal from '../components/NotificationModal';
+import NotificationModal from '../components/Modals/NotificationModal';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
