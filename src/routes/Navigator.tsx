@@ -9,7 +9,7 @@ import {RootState} from 'src/state/reducers';
 //ROUTES
 import ROUTES from './Routes';
 import {actions} from '../state/actions';
-import {database} from '../utils/database';
+import {database} from '../utils/firebase/database';
 import {RootStackParamList} from './Interface';
 //SCREENS
 import LandingView from '../containers/LandingScreenFlow/LandingView';

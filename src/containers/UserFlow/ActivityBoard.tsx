@@ -13,8 +13,8 @@ import {RootStackParamList} from 'src/routes/Interface';
 import {getUserUpcomingWods} from '../../utils/getUserFilteredWods';
 import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
-import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
-import {removeAattendee} from '../../utils/firebaseDatabaseAPI';
+import {getWorkoutById} from '../../utils/firebase/firebaseDatabaseAPI';
+import {removeAattendee} from '../../utils/firebase/firebaseDatabaseAPI';
 //INTERFACES
 import {IWodState} from 'src/state/wods/wodsInterface';
 import {IuserWod} from 'src/state/user/userInterface';

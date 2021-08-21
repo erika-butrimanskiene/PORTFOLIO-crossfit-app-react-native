@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StatusBar,
   ActivityIndicator,
   TouchableOpacity,
   View,
+  Text,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
@@ -14,17 +15,26 @@ import storage from '@react-native-firebase/storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {AreaChart, XAxis, YAxis, Grid} from 'react-native-svg-charts';
+import * as shape from 'd3-shape';
+
 //ROUTES
 import {actions} from '../../state/actions';
 import {RootState} from 'src/state/reducers';
+//UTILS
+import {
+  getLastTwelveEveryMonthWodsLenght,
+  getThisYearFromAnyMonthWodsLenght,
+} from '../../utils/getUserFilteredWods';
 //UTILS-DATABASE
 import {
   editUserProfilePhoto,
   editUserInfo,
-} from '../../utils/firebaseDatabaseAPI';
+} from '../../utils/firebase/firebaseDatabaseAPI';
 //COMPONENTS
 import SmallButton from '../../components/Buttons/SmallBtn';
 import {Keyboard} from 'react-native';
+import {join} from 'lodash';
 
 interface IProfileViewProps {
   theme: DefaultTheme;
@@ -37,12 +47,18 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
   //GLOBAL STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
+  const userWods = useSelector((state: RootState) => state.user.userWods);
+
   //LOCAL STATES
   const [defaultImageFromStorage, setDefaultImageFromStorage] = useState('');
   const [isInputActive, setIsInputActive] = useState(false);
   const [userName, setUserName] = useState(user.name);
   const [userSurname, setUserSurname] = useState(user.surname);
   const [savingError, setSavingError] = useState('');
+  const [lastTwelveEveryMonthWodsLenght, setLastTwelveMonthsWodsLenght] =
+    useState([]);
+  const [thisYearWodsLength, setThisYearWodsLength] = useState(null);
+  const [thisMonthWodsLength, setThisMonthWodsLength] = useState(null);
 
   useEffect(() => {
     const getUrl = async () => {
@@ -52,6 +68,14 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
       setDefaultImageFromStorage(defaultPhoto);
     };
     getUrl();
+    setLastTwelveMonthsWodsLenght(getLastTwelveEveryMonthWodsLenght(userWods));
+    setThisYearWodsLength(getThisYearFromAnyMonthWodsLenght(userWods, '01'));
+    setThisMonthWodsLength(
+      getThisYearFromAnyMonthWodsLenght(
+        userWods,
+        (new Date().getMonth() + 1).toString(),
+      ),
+    );
   }, []);
 
   const handleChoosePhoto = () => {
@@ -88,64 +112,126 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <View>
-            <TouchableOpacity onPress={handleChoosePhoto}>
-              <ImageContainer>
-                {user.imageUrl !== '' && (
-                  <Image
-                    source={{
-                      uri: user.imageUrl,
-                    }}></Image>
-                )}
-                {defaultImageFromStorage !== '' && (
-                  <Image
-                    source={{
-                      uri: defaultImageFromStorage,
-                    }}></Image>
-                )}
-              </ImageContainer>
-              <Add>
-                <AntDesign name="plus" size={25} color="#ffffff" />
-              </Add>
-            </TouchableOpacity>
-          </View>
-          <UserInfo>
-            <UserInfoItem>
-              <UserNameSurname
-                value={userName}
-                onFocus={() => setIsInputActive(true)}
-                onChangeText={text => setUserName(text)}
+          <User>
+            <View>
+              <TouchableOpacity onPress={handleChoosePhoto}>
+                <ImageContainer>
+                  {user.imageUrl !== '' && (
+                    <Image
+                      source={{
+                        uri: user.imageUrl,
+                      }}></Image>
+                  )}
+                  {defaultImageFromStorage !== '' && (
+                    <Image
+                      source={{
+                        uri: defaultImageFromStorage,
+                      }}></Image>
+                  )}
+                </ImageContainer>
+                <Add>
+                  <AntDesign name="plus" size={25} color="#ffffff" />
+                </Add>
+              </TouchableOpacity>
+            </View>
+            <UserInfo>
+              <UserInfoItem>
+                <UserNameSurname
+                  value={userName}
+                  onFocus={() => setIsInputActive(true)}
+                  onChangeText={text => setUserName(text)}
+                />
+                <MaterialCommunityIcons
+                  name={'account-edit'}
+                  onPress={() => setIsInputActive(true)}
+                  size={20}
+                  color={`${theme.appColors.textColorLightGray}`}
+                />
+              </UserInfoItem>
+              <UserInfoItem>
+                <UserNameSurname
+                  value={userSurname}
+                  onFocus={() => setIsInputActive(true)}
+                  onChangeText={text => setUserSurname(text)}
+                />
+                <MaterialCommunityIcons
+                  name={'account-edit'}
+                  onPress={() => {
+                    setIsInputActive(true);
+                  }}
+                  size={20}
+                  color={`${theme.appColors.textColorLightGray}`}
+                />
+              </UserInfoItem>
+              {savingError !== '' && <ErrorMsg>{savingError}</ErrorMsg>}
+            </UserInfo>
+            {isInputActive && (
+              <ButtonContainer>
+                <SmallButton
+                  border={false}
+                  text={t('user:save')}
+                  bgColor={theme.appColors.accentColor}
+                  onPress={handleSave}
+                />
+              </ButtonContainer>
+            )}
+          </User>
+          <Activity>
+            <YearAndMonthActivity>
+              <WodsNumber>
+                <MaterialCommunityIcons
+                  name={'weight-lifter'}
+                  size={35}
+                  color={`${theme.appColors.primaryColorLighter}`}
+                />
+
+                <WodsNumberText>
+                  {thisYearWodsLength} wods this year
+                </WodsNumberText>
+              </WodsNumber>
+              <WodsNumber>
+                <MaterialCommunityIcons
+                  name={'kettlebell'}
+                  size={35}
+                  color={`${theme.appColors.primaryColorLighter}`}
+                />
+
+                <WodsNumberText>
+                  {thisMonthWodsLength} wods this month
+                </WodsNumberText>
+              </WodsNumber>
+            </YearAndMonthActivity>
+            <ActivityChart>
+              <YAxis
+                style={{height: 100}}
+                data={lastTwelveEveryMonthWodsLenght}
+                numberOfTicks={3}
+                min={0}
+                formatLabel={(value, index) => value}
+                contentInset={{top: 15, bottom: 10}}
+                svg={{
+                  fontSize: 15,
+                  fill: theme.appColors.textColorLightGray,
+                }}
               />
-              <MaterialCommunityIcons
-                name={'account-edit'}
-                size={20}
-                color={`${theme.appColors.whiteColor}`}
-              />
-            </UserInfoItem>
-            <UserInfoItem>
-              <UserNameSurname
-                value={userSurname}
-                onFocus={() => setIsInputActive(true)}
-                onChangeText={text => setUserSurname(text)}
-              />
-              <MaterialCommunityIcons
-                name={'account-edit'}
-                size={20}
-                color={`${theme.appColors.whiteColor}`}
-              />
-            </UserInfoItem>
-            {savingError !== '' && <ErrorMsg>{savingError}</ErrorMsg>}
-          </UserInfo>
-          {isInputActive && (
-            <ButtonContainer>
-              <SmallButton
-                border={false}
-                text={t('user:save')}
-                bgColor={theme.appColors.primaryColorLighter}
-                onPress={handleSave}
-              />
-            </ButtonContainer>
-          )}
+              <AreaChart
+                style={{
+                  height: 100,
+                  width: 270,
+                  marginLeft: 10,
+                  marginBottom: 10,
+                }}
+                data={lastTwelveEveryMonthWodsLenght}
+                contentInset={{top: 15, bottom: 15}}
+                curve={shape.curveNatural}
+                svg={{
+                  fill: theme.appColors.primaryColorLighter,
+                }}></AreaChart>
+            </ActivityChart>
+            <ActivityChartTitle>
+              wods number of last 12 months/per month
+            </ActivityChartTitle>
+          </Activity>
         </>
       )}
     </Container>
@@ -157,23 +243,32 @@ const Container = styled.View`
   padding-top: 60px;
   font-size: 20px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
+const User = styled.View`
+  width: 80%;
+  border-radius: 30px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({theme}) => theme.appColors.backgroundColorDarken};
+`;
+
 const ImageContainer = styled.View`
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   background-color: ${({theme}) => theme.appColors.whiteColor};
   border-radius: 100px;
-  border-width: 1px;
-  border-color: ${({theme}) => theme.appColors.whiteColor};
+  border-width: 2px;
+  border-color: ${({theme}) => theme.appColors.accentColor};
   overflow: hidden;
 `;
 
 const Image = styled.ImageBackground`
-  width: 100px;
-  height: 110px;
+  width: 120px;
+  height: 130px;
 `;
 
 const Add = styled.View`
@@ -189,7 +284,7 @@ const Add = styled.View`
 `;
 
 const UserInfo = styled.View`
-  width: 60%;
+  width: 90%;
   margin: 20px 0px;
   align-items: center;
 `;
@@ -199,8 +294,8 @@ const UserInfoItem = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
-  border-bottom-width: 1px;
-  border-bottom-color: ${({theme}) => theme.appColors.backgroundColorVeryLight};
+  border-bottom-width: 1.5px;
+  border-bottom-color: ${({theme}) => theme.appColors.backgroundColorLighter};
 `;
 
 const UserNameSurname = styled.TextInput`
@@ -219,7 +314,44 @@ const ErrorMsg = styled.Text`
 `;
 
 const ButtonContainer = styled.View`
-  width: 20%;
+  width: 50%;
+`;
+
+const Activity = styled.View`
+  width: 90%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ActivityChart = styled.View`
+  margin-top: 10px;
+  padding-top: 30px;
+  margin-right: 20px;
+  flex-direction: row;
+`;
+
+const ActivityChartTitle = styled.Text`
+  width: 80%;
+  color: ${({theme}) => theme.appColors.textColorLightGray};
+  font-size: 16px;
+  text-align: center;
+`;
+
+const YearAndMonthActivity = styled.View`
+  width: 70%;
+  padding-top: 30px;
+`;
+const WodsNumber = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const WodsNumberText = styled.Text`
+  padding-left: 10px;
+  color: ${({theme}) => theme.appColors.whiteColor};
+  font-size: 19px;
 `;
 
 export default withTheme(ProfileView);

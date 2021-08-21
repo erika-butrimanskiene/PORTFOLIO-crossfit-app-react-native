@@ -15,7 +15,7 @@ import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
 import {createWorkoutSchema} from '../../utils/formsValidations';
 //UTILS-DATABASE
-import {createWorkout} from '../../utils/firebaseDatabaseAPI';
+import {createWorkout} from '../../utils/firebase/firebaseDatabaseAPI';
 //COMPONENTS
 import Button from '../../components/Buttons/Button';
 import FormInput from '../../components/Inputs/FormInput';

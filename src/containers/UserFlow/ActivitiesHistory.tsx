@@ -14,7 +14,10 @@ import {RootStackParamList} from 'src/routes/Interface';
 import {getUserPreviousWods} from '../../utils/getUserFilteredWods';
 import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
-import {getWorkoutById, addResult} from '../../utils/firebaseDatabaseAPI';
+import {
+  getWorkoutById,
+  addResult,
+} from '../../utils/firebase/firebaseDatabaseAPI';
 //INTERFACES
 import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
@@ -269,8 +272,10 @@ const WodDate = styled.Text`
 `;
 
 const WodInfo = styled.View`
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin: 10px 0px;
   padding: 15px;
   border-radius: 5px;
@@ -278,6 +283,7 @@ const WodInfo = styled.View`
 `;
 
 const WorkoutName = styled.Text`
+  width: 60%;
   font-size: 23px;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;

@@ -8,7 +8,7 @@ export const theme: DefaultTheme = {
     backgroundColor_opacity20: '#21212132',
     backgroundColorDarken: '#121212',
     backgroundColorLighter: '#2E2E2E',
-    backgroundColorVeryLight: '#424242',
+    backgroundColorVeryLight: '#535353',
     primaryColorDarken: '#2c298c',
     primaryColorLighter: '#5853F2',
     accentColor: '#ff3ca5',

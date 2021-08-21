@@ -18,7 +18,7 @@ import {RootStackParamList} from 'src/routes/Interface';
 import {createWodSchema} from '../../utils/formsValidations';
 import {formatDateToDate} from '../../utils/dateFormating';
 //UTILS-DATABASE
-import {createWod} from '../../utils/firebaseDatabaseAPI';
+import {createWod} from '../../utils/firebase/firebaseDatabaseAPI';
 //INTERFACES
 import {IWorkoutState} from '../../state/workouts/workoutsInterface';
 //COMPONENTS

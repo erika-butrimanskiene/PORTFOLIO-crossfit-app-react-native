@@ -1,8 +1,8 @@
-import {database} from '../../utils/database';
+import {database} from '../../utils/firebase/database';
 import {EventChannel, eventChannel} from 'redux-saga';
 import {call, take, put} from 'redux-saga/effects';
 import {actions} from '../actions';
-import {convertWorkoutsObjectToArray} from '../../utils/firebaseDatabaseAPI';
+import {convertWorkoutsObjectToArray} from '../../utils/firebase/firebaseDatabaseAPI';
 import {IWorkoutState} from './workoutsInterface';
 
 const workoutsChannel = () => {

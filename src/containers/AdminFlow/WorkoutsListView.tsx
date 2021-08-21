@@ -16,8 +16,8 @@ import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
 import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
-import {getWorkoutById} from '../../utils/firebaseDatabaseAPI';
-import {deleteWorkout} from '../../utils/firebaseDatabaseAPI';
+import {getWorkoutById} from '../../utils/firebase/firebaseDatabaseAPI';
+import {deleteWorkout} from '../../utils/firebase/firebaseDatabaseAPI';
 //INTERFACES
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 //COMPONENTS

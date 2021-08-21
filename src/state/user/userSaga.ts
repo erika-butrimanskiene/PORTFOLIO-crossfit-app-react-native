@@ -1,14 +1,14 @@
 import {call, put, takeLatest, fork} from 'redux-saga/effects';
 import {actions} from '../actions';
 import {constants} from '../constants';
-import {database} from '../../utils/database';
+import {database} from '../../utils/firebase/database';
 import {
   register,
   login,
   fbLogin,
   logout,
   IFirebaseAuth,
-} from '../../utils/firebaseAuthAPI';
+} from '../../utils/firebase/firebaseAuthAPI';
 import watchUser from './userWatcherSaga';
 import watchWods from '../wods/wodsWatcherSaga';
 import {AnyAction} from 'redux';

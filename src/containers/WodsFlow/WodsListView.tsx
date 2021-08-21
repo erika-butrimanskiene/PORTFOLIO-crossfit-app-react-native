@@ -17,7 +17,10 @@ import {RootStackParamList} from 'src/routes/Interface';
 import {imagesURI} from '../../utils/workoutsImages';
 import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
 //UTILS-DATABASE
-import {addAttendee, removeAattendee} from '../../utils/firebaseDatabaseAPI';
+import {
+  addAttendee,
+  removeAattendee,
+} from '../../utils/firebase/firebaseDatabaseAPI';
 //INTERFACES
 import {IAttendee, IWodTime} from 'src/state/wods/wodsInterface';
 //COMPONENTS
