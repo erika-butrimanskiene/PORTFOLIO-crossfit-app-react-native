@@ -1,6 +1,19 @@
+import {IUser} from 'src/state/user/userInterface';
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
-import {IWodState, IAttendee, IWodTime} from '../state/wods/wodsInterface';
+import {IWodState, IAttendee, IWodTime} from '../../state/wods/wodsInterface';
 import {database} from './database';
+
+export const getUserByUid = async (userUid: string): Promise<IUser> => {
+  let user;
+  await database
+    .ref(`/users/${userUid}`)
+    .once('value')
+    .then(async snapshot => {
+      user = snapshot.val();
+    });
+
+  return user;
+};
 
 export const editUserProfilePhoto = (userUid: string, photoUrl: string) => {
   database

@@ -105,7 +105,9 @@
     "selectRoom": "Select room",
     "typeAttendeesNumber": "Type attendees number",
     "selectWod": "Select WOD",
-    "addToWod": "WOD"
+    "addToWod": "WOD",
+    "attendees": "Attendees",
+    "noAttendees": "No registered attendees"
   },
   "wods": {
     "wodsList": "Schedule",

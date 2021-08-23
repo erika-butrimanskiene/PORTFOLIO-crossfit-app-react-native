@@ -2,8 +2,6 @@ import {IWorkoutState} from '../workouts/workoutsInterface';
 
 export interface IAttendee {
   uid: string;
-  name: string;
-  surname: string;
   attendeeId?: string;
 }
 

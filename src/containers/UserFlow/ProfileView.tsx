@@ -50,7 +50,6 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
   const userWods = useSelector((state: RootState) => state.user.userWods);
 
   //LOCAL STATES
-  const [defaultImageFromStorage, setDefaultImageFromStorage] = useState('');
   const [isInputActive, setIsInputActive] = useState(false);
   const [userName, setUserName] = useState(user.name);
   const [userSurname, setUserSurname] = useState(user.surname);
@@ -61,13 +60,6 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
   const [thisMonthWodsLength, setThisMonthWodsLength] = useState(null);
 
   useEffect(() => {
-    const getUrl = async () => {
-      const defaultPhoto = await storage()
-        .ref(`usersPhotos/defaultPhoto.png`)
-        .getDownloadURL();
-      setDefaultImageFromStorage(defaultPhoto);
-    };
-    getUrl();
     setLastTwelveMonthsWodsLenght(getLastTwelveEveryMonthWodsLenght(userWods));
     setThisYearWodsLength(getThisYearFromAnyMonthWodsLenght(userWods, '01'));
     setThisMonthWodsLength(
@@ -120,12 +112,6 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
                     <Image
                       source={{
                         uri: user.imageUrl,
-                      }}></Image>
-                  )}
-                  {defaultImageFromStorage !== '' && (
-                    <Image
-                      source={{
-                        uri: defaultImageFromStorage,
                       }}></Image>
                   )}
                 </ImageContainer>
@@ -267,7 +253,7 @@ const ImageContainer = styled.View`
 `;
 
 const Image = styled.ImageBackground`
-  width: 120px;
+  width: 115px;
   height: 130px;
 `;
 

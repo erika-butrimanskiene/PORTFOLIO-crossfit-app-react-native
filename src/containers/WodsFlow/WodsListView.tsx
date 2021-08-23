@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, Modal} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
@@ -8,6 +8,8 @@ import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
 //LIBRARIES
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 //ROUTES
 import {RootState} from 'src/state/reducers';
 import ROUTES from '../../routes/Routes';
@@ -18,6 +20,7 @@ import {imagesURI} from '../../utils/workoutsImages';
 import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
 //UTILS-DATABASE
 import {
+  getUserByUid,
   addAttendee,
   removeAattendee,
 } from '../../utils/firebase/firebaseDatabaseAPI';
@@ -27,6 +30,8 @@ import {IAttendee, IWodTime} from 'src/state/wods/wodsInterface';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import WodTimeInfo from '../../components/WodTimeInfo';
 import SmallBtn from '../../components/Buttons/SmallBtn';
+import {IUser} from 'src/state/user/userInterface';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -45,10 +50,12 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const user = useSelector((state: RootState) => state.user.user);
   const wods = useSelector((state: RootState) => state.wods.wods);
 
-  //STATES
+  //LOCAL STATES
   const [disabledRegisterOrCancel, setDisabledRegisterOrCancel] =
     useState(false);
   const [scheduleDate, setScheduleDate] = useState(new Date());
+  const [showModal, setShowModal] = useState(false);
+  const [wodAttendees, setWodAttendees] = useState([]);
 
   //VARIABLES
   let today = new Date();
@@ -72,54 +79,102 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
         setDisabledRegisterOrCancel(true);
       }
     }
-  }, [showWodIndex]);
+  }, [showWodIndex, wodAttendees]);
+
+  useEffect(() => {}, [wodAttendees]);
 
   //FUNCTIONS
   const handleRegister = (index: number) => {
-    showAlert({
-      alertType: 'custom',
-      customAlert: (
-        <ConfirmationModal
-          confirmText={t('wods:register')}
-          alertText={t('wods:willBeRegister')}
-          onCancelPress={() => closeAlert()}
-          onConfirmPress={() => {
-            const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
-            addAttendee(url, {
-              uid: user.uid,
-              name: user.name,
-              surname: user.surname,
-            });
-            closeAlert();
-          }}
-        />
-      ),
-    });
+    if (
+      disabledRegisterOrCancel ||
+      (sortedWodsByDate[showWodIndex].date === todayDate &&
+        sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
+          todayTime)
+    ) {
+      dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
+    } else {
+      showAlert({
+        alertType: 'custom',
+        customAlert: (
+          <ConfirmationModal
+            confirmText={t('wods:register')}
+            alertText={t('wods:willBeRegister')}
+            onCancelPress={() => closeAlert()}
+            onConfirmPress={() => {
+              const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
+              addAttendee(url, {
+                uid: user.uid,
+              });
+              closeAlert();
+            }}
+          />
+        ),
+      });
+    }
   };
 
   const handleUnregister = (index: number) => {
-    showAlert({
-      alertType: 'custom',
-      customAlert: (
-        <ConfirmationModal
-          confirmText={t('wods:yesCancel')}
-          alertText={t('wods:willBeUnregister')}
-          onCancelPress={() => closeAlert()}
-          onConfirmPress={() => {
-            const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
-            removeAattendee(url, user.uid);
-            closeAlert();
-          }}
-        />
-      ),
-    });
+    if (
+      disabledRegisterOrCancel ||
+      (sortedWodsByDate[showWodIndex].date === todayDate &&
+        sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
+          todayTime)
+    ) {
+      dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
+    } else {
+      showAlert({
+        alertType: 'custom',
+        customAlert: (
+          <ConfirmationModal
+            confirmText={t('wods:yesCancel')}
+            alertText={t('wods:willBeUnregister')}
+            onCancelPress={() => closeAlert()}
+            onConfirmPress={() => {
+              const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
+              removeAattendee(url, user.uid);
+              closeAlert();
+            }}
+          />
+        ),
+      });
+    }
+  };
+
+  const showAttendees = async (itemAttendees: IAttendee[]) => {
+    if (itemAttendees) {
+      let attendees: {
+        uid: string;
+        name: string;
+        surname: string;
+        imageUrl: string;
+      }[] = [];
+
+      await Promise.all(
+        itemAttendees.map(async attendee => {
+          let user: IUser = await getUserByUid(attendee.uid);
+          console.log(user);
+          attendees.push({
+            uid: user.uid,
+            name: user.name,
+            surname: user.surname,
+            imageUrl: user.imageUrl,
+          });
+        }),
+      );
+
+      setWodAttendees(attendees);
+      setShowModal(true);
+    } else {
+      setShowModal(true);
+    }
   };
 
   const renderItem = ({item, index}: {item: IWodTime; index: number}) => {
     let attendees: IAttendee[] = [];
-    if (sortedWodsByDate[showWodIndex].data.times[index].attendees) {
-      attendees = sortedWodsByDate[showWodIndex].data.times[index].attendees;
+    if (item.attendees) {
+      attendees = item.attendees;
     }
+
     return (
       <ScheduleItem>
         <WodTimeInfo
@@ -135,17 +190,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               bgColor={theme.appColors.primaryColorLighter}
               border={false}
               onPress={() => {
-                if (
-                  disabledRegisterOrCancel ||
-                  (sortedWodsByDate[showWodIndex].date === todayDate &&
-                    sortedWodsByDate[showWodIndex].data.times[index].wodTime +
-                      1 <
-                      todayTime)
-                ) {
-                  dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
-                } else {
-                  handleRegister(index);
-                }
+                handleRegister(index);
               }}
             />
           ) : (
@@ -154,27 +199,19 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               bgColor={theme.appColors.backgroundColor}
               border={true}
               onPress={() => {
-                if (
-                  disabledRegisterOrCancel ||
-                  (sortedWodsByDate[showWodIndex].date === todayDate &&
-                    sortedWodsByDate[showWodIndex].data.times[index].wodTime +
-                      1 <
-                      todayTime)
-                ) {
-                  dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
-                } else {
-                  handleUnregister(index);
-                }
+                handleUnregister(index);
               }}
             />
           )}
 
           {user.admin && (
             <SmallBtn
-              text={'Attendees'}
+              text={t('admin:attendees')}
               bgColor={theme.appColors.primaryColorDarken}
               border={false}
-              onPress={() => {}}
+              onPress={() => {
+                showAttendees(item.attendees);
+              }}
             />
           )}
         </ScheduleActions>
@@ -255,6 +292,54 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               renderItem={renderItem}
             />
           </ScheduleList>
+          <Modal visible={showModal} transparent={true}>
+            <ModalLayout>
+              <ModalDisplay>
+                <ModalActions>
+                  <MaterialIcons
+                    name={'close'}
+                    size={27}
+                    color={theme.appColors.primaryColorLighter}
+                    onPress={() => {
+                      setWodAttendees([]);
+                      setShowModal(false);
+                    }}
+                  />
+                </ModalActions>
+                {wodAttendees.length > 0 ? (
+                  <ScrollView>
+                    {wodAttendees.map(
+                      (
+                        attendee: {
+                          uid: string;
+                          name: string;
+                          surname: string;
+                          imageUrl: string;
+                        },
+                        index,
+                      ) => (
+                        <WodAttendee key={index}>
+                          <WodAttendeeImageContainer>
+                            <WodAttendeImage
+                              source={{uri: attendee.imageUrl}}
+                            />
+                          </WodAttendeeImageContainer>
+
+                          <WodAttendeeName>
+                            {attendee.name} {attendee.surname}
+                          </WodAttendeeName>
+                        </WodAttendee>
+                      ),
+                    )}
+                  </ScrollView>
+                ) : (
+                  <NoAttendeesMessage>
+                    {t('admin:noAttendees')}
+                  </NoAttendeesMessage>
+                )}
+              </ModalDisplay>
+            </ModalLayout>
+          </Modal>
         </>
       ) : (
         <NoWodsMessage>{t('wods:noWodsToday')}</NoWodsMessage>
@@ -368,6 +453,65 @@ const ScheduleItem = styled.View`
 `;
 
 const ScheduleActions = styled.View``;
+
+const ModalLayout = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000099;
+`;
+
+const ModalDisplay = styled.View`
+  padding: 20px;
+  height: 85%;
+  width: 85%;
+  border-radius: 10px;
+  justify-content: flex-start;
+  background-color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const ModalActions = styled.View`
+  margin-bottom: 15px;
+  width: 100%;
+  align-items: flex-end;
+`;
+
+const WodAttendee = styled.View`
+  margin: 5px;
+  padding: 8px 12px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
+  border-radius: 10px;
+`;
+
+const WodAttendeeImageContainer = styled.View`
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  border-radius: 100px;
+  border-width: 3px;
+  border-color: ${({theme}) => theme.appColors.primaryColorLighter};
+  overflow: hidden;
+`;
+
+const WodAttendeImage = styled.ImageBackground`
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
+`;
+
+const WodAttendeeName = styled.Text`
+  font-size: 20px;
+  color: ${({theme}) => theme.appColors.whiteColor};
+`;
+
+const NoAttendeesMessage = styled.Text`
+  font-size: 20px;
+  text-align: center;
+  color: ${({theme}) => theme.appColors.backgroundColor};
+`;
 
 const NoWodsMessage = styled.Text`
   margin-top: 40px;

@@ -330,6 +330,7 @@ const ModalDisplay = styled.View`
   padding: 20px 10px;
   height: 40%;
   width: 90%;
+  border-radius: 10px;
   justify-content: center;
   background-color: ${({theme}) => theme.appColors.whiteColor};
 `;

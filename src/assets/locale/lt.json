@@ -105,7 +105,9 @@
     "selectRoom": "Pasirinkite salę",
     "typeAttendeesNumber": "Nurodyti dalyvių skaičių",
     "selectWod": "Pasirinkite treniruotę",
-    "addToWod": "WOD"
+    "addToWod": "WOD",
+    "attendees": "Dalyviai",
+    "noAttendees": "Nėra užsiregistravusių dalyvių"
   },
   "wods": {
     "wodsList": "Tvarkaraštis",

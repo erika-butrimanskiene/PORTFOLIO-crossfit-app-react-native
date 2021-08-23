@@ -1,4 +1,5 @@
 import {call, put, takeLatest, fork} from 'redux-saga/effects';
+import storage from '@react-native-firebase/storage';
 import {actions} from '../actions';
 import {constants} from '../constants';
 import {database} from '../../utils/firebase/database';
@@ -35,18 +36,24 @@ function* handleRegistration(action: {
     yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
-      console.log(response);
+      storage()
+        .ref(`usersPhotos/defaultPhoto.png`)
+        .getDownloadURL()
+        .then(image => {
+          console.log(image);
+          database
+            .ref(`/users/${response.uid}`)
+            .set({
+              email: `${response.email}`,
+              name: action.payload.userName,
+              surname: action.payload.userSurname,
+              imageUrl: image,
+              admin: false,
+            })
+            .then(() => console.log('Data set.'));
+        });
+
       //create user in fireabase realtimeDB
-      database
-        .ref(`/users/${response.uid}`)
-        .set({
-          email: `${response.email}`,
-          name: action.payload.userName,
-          surname: action.payload.userSurname,
-          imageUrl: '',
-          admin: false,
-        })
-        .then(() => console.log('Data set.'));
 
       yield put(actions.messages.clearMessages());
 
