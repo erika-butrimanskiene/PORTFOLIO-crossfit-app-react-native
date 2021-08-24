@@ -67,7 +67,9 @@
     "submit": "Pateikti",
     "save": "Išsaugoti",
     "noActivitiesHistory": "Nėra treniruočių istorijos...",
-    "inputEmpty": "*Vardas ir pavardė yra privalomi."
+    "inputEmpty": "*Vardas ir pavardė yra privalomi.",
+    "logout": "ATSIJUNGTI",
+    "welcome": "Labas"
   },
   "admin": {
     "workoutsList": "Treniruočių sąrašas",

@@ -67,7 +67,9 @@
     "submit": "Submit",
     "save": "Save",
     "noActivitiesHistory": "No activities history...",
-    "inputEmpty": "*Name and surname are required."
+    "inputEmpty": "*Name and surname are required.",
+    "logout": "LOGOUT",
+    "welcome": "Welcome"
   },
   "admin": {
     "workoutsList": "Workouts List",

@@ -1,10 +1,5 @@
-import React, {useState} from 'react';
-import {
-  StatusBar,
-  ActivityIndicator,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {StatusBar, ActivityIndicator, TouchableOpacity} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -41,33 +36,37 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
 
-  //STATES
+  //GLOBAL STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <>
-          <HeaderActions>
-            <Logout onPress={() => dispatch(actions.user.logoutUser())}>
-              <LogoutText>LOGOUT</LogoutText>
-            </Logout>
-            <SwitchSelector
-              options={options}
-              hasPadding
-              initial={0}
-              buttonColor={theme.appColors.accentColor}
-              style={{width: 70}}
-              onPress={(language: string) => {
-                i18n.changeLanguage(language);
-              }}
-            />
-          </HeaderActions>
-        </>
+        <HeaderRight>
+          <Logout onPress={() => dispatch(actions.user.logoutUser())}>
+            <LogoutText>{t('user:logout')}</LogoutText>
+          </Logout>
+          <ImageContainer>
+            <Image source={{uri: user.imageUrl}}></Image>
+          </ImageContainer>
+        </HeaderRight>
+      ),
+      headerLeft: () => (
+        <HeaderLeft>
+          <SwitchLanguage
+            options={options}
+            hasPadding
+            initial={0}
+            buttonColor={theme.appColors.accentColor}
+            onPress={(language: string) => {
+              i18n.changeLanguage(language);
+            }}
+          />
+        </HeaderLeft>
       ),
     });
-  }, [navigation]);
+  }, [navigation, user]);
 
   return (
     <Container>
@@ -78,7 +77,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
       ) : (
         <ScrollContent>
           <WelcomeMessage>
-            <WelcomeText>Welcome, </WelcomeText>
+            <WelcomeText>{t('user:welcome')}, </WelcomeText>
             <WelcomeUser>{user.name}</WelcomeUser>
           </WelcomeMessage>
           <HomeViewLink
@@ -142,13 +141,43 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
   );
 };
 
-const HeaderActions = styled.View`
+const HeaderRight = styled.View`
   flex-direction: row;
+  margin-top: 20px;
   align-items: center;
+  justify-content: center;
+`;
+
+const HeaderLeft = styled.View`
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SwitchLanguage = styled(SwitchSelector)`
+  margin: 0px 15px;
+  width: 70px;
+`;
+
+const ImageContainer = styled.View`
+  margin-right: 15px;
+  width: 35px;
+  height: 35px;
+  align-items: center;
+  border-radius: 100px;
+  border-width: 2px;
+  border-color: ${({theme}) => theme.appColors.backgroundColor};
+  overflow: hidden;
+`;
+
+const Image = styled.ImageBackground`
+  border-radius: 100px;
+  width: 35px;
+  height: 35px;
 `;
 
 const Logout = styled(TouchableOpacity)`
-  padding-right: 20px;
+  margin: 0px 10px;
 `;
 
 const LogoutText = styled.Text`
@@ -167,18 +196,22 @@ const Container = styled.View`
 
 const WelcomeMessage = styled.View`
   flex-direction: row;
-  margin: 15px 0px 25px 0px;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 5px;
+  width: 90%;
+  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
+  margin: 15px 0px 15px 0px;
 `;
 
 const WelcomeText = styled.Text`
-  font-size: 25px;
+  font-size: 20px;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 const WelcomeUser = styled.Text`
-  font-size: 25px;
+  font-size: 20px;
   color: ${({theme}) => theme.appColors.accentColor};
-  font-style: italic;
 `;
 
 const ScrollContent = styled.ScrollView.attrs(() => ({
