@@ -77,7 +77,7 @@ export const register = async (
       email,
       password,
     );
-    console.log(response);
+
     return {
       status: true,
       email: response.user.email,
@@ -85,6 +85,17 @@ export const register = async (
     };
   } catch (e) {
     console.log(e.code);
+    return {status: false, code: e.code};
+  }
+};
+
+export const resetPasswordEmail = async (
+  email: string,
+): Promise<IFirebaseAuth> => {
+  try {
+    await auth().sendPasswordResetEmail(email);
+    return {status: true};
+  } catch (e) {
     return {status: false, code: e.code};
   }
 };

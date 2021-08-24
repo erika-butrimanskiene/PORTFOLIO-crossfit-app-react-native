@@ -49,7 +49,8 @@
   },
   "succesNotifications": {
     "successCreate": "Successfully created.",
-    "successUpload": "Image successfully uploaded."
+    "successUpload": "Image successfully uploaded.",
+    "passwordReset": "Password reset email send to you."
   },
   "confirmationModal": {
     "areSure": "Are you sure?"
@@ -69,7 +70,8 @@
     "noActivitiesHistory": "No activities history...",
     "inputEmpty": "*Name and surname are required.",
     "logout": "LOGOUT",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "pleaseProvideEmail": "Please type your email"
   },
   "admin": {
     "workoutsList": "Workouts List",
