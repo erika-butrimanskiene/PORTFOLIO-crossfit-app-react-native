@@ -1,6 +1,6 @@
 import {IUser} from 'src/state/user/userInterface';
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
-import {IWodState, IAttendee, IWodTime} from '../../state/wods/wodsInterface';
+import {IWodState, IAttendee} from '../../state/wods/wodsInterface';
 import {database} from './database';
 
 export const getUserByUid = async (userUid: string): Promise<IUser> => {
@@ -16,10 +16,7 @@ export const getUserByUid = async (userUid: string): Promise<IUser> => {
 };
 
 export const editUserProfilePhoto = (userUid: string, photoUrl: string) => {
-  database
-    .ref(`/users/${userUid}/imageUrl`)
-    .set(photoUrl)
-    .then(() => console.log('Data set.'));
+  database.ref(`/users/${userUid}/imageUrl`).set(photoUrl);
 };
 
 export const editUserInfo = (
@@ -33,16 +30,13 @@ export const editUserInfo = (
     .then(async snapshot => {
       let dataFromDatabase = snapshot.val();
 
-      database
-        .ref(`/users/${userUid}`)
-        .set({
-          admin: dataFromDatabase.admin,
-          email: dataFromDatabase.email,
-          imageUrl: dataFromDatabase.imageUrl,
-          name: userName,
-          surname: userSurname,
-        })
-        .then(() => console.log('Data set.'));
+      database.ref(`/users/${userUid}`).set({
+        admin: dataFromDatabase.admin,
+        email: dataFromDatabase.email,
+        imageUrl: dataFromDatabase.imageUrl,
+        name: userName,
+        surname: userSurname,
+      });
     });
 };
 
@@ -57,20 +51,6 @@ export const convertWorkoutsObjectToArray = (
   });
 };
 
-// export const getWorkouts = async (): Promise<any> => {
-//   let dataArray: IWorkoutState[] = [];
-//   await database
-//     .ref('/workouts')
-//     .once('value')
-//     .then(snapshot => {
-//       let dataFromDatabase = snapshot.val();
-//       dataArray = convertWorkoutsObjectToArray(dataFromDatabase);
-//       console.log(dataArray);
-//     });
-
-//   return dataArray;
-// };
-
 export const deleteWorkout = async (id: string): Promise<any> => {
   database.ref(`/workouts/${id}`).remove();
 };
@@ -83,15 +63,13 @@ export const createWorkout = async (
   exercises: string[],
 ): Promise<any> => {
   const newReference = database.ref('/workouts').push();
-  newReference
-    .set({
-      name: workoutName,
-      workoutType: workoutType,
-      countResultOf: countResultOf,
-      workoutWeights: workoutWeights,
-      exercises: exercises,
-    })
-    .then(() => console.log('Data updated.'));
+  newReference.set({
+    name: workoutName,
+    workoutType: workoutType,
+    countResultOf: countResultOf,
+    workoutWeights: workoutWeights,
+    exercises: exercises,
+  });
 };
 
 export const createWod = async (
@@ -99,13 +77,10 @@ export const createWod = async (
   times: object[],
   workout: {id: string},
 ): Promise<any> => {
-  await database
-    .ref(`/WODs/${date}/crossfit`)
-    .set({
-      workout,
-      times,
-    })
-    .then(() => console.log('Data set.'));
+  await database.ref(`/WODs/${date}/crossfit`).set({
+    workout,
+    times,
+  });
 };
 
 export const convertWodsObjectToArray = async (
@@ -135,9 +110,7 @@ export const getWods = async (): Promise<any> => {
     .once('value')
     .then(async snapshot => {
       let dataFromDatabase = snapshot.val();
-      console.log(dataFromDatabase);
       dataArray = await convertWodsObjectToArray(dataFromDatabase);
-      console.log(dataArray);
     });
 
   return dataArray;

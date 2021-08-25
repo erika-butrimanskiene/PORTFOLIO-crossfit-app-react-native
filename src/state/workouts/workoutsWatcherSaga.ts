@@ -27,10 +27,10 @@ export default function* watchWorkouts() {
     while (true) {
       const {workouts} = yield take(channel);
       console.log('workouts are updated by watcher');
-      console.log(workouts);
+
       const workoutsArray: IWorkoutState[] =
         convertWorkoutsObjectToArray(workouts);
-      console.log(workoutsArray);
+
       if (workouts) {
         yield put(actions.workouts.setWorkoutsList(workoutsArray));
       }

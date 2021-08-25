@@ -9,7 +9,6 @@ function* handleSetWodsList({payload}: IsetWodsList) {
   try {
     const user: any = auth().currentUser;
     const wodsList = getUserWods(payload, user._user.uid);
-    console.log(payload);
     yield put(actions.user.setUserWods(wodsList));
   } catch (e) {
     console.log(e);

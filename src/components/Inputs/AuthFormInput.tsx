@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
+
+//LIBRARIES
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 interface IAuthFormInputProps {

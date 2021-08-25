@@ -39,14 +39,13 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
 }) => {
   const {t} = useTranslation();
 
-  //STATES
+  //GLOBAL STATES
   const wods = useSelector((state: RootState) => state.wods.wods);
   const userWods = useSelector((state: RootState) => state.user.userWods);
   const user = useSelector((state: RootState) => state.user.user);
 
   //VARIABLES
   const filteredWodsList: IuserWod[] = getUserUpcomingWods(userWods);
-  console.log(filteredWodsList);
 
   const handleUnregister = (
     wodDate: string,
@@ -62,7 +61,6 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
           onCancelPress={() => closeAlert()}
           onConfirmPress={() => {
             const url = `/WODs/${wodDate}/${workoutType}/times/${timeIndex}/attendees`;
-            console.log(url);
             removeAattendee(url, user.uid);
             closeAlert();
           }}

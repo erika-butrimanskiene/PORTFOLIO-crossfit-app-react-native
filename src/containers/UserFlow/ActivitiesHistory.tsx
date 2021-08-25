@@ -38,11 +38,12 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
 }) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
-  //STATES
+  //GLOBAL STATES
   const userWods = useSelector((state: RootState) => state.user.userWods);
   const user = useSelector((state: RootState) => state.user.user);
   const onSync = useSelector((state: RootState) => state.ui.onSync);
 
+  //STATES
   const [showModal, setShowModal] = useState(false);
   const [selectedUserWod, setSelectedUserWod] = useState<IuserWod>(null);
   const [wodResult, setWodResult] = useState('');

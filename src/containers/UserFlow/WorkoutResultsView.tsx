@@ -25,17 +25,15 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
   route,
 }) => {
   const workout: IWorkoutState = route.params.workout;
-  //STATES
+  //GLOBAL STATES
   const user = useSelector((state: RootState) => state.user.user);
+  //STATES
   const [isUserResults, setIsUserResults] = useState(false);
-  console.log(workout.data.results);
 
   const renderItem = ({item, index}: {item: string; index: number}) => {
     const userResults = workout.data.results[item].filter(
       result => result.attendeeId === user.uid,
     );
-    console.log(userResults);
-    console.log(workout.data.results[item]);
 
     if (isUserResults && userResults.length > 0) {
       return (

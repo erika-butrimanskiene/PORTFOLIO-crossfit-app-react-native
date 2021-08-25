@@ -16,14 +16,12 @@ export const login = async (
 ): Promise<IFirebaseAuth> => {
   try {
     const response = await auth().signInWithEmailAndPassword(email, password);
-    console.log(response);
     return {
       status: true,
       email: response.user.email,
       uid: response.user.uid,
     };
   } catch (e) {
-    console.log(e.code);
     return {status: false, code: e.code};
   }
 };
@@ -54,7 +52,6 @@ export const fbLogin = async (): Promise<IFirebaseAuth> => {
 
     // Sign-in the user with the credential
     const response = await auth().signInWithCredential(facebookCredential);
-    console.log(response);
     return {
       status: true,
       email: response.user.email,
@@ -63,7 +60,6 @@ export const fbLogin = async (): Promise<IFirebaseAuth> => {
       uid: response.user.uid,
     };
   } catch (e) {
-    console.log(e);
     return {status: false, code: e};
   }
 };
@@ -84,7 +80,6 @@ export const register = async (
       uid: response.user.uid,
     };
   } catch (e) {
-    console.log(e.code);
     return {status: false, code: e.code};
   }
 };
@@ -107,7 +102,6 @@ export const logout = async (): Promise<IFirebaseAuth> => {
       status: true,
     };
   } catch (e) {
-    console.log(e.code);
     return {status: false, code: e.code};
   }
 };

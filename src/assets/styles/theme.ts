@@ -17,8 +17,6 @@ export const theme: DefaultTheme = {
     textColorLightGray: '#b5b5b5',
     textColorDarkGray: '#212121',
     errorColor: '#f7362f',
-    // lightPrimaryColor: '#5853F2',
-    // darkPrimaryColor: '#2c298c',
     whiteColor: '#ffffff',
     blackColor: '#000000',
   },

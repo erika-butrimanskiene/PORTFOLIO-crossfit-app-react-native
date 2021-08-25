@@ -1,17 +1,22 @@
 import React from 'react';
 import {GestureResponderEvent} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
+import {useDispatch, useSelector} from 'react-redux';
+
+//LIBRARIES
 import {useTranslation} from 'react-i18next';
 import {Formik} from 'formik';
 import {Picker} from '@react-native-picker/picker';
-import {useDispatch, useSelector} from 'react-redux';
+
+//ROUTES
 import {actions} from '../../state/actions';
-
-import {createTimeSchema} from '../../utils/formsValidations';
-
-import FormInput from '../Inputs/FormInput';
-import {InewWod} from 'src/state/wods/wodsInterface';
 import {RootState} from '../../state/reducers';
+//UTILS
+import {createTimeSchema} from '../../utils/formsValidations';
+//INTERFACES
+import {InewWod} from 'src/state/wods/wodsInterface';
+//COMPONENTS
+import FormInput from '../Inputs/FormInput';
 
 interface ICreateWodTimesFormProps {
   theme: DefaultTheme;

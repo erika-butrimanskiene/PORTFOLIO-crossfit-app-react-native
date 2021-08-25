@@ -40,17 +40,13 @@ function* handleRegistration(action: {
         .ref(`usersPhotos/defaultPhoto.png`)
         .getDownloadURL()
         .then(image => {
-          console.log(image);
-          database
-            .ref(`/users/${response.uid}`)
-            .set({
-              email: `${response.email}`,
-              name: action.payload.userName,
-              surname: action.payload.userSurname,
-              imageUrl: image,
-              admin: false,
-            })
-            .then(() => console.log('Data set.'));
+          database.ref(`/users/${response.uid}`).set({
+            email: `${response.email}`,
+            name: action.payload.userName,
+            surname: action.payload.userSurname,
+            imageUrl: image,
+            admin: false,
+          });
         });
 
       //create user in fireabase realtimeDB
@@ -121,16 +117,13 @@ function* handleLoginFacebook() {
     yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
-      database
-        .ref(`/users/${response.uid}`)
-        .set({
-          email: `${response.email}`,
-          name: `${response.name}`,
-          surname: `${response.surname}`,
-          imageUrl: '',
-          admin: false,
-        })
-        .then(() => console.log('Data set.'));
+      database.ref(`/users/${response.uid}`).set({
+        email: `${response.email}`,
+        name: `${response.name}`,
+        surname: `${response.surname}`,
+        imageUrl: '',
+        admin: false,
+      });
 
       yield fork(watchUser, response.uid);
       yield fork(watchWods);
@@ -141,7 +134,7 @@ function* handleLoginFacebook() {
     }
   } catch (e) {
     console.log(e);
-    yield put(actions.messages.setErrorMessage(e.code)); //Error not display. Facebook reload page.
+    yield put(actions.messages.setErrorMessage(e.code));
   }
 }
 

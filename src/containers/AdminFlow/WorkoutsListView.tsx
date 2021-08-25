@@ -122,7 +122,6 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
         {isWorkoutSelection && (
           <Icon
             onPress={() => {
-              console.log(item);
               dispatch(
                 actions.wods.setNewWod({
                   ...newWod,

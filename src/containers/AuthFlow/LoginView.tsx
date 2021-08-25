@@ -54,7 +54,6 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
             initialValues={{email: '', password: ''}}
             validationSchema={loginSchema}
             onSubmit={values => {
-              console.log('login btn clicked');
               const {email, password} = values;
               dispatch(actions.user.getUserAtLogin(email, password));
             }}>

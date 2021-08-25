@@ -114,7 +114,6 @@ export const getLastTwelveEveryMonthDateRange = () => {
     {start: getAnyMonthStartDate(-1), end: getAnyMonthStartDate(0)},
     {start: getAnyMonthStartDate(0), end: getAnyMonthStartDate(1)},
   ];
-  console.log(lastTwelveEveryMonthDateRange);
   return lastTwelveEveryMonthDateRange;
 };
 
@@ -125,7 +124,7 @@ export const getLastTwelveEveryMonthWodsLenght = (userWods: IuserWod[]) => {
     let length = getLengthOfOneAnyMonthWods(userWods, item.start, item.end);
     wodsLenghtMonthly.push(length);
   });
-  console.log(wodsLenghtMonthly);
+
   return wodsLenghtMonthly;
 };
 

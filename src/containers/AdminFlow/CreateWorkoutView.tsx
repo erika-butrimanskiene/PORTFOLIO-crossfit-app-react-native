@@ -42,7 +42,6 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
   const newWorkout: InewWorkout = useSelector(
     (state: RootState) => state.workouts.newWorkout,
   );
-  console.log(newWorkout);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -101,7 +100,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                           workoutName: text,
                         }),
                       );
-                      console.log(newWorkout);
+
                       return formikProps.setFieldValue('workoutName', text);
                     }}
                     placeholderText={t('admin:workoutName')}

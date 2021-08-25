@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {GestureResponderEvent} from 'react-native';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
+
+//LIBRARIES
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface IFormInputProps {

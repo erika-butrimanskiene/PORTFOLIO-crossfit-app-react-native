@@ -61,7 +61,6 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
   };
 
   const handleDatePicked = (date: Date) => {
-    console.log('A date has been picked: ', date);
     hideDateTimePicker();
   };
 

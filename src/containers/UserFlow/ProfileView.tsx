@@ -15,7 +15,7 @@ import storage from '@react-native-firebase/storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {AreaChart, XAxis, YAxis, Grid} from 'react-native-svg-charts';
+import {AreaChart, YAxis} from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
 //ROUTES

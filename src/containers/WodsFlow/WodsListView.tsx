@@ -9,12 +9,6 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedStyle,
-//   withSpring,
-//   withTiming,
-// } from 'react-native-reanimated';
 
 //ROUTES
 import {RootState} from 'src/state/reducers';
@@ -167,7 +161,6 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
       await Promise.all(
         itemAttendees.map(async attendee => {
           let user: IUser = await getUserByUid(attendee.uid);
-          console.log(user);
           attendees.push({
             uid: user.uid,
             name: user.name,
