@@ -23,9 +23,30 @@ export interface IWodState {
 }
 export interface IWodsState {
   wods: IWodState[];
+  newWod: InewWod;
 }
 
 export interface IsetWodsList {
   type: string;
   payload: IWodState[];
+}
+
+export interface InewWod {
+  workoutId: string;
+  wod: string;
+  wodDate: string;
+  wodTimes: IWodTime[];
+  wodTime: string;
+  wodRoom: string;
+  coachName: string;
+  attendeesNumber: string;
+}
+export interface IsetNewWod {
+  type: string;
+  payload: InewWod;
+}
+
+export interface IclearNewWod {
+  type: string;
+  payload?: null;
 }

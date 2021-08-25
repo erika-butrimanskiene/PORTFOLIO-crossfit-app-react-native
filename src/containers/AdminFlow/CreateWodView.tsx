@@ -19,12 +19,11 @@ import {createWodSchema} from '../../utils/formsValidations';
 import {formatDateToDate} from '../../utils/dateFormating';
 //UTILS-DATABASE
 import {createWod} from '../../utils/firebase/firebaseDatabaseAPI';
-//INTERFACES
-import {IWorkoutState} from '../../state/workouts/workoutsInterface';
 //COMPONENTS
 import Button from '../../components/Buttons/Button';
 import FormInput from '../../components/Inputs/FormInput';
 import CreateWodTimesForm from '../../components/Formik/CreateWodTimesForm';
+import {InewWod} from 'src/state/wods/wodsInterface';
 
 type CreateWodScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -40,17 +39,14 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
   const dispatch = useDispatch();
 
   //STATES
-  const wod: IWorkoutState = useSelector(
-    (state: RootState) => state.workouts.selectedWorkout,
-  );
+  const newWod: InewWod = useSelector((state: RootState) => state.wods.newWod);
 
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-  const [wodDate, setWodDate] = useState(null);
-  const [wodsTimes, setWodsTimes] = useState([]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
-      dispatch(actions.workouts.clearSelectedWorkout());
+      dispatch(actions.messages.clearMessages());
+      dispatch(actions.wods.clearNewWod());
     });
     return unsubscribe;
   }, [navigation]);
@@ -71,12 +67,8 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
 
   //FORM SUBMIT
   const handleCreateFormSubmit = () => {
-    createWod(formatDateToDate(wodDate), wodsTimes, {id: wod.id});
+    createWod(newWod.wodDate, newWod.wodTimes, {id: newWod.workoutId});
     dispatch(actions.messages.setSuccessMessage('successCreate'));
-    setTimeout(() => {
-      dispatch(actions.messages.clearMessages());
-    }, 2000);
-    dispatch(actions.workouts.clearSelectedWorkout());
   };
 
   return (
@@ -86,16 +78,27 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
         <Formik
           enableReinitialize={true}
           initialValues={{
-            wodDate: '',
-            wodName: wod.data.name,
+            wodDate: newWod.wodDate,
+            wodName: newWod.wod,
           }}
           validationSchema={createWodSchema}
           onSubmit={(values, {resetForm}) => {
             try {
-              if (wodsTimes.length !== 0) {
-                handleCreateFormSubmit();
-                setWodsTimes([]);
-                resetForm();
+              if (newWod.wodTimes.length !== 0) {
+                if (
+                  newWod.attendeesNumber !== '' ||
+                  newWod.coachName !== '' ||
+                  newWod.wodRoom !== '' ||
+                  newWod.wodTime !== ''
+                ) {
+                  dispatch(
+                    actions.messages.setErrorMessage('leftWodTimeNotAdded'),
+                  );
+                } else {
+                  handleCreateFormSubmit();
+                  resetForm();
+                  dispatch(actions.wods.clearNewWod());
+                }
               } else {
                 dispatch(actions.messages.setErrorMessage('forgotWodTimes'));
               }
@@ -147,7 +150,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                   <ErrorText>{formikProps.errors.wodDate}</ErrorText>
                 )}
 
-                {wodsTimes.map((item, index) => (
+                {newWod.wodTimes.map((item, index) => (
                   <WodTimeItem key={index}>
                     <WodTimeItemContent>
                       <WodTime>{item.wodTime}</WodTime>
@@ -160,9 +163,15 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                     </WodTimeItemContent>
                     <DeleteTime
                       onPress={() => {
-                        const newWodsTimes = [...wodsTimes];
+                        const newWodsTimes = [...newWod.wodTimes];
                         newWodsTimes.splice(index, 1);
-                        setWodsTimes(newWodsTimes);
+
+                        dispatch(
+                          actions.wods.setNewWod({
+                            ...newWod,
+                            wodTimes: [...newWodsTimes],
+                          }),
+                        );
                       }}>
                       <MaterialIcons
                         name={'close'}
@@ -173,10 +182,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                   </WodTimeItem>
                 ))}
 
-                <CreateWodTimesForm
-                  wodsTimes={wodsTimes}
-                  setWodsTimes={setWodsTimes}
-                />
+                <CreateWodTimesForm />
 
                 <CreateButtonContainer>
                   <Button
@@ -190,7 +196,13 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                   isVisible={isDatePickerVisible}
                   onConfirm={date => {
                     handleDatePicked(date);
-                    setWodDate(date);
+
+                    dispatch(
+                      actions.wods.setNewWod({
+                        ...newWod,
+                        wodDate: formatDateToDate(date),
+                      }),
+                    );
                     formikProps.setFieldValue(
                       'wodDate',
                       formatDateToDate(date),

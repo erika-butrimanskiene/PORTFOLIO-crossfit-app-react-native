@@ -23,6 +23,7 @@ import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 //COMPONENTS
 import Button from '../../components/Buttons/Button';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
+import {InewWod} from 'src/state/wods/wodsInterface';
 
 type WorkoutsListViewNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -47,6 +48,8 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
   const isWorkoutSelection: boolean = useSelector(
     (state: RootState) => state.workouts.initSelection,
   );
+
+  const newWod: InewWod = useSelector((state: RootState) => state.wods.newWod);
 
   const [search, setSearch] = useState('');
   const [filteredWorkouts, setFilteredWorkouts] = useState(workouts);
@@ -120,7 +123,13 @@ const WorkoutsListView: React.FC<IWorkoutsListViewProps> = ({
           <Icon
             onPress={() => {
               console.log(item);
-              dispatch(actions.workouts.selectWorkout(item));
+              dispatch(
+                actions.wods.setNewWod({
+                  ...newWod,
+                  wod: item.data.name,
+                  workoutId: item.id,
+                }),
+              );
               navigation.navigate(ROUTES.CreateWod);
             }}>
             <MaterialIcons

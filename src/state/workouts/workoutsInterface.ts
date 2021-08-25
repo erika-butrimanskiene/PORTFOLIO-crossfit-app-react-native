@@ -23,7 +23,7 @@ export interface IWorkoutDateResults {
 export interface IWorkoutsState {
   workouts: IWorkoutState[];
   initSelection: boolean;
-  selectedWorkout: IWorkoutState;
+  newWorkout: InewWorkout;
 }
 
 export interface IgetWorkoutsList {
@@ -36,17 +36,24 @@ export interface IinitWorkoutSelection {
   payload: boolean;
 }
 
-export interface IclearSelectedWorkout {
-  type: string;
-  payload?: null;
-}
-
 export interface IsetWorkoutsList {
   type: string;
   payload: IWorkoutState[];
 }
 
-export interface IselectWorkout {
+export interface InewWorkout {
+  workoutName: string;
+  workoutType: string;
+  countResultOf: string;
+  workoutWeights: string;
+  exercises: string[];
+}
+export interface IsetNewWorkout {
   type: string;
-  payload: IWorkoutState;
+  payload: InewWorkout;
+}
+
+export interface IclearNewWorkout {
+  type: string;
+  payload?: null;
 }

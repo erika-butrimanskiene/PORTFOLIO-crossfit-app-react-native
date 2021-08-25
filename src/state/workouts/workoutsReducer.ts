@@ -1,20 +1,18 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import {persistReducer} from 'redux-persist';
 import {constants} from '../constants';
 import {workoutsActionsType} from './workoutsActions';
-import {IWorkoutsState, IWorkoutState} from './workoutsInterface';
+import {InewWorkout, IWorkoutsState, IWorkoutState} from './workoutsInterface';
 
 const initialWorkoutsState: IWorkoutsState = {
   workouts: [],
   initSelection: false,
-  selectedWorkout: {
-    id: '',
-    data: {
-      name: '',
-      countResultOf: '',
-      workoutType: '',
-      workoutWeights: '',
-      exercises: [],
-      results: {},
-    },
+  newWorkout: {
+    workoutName: '',
+    workoutType: '',
+    countResultOf: '',
+    workoutWeights: '',
+    exercises: [' '],
   },
 };
 
@@ -35,17 +33,21 @@ const workoutsReducer = (
         initSelection: action.payload as boolean,
       };
 
-    case constants.workouts.SELECT_WORKOUT:
+    case constants.workouts.SET_NEW_WORKOUT:
       return {
         ...state,
-        initSelection: false,
-        selectedWorkout: action.payload as IWorkoutState,
+        newWorkout: {...(action.payload as InewWorkout)},
       };
-
-    case constants.workouts.CLEAR_SELECTED_WORKOUT:
+    case constants.workouts.CLEAR_NEW_WORKOUT:
       return {
         ...state,
-        selectedWorkout: {...initialWorkoutsState.selectedWorkout},
+        newWorkout: {
+          workoutName: '',
+          workoutType: '',
+          countResultOf: '',
+          workoutWeights: '',
+          exercises: [''],
+        },
       };
 
     default:
@@ -53,4 +55,10 @@ const workoutsReducer = (
   }
 };
 
-export default workoutsReducer;
+const workoutsPersistConfig = {
+  key: 'workouts',
+  storage: AsyncStorage,
+  blacklist: ['workouts', 'initSelection'],
+};
+
+export default persistReducer(workoutsPersistConfig, workoutsReducer);

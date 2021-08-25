@@ -1,9 +1,21 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import {persistReducer} from 'redux-persist';
 import {constants} from '../constants';
 import {wodsActionsType} from './wodsActions';
-import {IWodsState} from './wodsInterface';
+import {InewWod, IWodsState, IWodState} from './wodsInterface';
 
 const initialWodsState: IWodsState = {
   wods: [],
+  newWod: {
+    workoutId: '',
+    wod: '',
+    wodDate: '',
+    wodTimes: [],
+    wodTime: '',
+    wodRoom: '',
+    coachName: '',
+    attendeesNumber: '',
+  },
 };
 
 const wodsReducer = (
@@ -14,7 +26,28 @@ const wodsReducer = (
     case constants.wods.SET_WODS_LIST:
       return {
         ...state,
-        wods: [...action.payload],
+        wods: [...(action.payload as IWodState[])],
+      };
+
+    case constants.wods.SET_NEW_WOD:
+      return {
+        ...state,
+        newWod: {...(action.payload as InewWod)},
+      };
+
+    case constants.wods.CLEAR_NEW_WOD:
+      return {
+        ...state,
+        newWod: {
+          workoutId: '',
+          wod: '',
+          wodDate: '',
+          wodTimes: [],
+          wodTime: '',
+          wodRoom: '',
+          coachName: '',
+          attendeesNumber: '',
+        },
       };
 
     default:
@@ -22,4 +55,10 @@ const wodsReducer = (
   }
 };
 
-export default wodsReducer;
+const wodsPersistConfig = {
+  key: 'wods',
+  storage: AsyncStorage,
+  blacklist: ['wods'],
+};
+
+export default persistReducer(wodsPersistConfig, wodsReducer);

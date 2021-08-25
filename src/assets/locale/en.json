@@ -45,7 +45,8 @@
     "auth/unknown": "Unknown error",
     "forgotWodTimes": "At least one WOD time is required",
     "wodTimeIsPassed": "WOD time is passed",
-    "enterResult": "Please enter result"
+    "enterResult": "Please enter result",
+    "leftWodTimeNotAdded": "Add time or clear it's values"
   },
   "succesNotifications": {
     "successCreate": "Successfully created.",

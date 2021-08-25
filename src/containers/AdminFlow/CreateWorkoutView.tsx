@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 //LIBRARIES
@@ -11,6 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //ROUTES
 import ROUTES from '../../routes/Routes';
 import {actions} from '../../state/actions';
+import {RootState} from '../../state/reducers';
 import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
 import {createWorkoutSchema} from '../../utils/formsValidations';
@@ -19,6 +20,7 @@ import {createWorkout} from '../../utils/firebase/firebaseDatabaseAPI';
 //COMPONENTS
 import Button from '../../components/Buttons/Button';
 import FormInput from '../../components/Inputs/FormInput';
+import {InewWorkout} from 'src/state/workouts/workoutsInterface';
 
 type CreateWorkoutViewNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -36,9 +38,16 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
 
+  //STATES
+  const newWorkout: InewWorkout = useSelector(
+    (state: RootState) => state.workouts.newWorkout,
+  );
+  console.log(newWorkout);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.messages.clearMessages());
+      dispatch(actions.workouts.clearNewWorkout());
     });
     return unsubscribe;
   }, [navigation]);
@@ -49,11 +58,11 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
         <Heading>{t('admin:createNewWorkout')}</Heading>
         <Formik
           initialValues={{
-            workoutName: '',
-            workoutWeights: '',
-            countResultOf: '',
-            workoutType: '',
-            exercises: [''],
+            workoutName: newWorkout.workoutName,
+            workoutWeights: newWorkout.workoutWeights,
+            countResultOf: newWorkout.countResultOf,
+            workoutType: newWorkout.workoutType,
+            exercises: newWorkout.exercises,
           }}
           validationSchema={createWorkoutSchema}
           onSubmit={(values, {resetForm}) => {
@@ -72,12 +81,9 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                 workoutWeights,
                 exercises,
               );
-
               dispatch(actions.messages.setSuccessMessage('successCreate'));
-              setTimeout(() => {
-                dispatch(actions.messages.clearMessages());
-              }, 2000);
               resetForm();
+              dispatch(actions.workouts.clearNewWorkout());
             } catch (e) {
               console.log(e);
             }
@@ -88,7 +94,16 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                 <Form>
                   <FormInput
                     value={formikProps.values.workoutName}
-                    onChangeText={formikProps.handleChange('workoutName')}
+                    onChangeText={(text: string) => {
+                      dispatch(
+                        actions.workouts.setNewWorkout({
+                          ...newWorkout,
+                          workoutName: text,
+                        }),
+                      );
+                      console.log(newWorkout);
+                      return formikProps.setFieldValue('workoutName', text);
+                    }}
                     placeholderText={t('admin:workoutName')}
                     placeholderColor={theme.appColors.backgroundColorDarken}
                     isInputWithAction={false}
@@ -101,7 +116,15 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                     )}
                   <FormInput
                     value={formikProps.values.workoutWeights}
-                    onChangeText={formikProps.handleChange('workoutWeights')}
+                    onChangeText={(text: string) => {
+                      dispatch(
+                        actions.workouts.setNewWorkout({
+                          ...newWorkout,
+                          workoutWeights: text,
+                        }),
+                      );
+                      return formikProps.setFieldValue('workoutWeights', text);
+                    }}
                     placeholderText={t('admin:workoutWeights')}
                     placeholderColor={theme.appColors.textColorLightGray}
                     isInputWithAction={false}
@@ -113,7 +136,15 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                     )}
                   <FormInput
                     value={formikProps.values.workoutType}
-                    onChangeText={formikProps.handleChange('workoutType')}
+                    onChangeText={(text: string) => {
+                      dispatch(
+                        actions.workouts.setNewWorkout({
+                          ...newWorkout,
+                          workoutType: text,
+                        }),
+                      );
+                      return formikProps.setFieldValue('workoutType', text);
+                    }}
                     placeholderText={t('admin:workoutType')}
                     placeholderColor={theme.appColors.textColorLightGray}
                     isInputWithAction={false}
@@ -126,7 +157,15 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
 
                   <FormInput
                     value={formikProps.values.countResultOf}
-                    onChangeText={formikProps.handleChange('countResultOf')}
+                    onChangeText={(text: string) => {
+                      dispatch(
+                        actions.workouts.setNewWorkout({
+                          ...newWorkout,
+                          countResultOf: text,
+                        }),
+                      );
+                      return formikProps.setFieldValue('countResultOf', text);
+                    }}
                     placeholderText={t('admin:countResult')}
                     placeholderColor={theme.appColors.textColorLightGray}
                     isInputWithAction={false}
@@ -148,9 +187,18 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                             <ExerciseInput key={index}>
                               <FormInput
                                 value={formikProps.values.exercises[index]}
-                                onChangeText={formikProps.handleChange(
-                                  `exercises[${index}]`,
-                                )}
+                                onChangeText={(text: string) => {
+                                  dispatch(
+                                    actions.workouts.setNewWorkout({
+                                      ...newWorkout,
+                                      exercises: [...exercises, text],
+                                    }),
+                                  );
+                                  return formikProps.setFieldValue(
+                                    `exercises[${index}]`,
+                                    text,
+                                  );
+                                }}
                                 placeholderText={t('admin:exerciseDefinition')}
                                 placeholderColor={
                                   theme.appColors.textColorLightGray

@@ -4,6 +4,7 @@ import uiReducer, {IUiState} from './ui/uiReducer';
 import {IWorkoutsState} from './workouts/workoutsInterface';
 import workoutsReducer from './workouts/workoutsReducer';
 import messagesReducer, {IMessagesState} from './messages/messagesReducer';
+
 import {IUserState} from './user/userInterface';
 import {IWodsState} from './wods/wodsInterface';
 import wodsReducer from './wods/wodsReducer';

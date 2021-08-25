@@ -4,22 +4,24 @@ import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {Formik} from 'formik';
 import {Picker} from '@react-native-picker/picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {actions} from '../../state/actions';
 
 import {createTimeSchema} from '../../utils/formsValidations';
 
 import FormInput from '../Inputs/FormInput';
+import {InewWod} from 'src/state/wods/wodsInterface';
+import {RootState} from '../../state/reducers';
+
 interface ICreateWodTimesFormProps {
   theme: DefaultTheme;
-  setWodsTimes: any;
-  wodsTimes: object[];
 }
 
-const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
-  theme,
-  setWodsTimes,
-  wodsTimes,
-}) => {
+const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({theme}) => {
   const {t} = useTranslation();
+  const dispatch = useDispatch();
+
+  const newWod: InewWod = useSelector((state: RootState) => state.wods.newWod);
 
   const handleTimesSet = (
     wodTime: string,
@@ -27,19 +29,28 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
     coachName: string,
     attendeesNumber: string,
   ) => {
-    setWodsTimes([
-      ...wodsTimes,
-      {wodTime, wodRoom, coachName, attendeesNumber},
-    ]);
+    dispatch(
+      actions.wods.setNewWod({
+        ...newWod,
+        wodTimes: [
+          ...newWod.wodTimes,
+          {wodTime, wodRoom, coachName, attendeesNumber},
+        ],
+        wodTime: '',
+        wodRoom: '',
+        coachName: '',
+        attendeesNumber: '',
+      }),
+    );
   };
 
   return (
     <Formik
       initialValues={{
-        wodTime: '',
-        coachName: '',
-        wodRoom: '',
-        attendeesNumber: '',
+        wodTime: newWod.wodTime,
+        coachName: newWod.coachName,
+        wodRoom: newWod.wodRoom,
+        attendeesNumber: newWod.attendeesNumber,
       }}
       validationSchema={createTimeSchema}
       onSubmit={(values, {resetForm, setFieldValue}) => {
@@ -50,12 +61,12 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
           values.attendeesNumber,
         );
 
+        resetForm();
+
         setFieldValue('wodTime', '');
         setFieldValue('wodRoom', '');
         setFieldValue('coachName', '');
         setFieldValue('attendeesNumber', '');
-
-        resetForm();
       }}>
       {formikProps => {
         return (
@@ -64,9 +75,15 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
               <StyledPicker
                 selectedValue={formikProps.values.wodTime}
                 dropdownIconColor={'#ffffff'}
-                onValueChange={itemValue =>
-                  formikProps.setFieldValue('wodTime', itemValue)
-                }>
+                onValueChange={itemValue => {
+                  dispatch(
+                    actions.wods.setNewWod({
+                      ...newWod,
+                      wodTime: itemValue as string,
+                    }),
+                  );
+                  return formikProps.setFieldValue('wodTime', itemValue);
+                }}>
                 <Picker.Item
                   style={{fontSize: 20}}
                   label={t('admin:selectWodTime')}
@@ -120,9 +137,15 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
               <StyledPicker
                 selectedValue={formikProps.values.wodRoom}
                 dropdownIconColor={'#ffffff'}
-                onValueChange={itemValue =>
-                  formikProps.setFieldValue('wodRoom', itemValue)
-                }>
+                onValueChange={itemValue => {
+                  dispatch(
+                    actions.wods.setNewWod({
+                      ...newWod,
+                      wodRoom: itemValue as string,
+                    }),
+                  );
+                  return formikProps.setFieldValue('wodRoom', itemValue);
+                }}>
                 <Picker.Item
                   style={{fontSize: 20}}
                   label={t('admin:selectRoom')}
@@ -157,7 +180,15 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
             <FormInput
               value={formikProps.values.coachName}
               placeholderText={t('admin:typeCoachName')}
-              onChangeText={formikProps.handleChange('coachName')}
+              onChangeText={(text: string) => {
+                dispatch(
+                  actions.wods.setNewWod({
+                    ...newWod,
+                    coachName: text,
+                  }),
+                );
+                return formikProps.setFieldValue('coachName', text);
+              }}
               placeholderColor={theme.appColors.textColorLightGray}
               isInputWithAction={false}
               bgColor={theme.appColors.backgroundColorLighter}
@@ -170,7 +201,15 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({
             <FormInput
               value={formikProps.values.attendeesNumber}
               placeholderText={t('admin:typeAttendeesNumber')}
-              onChangeText={formikProps.handleChange('attendeesNumber')}
+              onChangeText={text => {
+                dispatch(
+                  actions.wods.setNewWod({
+                    ...newWod,
+                    attendeesNumber: text,
+                  }),
+                );
+                return formikProps.setFieldValue('attendeesNumber', text);
+              }}
               placeholderColor={theme.appColors.textColorLightGray}
               isInputWithAction={false}
               bgColor={theme.appColors.backgroundColorLighter}

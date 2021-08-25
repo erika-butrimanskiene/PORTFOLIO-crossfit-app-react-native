@@ -45,7 +45,8 @@
     "auth/unknown": "Nežinoma klaida",
     "forgotWodTimes": "Nepridėjote nei vieno treniruotės laiko",
     "wodTimeIsPassed": "Treniruotės laikas praėjęs",
-    "enterResult": "Įveskite rezultatą"
+    "enterResult": "Įveskite rezultatą",
+    "leftWodTimeNotAdded": "Pridėkite laiką arba ištrinkite jo vertes"
   },
   "succesNotifications": {
     "successCreate": "Sėkmingai sukurta.",
