@@ -164,8 +164,8 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                     <DeleteTime
                       onPress={() => {
                         const newWodsTimes = [...newWod.wodTimes];
-                        newWodsTimes.splice(index, 1);
 
+                        newWodsTimes.splice(index, 1);
                         dispatch(
                           actions.wods.setNewWod({
                             ...newWod,

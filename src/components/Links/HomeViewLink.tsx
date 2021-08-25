@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {GestureResponderEvent} from 'react-native';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedStyle,
-//   withSpring,
-//   withTiming,
-// } from 'react-native-reanimated';
+
+//LIBRARIES
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 
 interface IHomeViewLinkProps {
   image: string;
@@ -21,40 +23,55 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
   text,
   admin,
 }) => {
-  const [isPressed, setIsPressed] = useState(false);
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(0);
+  const scale1 = useSharedValue(0.5);
 
-  // const scale = useSharedValue(1);
+  const reanimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: scale.value}],
+    };
+  }, []);
 
-  // const reanimatedStyle = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [{scale: scale.value}],
-  //   };
-  // }, []);
+  const reanimatedStyle1 = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+      transform: [{scale: scale1.value}],
+    };
+  }, []);
+
+  useEffect(() => {
+    opacity.value = withTiming(1, {duration: 4000});
+    scale1.value = withTiming(1, {duration: 900});
+  }, []);
 
   return (
-    <ImageContainer
-      source={{
-        uri: image,
-      }}
-      resizeMode="cover">
-      <Link
-        admin={admin}
-        onPress={onPress}
-        // onPressIn={() => {
-        //   scale.value = withSpring(1.5);
-        //   setIsPressed(true);
-        // }}
-        // onPressOut={() => {
-        //   scale.value = withSpring(1);
-        //   setIsPressed(false);
-        // }}
-      >
-        {/* <LinkText style={reanimatedStyle}>{text.toUpperCase()}</LinkText> */}
-        <LinkText>{text.toUpperCase()}</LinkText>
-      </Link>
-    </ImageContainer>
+    <AnimatedView style={reanimatedStyle1}>
+      <ImageContainer
+        source={{
+          uri: image,
+        }}
+        resizeMode="cover">
+        <Link
+          admin={admin}
+          onPress={onPress}
+          onPressIn={() => {
+            scale.value = withSpring(1.5);
+          }}
+          onPressOut={() => {
+            scale.value = withSpring(1);
+          }}>
+          <LinkText style={reanimatedStyle}>{text.toUpperCase()}</LinkText>
+        </Link>
+      </ImageContainer>
+    </AnimatedView>
   );
 };
+const AnimatedView = styled(Animated.View)`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 
 const Link = styled.TouchableOpacity<{admin: boolean}>`
   width: 100%;
@@ -67,18 +84,13 @@ const Link = styled.TouchableOpacity<{admin: boolean}>`
       : theme.appColors.backgroundColor_opacity50};
 `;
 
-//const LinkText = styled(Animated.Text)`
-const LinkText = styled.Text`
+const LinkText = styled(Animated.Text)`
   width: 70%;
   text-align: center;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 22px;
   padding: 5px;
   font-weight: bold;
-
-  /* border-radius: 5px;
-  border-width: 1px;
-  border-color: ${({theme}) => theme.appColors.whiteColor}; */
 `;
 
 const ImageContainer = styled.ImageBackground`

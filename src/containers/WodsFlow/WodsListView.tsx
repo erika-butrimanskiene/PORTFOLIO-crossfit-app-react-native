@@ -4,11 +4,17 @@ import {useSelector, useDispatch} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {showAlert, closeAlert} from 'react-native-customisable-alert';
 
 //LIBRARIES
+import {showAlert, closeAlert} from 'react-native-customisable-alert';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+// import Animated, {
+//   useSharedValue,
+//   useAnimatedStyle,
+//   withSpring,
+//   withTiming,
+// } from 'react-native-reanimated';
 
 //ROUTES
 import {RootState} from 'src/state/reducers';
@@ -70,6 +76,15 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   );
   const showWodIndex = sortedWodsByDate.indexOf(showWod[0]);
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 7) * 7;
+
+  // //REANIMATED
+  // const scale = useSharedValue(1);
+
+  // const reanimatedStyle = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [{scale: scale.value}],
+  //   };
+  // }, []);
 
   //USE-EFFECTS
   useEffect(() => {
@@ -299,7 +314,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
                   <MaterialIcons
                     name={'close'}
                     size={27}
-                    color={theme.appColors.primaryColorLighter}
+                    color={theme.appColors.accentColor}
                     onPress={() => {
                       setWodAttendees([]);
                       setShowModal(false);
@@ -458,7 +473,7 @@ const ModalLayout = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: #00000099;
+  background-color: #00000089;
 `;
 
 const ModalDisplay = styled.View`
@@ -467,7 +482,7 @@ const ModalDisplay = styled.View`
   width: 85%;
   border-radius: 10px;
   justify-content: flex-start;
-  background-color: ${({theme}) => theme.appColors.whiteColor};
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
 `;
 
 const ModalActions = styled.View`
@@ -491,8 +506,8 @@ const WodAttendeeImageContainer = styled.View`
   height: 50px;
   align-items: center;
   border-radius: 100px;
-  border-width: 3px;
-  border-color: ${({theme}) => theme.appColors.primaryColorLighter};
+  border-width: 2px;
+  border-color: ${({theme}) => theme.appColors.accentColor};
   overflow: hidden;
 `;
 
