@@ -26,16 +26,16 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
   timeoutForAnimation,
 }) => {
   const scale = useSharedValue(1);
-  const opacity = useSharedValue(0);
   const scale1 = useSharedValue(0.5);
+  const opacity = useSharedValue(0);
 
-  const reanimatedStyle = useAnimatedStyle(() => {
+  const reanimatedStyleText = useAnimatedStyle(() => {
     return {
       transform: [{scale: scale.value}],
     };
   }, []);
 
-  const reanimatedStyle1 = useAnimatedStyle(() => {
+  const reanimatedStyleContainer = useAnimatedStyle(() => {
     return {
       opacity: opacity.value,
       transform: [{scale: scale1.value}],
@@ -50,7 +50,7 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
   }, []);
 
   return (
-    <AnimatedView style={reanimatedStyle1}>
+    <AnimatedView style={reanimatedStyleContainer}>
       <ImageContainer
         source={{
           uri: image,
@@ -65,7 +65,7 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
           onPressOut={() => {
             scale.value = withSpring(1);
           }}>
-          <LinkText admin={admin} style={reanimatedStyle}>
+          <LinkText admin={admin} style={reanimatedStyleText}>
             {text.toUpperCase()}
           </LinkText>
         </Link>
@@ -84,10 +84,9 @@ const Link = styled.TouchableOpacity<{admin: boolean}>`
   height: 100px;
   justify-content: center;
   align-items: center;
-  color: #f8f5f54b;
   background-color: ${({theme, admin}) =>
     admin
-      ? theme.appColors.backgroundColor_opacity20
+      ? theme.appColors.backgroundColor_opacity80
       : theme.appColors.backgroundColor_opacity20};
 `;
 

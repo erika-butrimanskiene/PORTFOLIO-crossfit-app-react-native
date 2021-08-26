@@ -9,6 +9,12 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {showAlert, closeAlert} from 'react-native-customisable-alert';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 
 //ROUTES
 import {RootState} from 'src/state/reducers';
@@ -71,14 +77,22 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const showWodIndex = sortedWodsByDate.indexOf(showWod[0]);
   const imageIndex = showWodIndex - Math.floor(showWodIndex / 7) * 7;
 
-  // //REANIMATED
-  // const scale = useSharedValue(1);
+  //REANIMATED
 
-  // const reanimatedStyle = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [{scale: scale.value}],
-  //   };
-  // }, []);
+  const opacityDate = useSharedValue(1);
+  const opacityContent = useSharedValue(1);
+
+  const reanimatedStyleDate = useAnimatedStyle(() => {
+    return {
+      opacity: opacityDate.value,
+    };
+  }, []);
+
+  const reanimatedStyleContent = useAnimatedStyle(() => {
+    return {
+      opacity: opacityContent.value,
+    };
+  }, []);
 
   //USE-EFFECTS
   useEffect(() => {
@@ -88,7 +102,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
         setDisabledRegisterOrCancel(true);
       }
     }
-  }, [showWodIndex, wodAttendees]);
+  }, [showWodIndex]);
 
   useEffect(() => {}, [wodAttendees]);
 
@@ -235,7 +249,15 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
           onPress={() => {
             let currentDate = new Date(scheduleDate);
             currentDate.setDate(currentDate.getDate() - 1);
-            setScheduleDate(currentDate);
+            if (scheduleDate !== currentDate) {
+              setScheduleDate(currentDate);
+              opacityDate.value = withTiming(0, {duration: 400}, () => {
+                opacityDate.value = withTiming(1, {duration: 600});
+              });
+              opacityContent.value = withTiming(0, {duration: 400}, () => {
+                opacityContent.value = withTiming(1, {duration: 600});
+              });
+            }
           }}>
           <AntDesign
             name={'left'}
@@ -243,12 +265,25 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
             color={theme.appColors.accentColor}
           />
         </NavigateIcon>
-        <Day>{formatDateToDate(scheduleDate)}</Day>
+        <DayContainer>
+          <Day style={reanimatedStyleDate}>
+            {formatDateToDate(scheduleDate)}
+          </Day>
+        </DayContainer>
+
         <NavigateIcon
           onPress={() => {
             let currentDate = new Date(scheduleDate);
             currentDate.setDate(currentDate.getDate() + 1);
-            setScheduleDate(currentDate);
+            if (scheduleDate !== currentDate) {
+              setScheduleDate(currentDate);
+              opacityDate.value = withTiming(0, {duration: 400}, () => {
+                opacityDate.value = withTiming(1, {duration: 600});
+              });
+              opacityContent.value = withTiming(0, {duration: 400}, () => {
+                opacityContent.value = withTiming(1, {duration: 600});
+              });
+            }
           }}>
           <AntDesign
             name={'right'}
@@ -259,7 +294,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
       </NavigateDayContainer>
 
       {showWodIndex >= 0 ? (
-        <>
+        <ScheduledWods style={reanimatedStyleContent}>
           <ImageContainer>
             <Image
               source={{
@@ -348,7 +383,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               </ModalDisplay>
             </ModalLayout>
           </Modal>
-        </>
+        </ScheduledWods>
       ) : (
         <NoWodsMessage>{t('wods:noWodsToday')}</NoWodsMessage>
       )}
@@ -381,13 +416,19 @@ const NavigateIcon = styled.TouchableOpacity`
   padding: 0px 10px;
 `;
 
-const Day = styled.Text`
-  padding: 10px 15px;
-  font-size: 22px;
+const DayContainer = styled.View`
   border-radius: 10px;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
+`;
+
+const Day = styled(Animated.Text)`
+  padding: 10px 15px;
+  font-size: 22px;
+
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
+
+const ScheduledWods = styled(Animated.View)``;
 
 const ImageContainer = styled.View`
   margin: 30px 0px;
