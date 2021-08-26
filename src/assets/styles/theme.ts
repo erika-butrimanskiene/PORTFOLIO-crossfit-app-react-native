@@ -4,7 +4,7 @@ export const theme: DefaultTheme = {
   appColors: {
     backgroundColor: '#1c1c1c',
     backgroundColor_opacity80: '#212121d3',
-    backgroundColor_opacity50: '#2121217f',
+    backgroundColor_opacity50: '#2121219b',
     backgroundColor_opacity20: '#21212132',
     backgroundColorDarken: '#121212',
     backgroundColorLighter: '#2E2E2E',

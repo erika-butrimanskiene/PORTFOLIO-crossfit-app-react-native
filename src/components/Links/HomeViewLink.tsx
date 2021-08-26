@@ -15,6 +15,7 @@ interface IHomeViewLinkProps {
   onPress: ((event: GestureResponderEvent) => void) | any;
   text: string;
   admin: boolean;
+  timeoutForAnimation: number;
 }
 
 const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
@@ -22,6 +23,7 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
   onPress,
   text,
   admin,
+  timeoutForAnimation,
 }) => {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(0);
@@ -41,8 +43,10 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
   }, []);
 
   useEffect(() => {
-    opacity.value = withTiming(1, {duration: 4000});
-    scale1.value = withTiming(1, {duration: 900});
+    setTimeout(() => {
+      opacity.value = withTiming(1, {duration: 3000});
+      scale1.value = withTiming(1, {duration: 900});
+    }, timeoutForAnimation);
   }, []);
 
   return (
@@ -61,7 +65,9 @@ const HomeViewLink: React.FC<IHomeViewLinkProps> = ({
           onPressOut={() => {
             scale.value = withSpring(1);
           }}>
-          <LinkText style={reanimatedStyle}>{text.toUpperCase()}</LinkText>
+          <LinkText admin={admin} style={reanimatedStyle}>
+            {text.toUpperCase()}
+          </LinkText>
         </Link>
       </ImageContainer>
     </AnimatedView>
@@ -78,16 +84,18 @@ const Link = styled.TouchableOpacity<{admin: boolean}>`
   height: 100px;
   justify-content: center;
   align-items: center;
+  color: #f8f5f54b;
   background-color: ${({theme, admin}) =>
     admin
-      ? theme.appColors.backgroundColor_opacity80
-      : theme.appColors.backgroundColor_opacity50};
+      ? theme.appColors.backgroundColor_opacity20
+      : theme.appColors.backgroundColor_opacity20};
 `;
 
-const LinkText = styled(Animated.Text)`
+const LinkText = styled(Animated.Text)<{admin: boolean}>`
   width: 70%;
   text-align: center;
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme, admin}) =>
+    admin ? theme.appColors.whiteColor : theme.appColors.whiteColor};
   font-size: 22px;
   padding: 5px;
   font-weight: bold;

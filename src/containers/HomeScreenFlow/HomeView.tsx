@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StatusBar, ActivityIndicator, TouchableOpacity} from 'react-native';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -85,6 +85,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
             onPress={() => navigation.navigate(ROUTES.WodsList)}
             text={t('wods:wodsList')}
             admin={false}
+            timeoutForAnimation={0}
           />
 
           <HomeViewLink
@@ -92,6 +93,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
             onPress={() => navigation.navigate(ROUTES.ActivityBoard)}
             text={t('user:activityBoard')}
             admin={false}
+            timeoutForAnimation={400}
           />
 
           <HomeViewLink
@@ -102,6 +104,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
             }}
             text={t('user:activitiesHistory')}
             admin={false}
+            timeoutForAnimation={800}
           />
 
           <HomeViewLink
@@ -109,6 +112,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
             onPress={() => navigation.navigate(ROUTES.Profile)}
             text={t('user:userProfile')}
             admin={false}
+            timeoutForAnimation={1200}
           />
 
           {user.admin && (
@@ -118,6 +122,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
                 onPress={() => navigation.navigate(ROUTES.CreateWorkout)}
                 text={t('admin:createWorkout')}
                 admin={true}
+                timeoutForAnimation={1600}
               />
 
               <HomeViewLink
@@ -125,6 +130,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
                 onPress={() => navigation.navigate(ROUTES.WorkoutsList)}
                 text={t('admin:workoutsList')}
                 admin={true}
+                timeoutForAnimation={2000}
               />
 
               <HomeViewLink
@@ -132,6 +138,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
                 onPress={() => navigation.navigate(ROUTES.CreateWod)}
                 text={t('admin:createWod')}
                 admin={true}
+                timeoutForAnimation={2400}
               />
             </>
           )}
