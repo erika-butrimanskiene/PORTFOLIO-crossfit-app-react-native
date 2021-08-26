@@ -15,6 +15,7 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <Navigator />
+
           <CustomisableAlert
             titleStyle={{
               fontSize: 18,

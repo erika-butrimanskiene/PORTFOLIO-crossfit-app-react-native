@@ -34,6 +34,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
 
   //STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -45,7 +46,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   return (
     <Container>
       <StatusBar backgroundColor={`#212121`} />
-      {onSync ? (
+      {onSync || Object.keys(user).length !== 0 ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
@@ -55,6 +56,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
             validationSchema={loginSchema}
             onSubmit={values => {
               const {email, password} = values;
+              dispatch(actions.ui.setOnSync(true));
               dispatch(actions.user.getUserAtLogin(email, password));
             }}>
             {formikProps => {

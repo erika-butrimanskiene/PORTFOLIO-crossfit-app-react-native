@@ -3,13 +3,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
 import {RootState} from 'src/state/reducers';
+import auth from '@react-native-firebase/auth';
 
 //ROUTES
 import ROUTES from './Routes';
 import {actions} from '../state/actions';
-import {database} from '../utils/firebase/database';
 import {RootStackParamList} from './Interface';
 //SCREENS
 import LandingView from '../containers/LandingScreenFlow/LandingView';
@@ -26,6 +25,7 @@ import WodDetailView from '../containers/WodsFlow/WodDetailView';
 import ActivityBoard from '../containers/UserFlow/ActivityBoard';
 import ActivitiesHistory from '../containers/UserFlow/ActivitiesHistory';
 import WorkoutResultsView from '../containers/UserFlow/WorkoutResultsView';
+
 //COMPONENTS
 import NotificationModal from '../components/Modals/NotificationModal';
 
@@ -52,7 +52,12 @@ const Navigator: React.FC = () => {
         dispatch(actions.messages.clearMessages());
       }, 2000);
     }
-  }, [successMsgText]);
+
+    const currentUser: any = auth().currentUser;
+    if (!currentUser) {
+      dispatch(actions.ui.setOnSync(false));
+    }
+  }, [successMsgText, user]);
 
   return (
     <NavigationContainer>

@@ -34,6 +34,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
 
   //STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -46,7 +47,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
   return (
     <Container>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
-      {onSync ? (
+      {onSync || Object.keys(user).length !== 0 ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>

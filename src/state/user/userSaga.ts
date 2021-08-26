@@ -33,7 +33,7 @@ function* handleRegistration(action: {
       action.payload.password,
     );
 
-    yield put(actions.ui.setOnSync(false));
+    //yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
       storage()
@@ -58,6 +58,7 @@ function* handleRegistration(action: {
     }
 
     if (response.status === false) {
+      yield put(actions.ui.setOnSync(false));
       throw response;
     }
   } catch (e) {
@@ -83,7 +84,7 @@ function* handleLogin({payload: {email, password}}: AnyAction) {
 
     const response: IFirebaseAuth = yield call(login, email, password);
 
-    yield put(actions.ui.setOnSync(false));
+    //yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
       yield put(actions.messages.clearMessages());
@@ -91,6 +92,7 @@ function* handleLogin({payload: {email, password}}: AnyAction) {
       yield fork(watchWods);
     }
     if (response.status === false) {
+      yield put(actions.ui.setOnSync(false));
       throw response;
     }
   } catch (e) {
@@ -114,7 +116,7 @@ function* handleLoginFacebook() {
 
     const response: IFirebaseAuth = yield call(fbLogin);
 
-    yield put(actions.ui.setOnSync(false));
+    //yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
       database.ref(`/users/${response.uid}`).set({
@@ -130,6 +132,7 @@ function* handleLoginFacebook() {
     }
 
     if (response.status === false) {
+      yield put(actions.ui.setOnSync(false));
       throw response;
     }
   } catch (e) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
@@ -33,6 +33,7 @@ const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
 
   //STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
+  const user = useSelector((state: RootState) => state.user.user);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,7 +67,7 @@ const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
   return (
     <LandingContainer>
       <StatusBar backgroundColor={`${theme.appColors.backgroundColor}`} />
-      {onSync ? (
+      {onSync || Object.keys(user).length !== 0 ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <Image

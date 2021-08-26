@@ -38,6 +38,8 @@ export default function* watchUser(uid: string) {
             admin: user.admin,
           }),
         );
+
+        yield put(actions.ui.setOnSync(false));
       }
     }
   } catch (e) {

@@ -6,7 +6,7 @@ export interface IUiState {
 }
 
 const initialUiState = {
-  onSync: false,
+  onSync: true,
 };
 
 const uiReducer = (state: IUiState = initialUiState, action: uiActionsType) => {
