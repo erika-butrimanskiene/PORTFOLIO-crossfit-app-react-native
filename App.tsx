@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import {ThemeProvider} from 'styled-components';
 import {theme} from './src/assets/styles/theme';
 import Navigator from './src/routes/Navigator';

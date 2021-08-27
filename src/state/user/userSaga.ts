@@ -116,18 +116,18 @@ function* handleLoginFacebook() {
 
     const response: IFirebaseAuth = yield call(fbLogin);
 
-    //yield put(actions.ui.setOnSync(false));
-
     if (response.status === true) {
-      database.ref(`/users/${response.uid}`).set({
-        email: `${response.email}`,
-        name: `${response.name}`,
-        surname: `${response.surname}`,
-        imageUrl: '',
-        admin: false,
-      });
+      database
+        .ref(`/users/${response.uid}`)
+        .set({
+          email: `${response.email}`,
+          name: `${response.name}`,
+          surname: `${response.surname}`,
+          imageUrl: `${response.imageUrl}`,
+          admin: false,
+        })
+        .then(yield fork(watchUser, response.uid));
 
-      yield fork(watchUser, response.uid);
       yield fork(watchWods);
     }
 

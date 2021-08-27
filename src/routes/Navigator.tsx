@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {RootState} from 'src/state/reducers';
 import auth from '@react-native-firebase/auth';
+import styled from 'styled-components/native';
 
 //ROUTES
 import ROUTES from './Routes';
@@ -35,8 +37,6 @@ const Navigator: React.FC = () => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
   //STATES
-  const [initializing, setInitializing] = useState(true);
-
   const error = useSelector((state: RootState) => state.messages.authErrorMsg);
   const successMsg = useSelector(
     (state: RootState) => state.messages.successMsg,
@@ -60,73 +60,86 @@ const Navigator: React.FC = () => {
   }, [successMsgText, user]);
 
   return (
-    <NavigationContainer>
-      {errorText !== '' && (
-        <NotificationModal
-          notificationIcon={'error-outline'}
-          bgColor={'#B22430'}
-          errorText={errorText}
-          onPress={() => dispatch(actions.messages.clearMessages())}
-        />
-      )}
-      {successMsgText !== '' && (
-        <NotificationModal
-          notificationIcon={'check-circle-outline'}
-          bgColor={'#0b965a'}
-          errorText={successMsgText}
-          onPress={() => dispatch(actions.messages.clearMessages())}
-        />
-      )}
-      {Object.keys(user).length !== 0 ? (
-        <Stack.Navigator
-          screenOptions={{
-            title: '',
-            headerTransparent: true,
-            headerStyle: {
-              elevation: 0,
-            },
-            headerTintColor: 'white',
-          }}>
-          <Stack.Screen name={ROUTES.Home} component={HomeView} />
-          <Stack.Screen name={ROUTES.Profile} component={ProfileView} />
-          <Stack.Screen
-            name={ROUTES.CreateWorkout}
-            component={CreateWorkoutView}
+    <View
+      style={{
+        position: 'relative',
+        backgroundColor: 'rgba(52, 52, 52, 0)',
+        flex: 1,
+      }}>
+      <NavigationContainer>
+        {errorText !== '' && (
+          <NotificationModal
+            notificationIcon={'error-outline'}
+            bgColor={'#B22430'}
+            errorText={errorText}
+            onPress={() => dispatch(actions.messages.clearMessages())}
           />
-          <Stack.Screen
-            name={ROUTES.WorkoutsList}
-            component={WorkoutsListView}
+        )}
+        {successMsgText !== '' && (
+          <NotificationModal
+            notificationIcon={'check-circle-outline'}
+            bgColor={'#0b965a'}
+            errorText={successMsgText}
+            onPress={() => dispatch(actions.messages.clearMessages())}
           />
-          <Stack.Screen name={ROUTES.CreateWod} component={CreateWodView} />
-          <Stack.Screen name={ROUTES.WodsList} component={WodsListView} />
-          <Stack.Screen name={ROUTES.WodDetail} component={WodDetailView} />
-          <Stack.Screen name={ROUTES.ActivityBoard} component={ActivityBoard} />
-          <Stack.Screen
-            name={ROUTES.ActivitiesHistory}
-            component={ActivitiesHistory}
-          />
-          <Stack.Screen
-            name={ROUTES.WorkoutResults}
-            component={WorkoutResultsView}
-          />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator
-          screenOptions={{
-            title: '',
-            headerTransparent: true,
-            headerStyle: {
-              elevation: 0,
-            },
-            headerTintColor: 'white',
-          }}>
-          <Stack.Screen name={ROUTES.Landing} component={LandingView} />
-          <Stack.Screen name={ROUTES.Login} component={LoginView} />
-          <Stack.Screen name={ROUTES.Register} component={RegisterView} />
-          <Stack.Screen name={ROUTES.Password} component={ForgotPasswordView} />
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
+        )}
+        {Object.keys(user).length !== 0 ? (
+          <Stack.Navigator
+            screenOptions={{
+              title: '',
+              headerTransparent: true,
+              headerStyle: {
+                elevation: 0,
+              },
+              headerTintColor: 'white',
+            }}>
+            <Stack.Screen name={ROUTES.Home} component={HomeView} />
+            <Stack.Screen name={ROUTES.Profile} component={ProfileView} />
+            <Stack.Screen
+              name={ROUTES.CreateWorkout}
+              component={CreateWorkoutView}
+            />
+            <Stack.Screen
+              name={ROUTES.WorkoutsList}
+              component={WorkoutsListView}
+            />
+            <Stack.Screen name={ROUTES.CreateWod} component={CreateWodView} />
+            <Stack.Screen name={ROUTES.WodsList} component={WodsListView} />
+            <Stack.Screen name={ROUTES.WodDetail} component={WodDetailView} />
+            <Stack.Screen
+              name={ROUTES.ActivityBoard}
+              component={ActivityBoard}
+            />
+            <Stack.Screen
+              name={ROUTES.ActivitiesHistory}
+              component={ActivitiesHistory}
+            />
+            <Stack.Screen
+              name={ROUTES.WorkoutResults}
+              component={WorkoutResultsView}
+            />
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator
+            screenOptions={{
+              title: '',
+              headerTransparent: true,
+              headerStyle: {
+                elevation: 0,
+              },
+              headerTintColor: 'white',
+            }}>
+            <Stack.Screen name={ROUTES.Landing} component={LandingView} />
+            <Stack.Screen name={ROUTES.Login} component={LoginView} />
+            <Stack.Screen name={ROUTES.Register} component={RegisterView} />
+            <Stack.Screen
+              name={ROUTES.Password}
+              component={ForgotPasswordView}
+            />
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+    </View>
   );
 };
 

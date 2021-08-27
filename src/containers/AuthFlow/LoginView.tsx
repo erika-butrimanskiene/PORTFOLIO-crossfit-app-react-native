@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import SwitchSelector from 'react-native-switch-selector';
 
 //LIBRARIES
 import {Formik} from 'formik';
@@ -19,6 +20,12 @@ import AuthFormInput from '../../components/Inputs/AuthFormInput';
 import SocialButton from '../../components/Buttons/SocialButton';
 import Button from '../../components/Buttons/Button';
 
+//VARIABLES
+const options = [
+  {label: 'EN', value: 'en'},
+  {label: 'LT', value: 'lt'},
+];
+
 type LoginViewScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   ROUTES.Login
@@ -29,12 +36,30 @@ interface ILoginViewProps {
 }
 
 const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
 
   //STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderRight>
+          <SwitchLanguage
+            options={options}
+            hasPadding
+            initial={0}
+            buttonColor={theme.appColors.accentColor}
+            onPress={(language: string) => {
+              i18n.changeLanguage(language);
+            }}
+          />
+        </HeaderRight>
+      ),
+    });
+  }, [navigation, user]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -49,7 +74,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
       {onSync || Object.keys(user).length !== 0 ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
-        <>
+        <LoginForm>
           <Heading>{t('login:SignIn')}</Heading>
           <Formik
             initialValues={{email: '', password: ''}}
@@ -61,7 +86,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
             }}>
             {formikProps => {
               return (
-                <>
+                <LoginWithEmail>
                   <Inputs>
                     <AuthFormInput
                       labelValue={formikProps.values.email}
@@ -105,36 +130,29 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
                     </TouchableOpacity>
                   </Inputs>
 
-                  <Button
-                    text={t('login:Start')}
-                    bgColor={`${theme.appColors.primaryColorLighter}`}
-                    onPress={formikProps.handleSubmit}
-                  />
-                </>
+                  <ButtonContainer>
+                    <Button
+                      text={t('login:Start')}
+                      bgColor={`${theme.appColors.primaryColorLighter}`}
+                      onPress={formikProps.handleSubmit}
+                    />
+                  </ButtonContainer>
+                </LoginWithEmail>
               );
             }}
           </Formik>
 
           <SocialButtons>
             <SocialButton
-              text="Facebook"
+              text={t('login:FacebookLogin')}
               btnType="facebook"
               iconColor="#4867aa"
               onPress={() => {
                 dispatch(actions.user.getUserAtFbLogin());
               }}
             />
-
-            <SocialButton
-              text="Google"
-              btnType="google"
-              iconColor="#de4d41"
-              onPress={() => {
-                alert('Google Clicked');
-              }}
-            />
           </SocialButtons>
-        </>
+        </LoginForm>
       )}
     </Container>
   );
@@ -143,34 +161,62 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 70px;
+  padding-top: 60px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
 `;
 
+const HeaderRight = styled.View`
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SwitchLanguage = styled(SwitchSelector)`
+  margin: 0px 15px;
+  width: 70px;
+`;
+
+const LoginForm = styled.View`
+  width: 100%;
+  height: 85%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const Heading = styled.Text`
-  margin: 10px 0px 80px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
   font-size: 35px;
   font-weight: bold;
 `;
 
+const LoginWithEmail = styled.View`
+  margin: 30px 0px;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Inputs = styled.View`
-  margin-bottom: 20px;
   align-items: center;
 `;
 const ForgotPasswordText = styled.Text`
+  padding-bottom: 25px;
   color: ${({theme}) => theme.appColors.textColorLightGray};
   font-style: italic;
   font-size: 15px;
-  padding-bottom: 25px;
+`;
+
+const ButtonContainer = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SocialButtons = styled.View`
-  flex-direction: row;
-  margin-top: 40px;
   align-items: center;
+  justify-content: center;
+  width: 85%;
 `;
 
 const ErrorText = styled.Text`

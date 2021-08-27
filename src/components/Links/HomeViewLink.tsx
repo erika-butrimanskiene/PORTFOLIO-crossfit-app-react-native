@@ -81,7 +81,7 @@ const AnimatedView = styled(Animated.View)`
 
 const Link = styled.TouchableOpacity<{admin: boolean}>`
   width: 100%;
-  height: 100px;
+  height: 114px;
   justify-content: center;
   align-items: center;
   background-color: ${({theme, admin}) =>
@@ -105,7 +105,7 @@ const ImageContainer = styled.ImageBackground`
   overflow: hidden;
   margin: 10px 0px;
   width: 90%;
-  height: 100px;
+  height: 114px;
 `;
 
 export default HomeViewLink;

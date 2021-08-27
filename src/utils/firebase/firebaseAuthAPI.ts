@@ -1,5 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import Reactotron from 'reactotron-react-native';
 
 export interface IFirebaseAuth {
   status: Boolean;
@@ -8,6 +9,7 @@ export interface IFirebaseAuth {
   surname?: string;
   uid?: string;
   code?: string;
+  imageUrl?: string;
 }
 
 export const login = async (
@@ -52,12 +54,14 @@ export const fbLogin = async (): Promise<IFirebaseAuth> => {
 
     // Sign-in the user with the credential
     const response = await auth().signInWithCredential(facebookCredential);
+
     return {
       status: true,
       email: response.user.email,
       name: response.additionalUserInfo.profile.first_name,
       surname: response.additionalUserInfo.profile.last_name,
       uid: response.user.uid,
+      imageUrl: response.additionalUserInfo.profile.picture.data.url,
     };
   } catch (e) {
     return {status: false, code: e};
@@ -97,7 +101,7 @@ export const resetPasswordEmail = async (
 
 export const logout = async (): Promise<IFirebaseAuth> => {
   try {
-    auth().signOut();
+    await auth().signOut();
     return {
       status: true,
     };

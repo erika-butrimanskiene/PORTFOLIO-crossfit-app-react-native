@@ -4,7 +4,8 @@
     "Password": "Password",
     "SignIn": "Login",
     "Start": "Let's Go!",
-    "ForgotPsw": "Forgot your password?"
+    "ForgotPsw": "Forgot your password?",
+    "FacebookLogin": "Continue with Facebook"
   },
   "signup": {
     "Name": "Name",
@@ -70,7 +71,7 @@
     "save": "Save",
     "noActivitiesHistory": "No activities history...",
     "inputEmpty": "*Name and surname are required.",
-    "logout": "LOGOUT",
+    "logout": "Logout",
     "welcome": "Welcome",
     "pleaseProvideEmail": "Please type your email"
   },

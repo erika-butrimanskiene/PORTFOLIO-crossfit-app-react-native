@@ -29,9 +29,13 @@ const NotificationModal: React.FC<INotificationModalProps> = ({
 };
 
 const ErrorBar = styled.View<{bgColor: string}>`
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  left: 0;
   flex-direction: row;
-  min-height: 55px;
-  padding-right: 10px;
+  min-height: 60px;
+  padding-right: 20px;
   background-color: ${({bgColor}) => bgColor};
   font-size: 17px;
   align-items: center;

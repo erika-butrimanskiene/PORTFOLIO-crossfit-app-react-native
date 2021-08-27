@@ -2,14 +2,15 @@
   "login": {
     "Email": "El.paštas",
     "Password": "Slaptažodis",
-    "SignIn": "Prisijugti",
+    "SignIn": "Prisijunk",
     "Start": "Pirmyn!",
-    "ForgotPsw": "Pamiršote slaptažodį?"
+    "ForgotPsw": "Pamiršote slaptažodį?",
+    "FacebookLogin": "Tęskite su Facebook"
   },
   "signup": {
     "Name": "Vardas",
     "Surname": "Pavardė",
-    "SignUp": "Registruotis",
+    "SignUp": "Registruokis",
     "Email": "El.paštas",
     "Password": "Slaptažodis",
     "ConfirmPassword": "Pakartoki slaptažodį"
@@ -70,7 +71,7 @@
     "save": "Išsaugoti",
     "noActivitiesHistory": "Nėra treniruočių istorijos...",
     "inputEmpty": "*Vardas ir pavardė yra privalomi.",
-    "logout": "ATSIJUNGTI",
+    "logout": "Atsijunk",
     "welcome": "Labas",
     "pleaseProvideEmail": "Nurodykite el.paštą"
   },

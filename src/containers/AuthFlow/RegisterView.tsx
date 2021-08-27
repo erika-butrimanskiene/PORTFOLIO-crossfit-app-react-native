@@ -50,169 +50,158 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
       {onSync || Object.keys(user).length !== 0 ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
-        <>
-          <ScrollView>
-            <Heading>{t('signup:SignUp')}</Heading>
-            <Formik
-              initialValues={{
-                userName: '',
-                userSurname: '',
-                email: '',
-                password: '',
-                passwordConfirm: '',
-              }}
-              validationSchema={registerSchema}
-              onSubmit={values => {
-                const {
-                  userName,
-                  userSurname,
+        <ScrollContent>
+          <Heading>{t('signup:SignUp')}</Heading>
+          <Formik
+            initialValues={{
+              userName: '',
+              userSurname: '',
+              email: '',
+              password: '',
+              passwordConfirm: '',
+            }}
+            validationSchema={registerSchema}
+            onSubmit={values => {
+              const {userName, userSurname, email, password, passwordConfirm} =
+                values;
+              dispatch(
+                actions.user.getUserAtRegister(
                   email,
                   password,
                   passwordConfirm,
-                } = values;
-                dispatch(
-                  actions.user.getUserAtRegister(
-                    email,
-                    password,
-                    passwordConfirm,
-                    userName,
-                    userSurname,
-                  ),
-                );
-              }}>
-              {formikProps => {
-                return (
-                  <>
-                    <Inputs>
-                      <AuthFormInput
-                        labelValue={formikProps.values.userName}
-                        bgColor={`${theme.appColors.backgroundColorDarken}`}
-                        onChangeText={formikProps.handleChange('userName')}
-                        placeholderText={t('signup:Name')}
-                        iconType="user"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                      />
+                  userName,
+                  userSurname,
+                ),
+              );
+            }}>
+            {formikProps => {
+              return (
+                <>
+                  <Inputs>
+                    <AuthFormInput
+                      labelValue={formikProps.values.userName}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
+                      onChangeText={formikProps.handleChange('userName')}
+                      placeholderText={t('signup:Name')}
+                      iconType="user"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                    />
 
-                      {formikProps.touched.userName &&
-                        formikProps.errors.userName && (
-                          <ErrorText>
-                            {formikProps.touched.userName &&
-                              formikProps.errors.userName}
-                          </ErrorText>
-                        )}
+                    {formikProps.touched.userName &&
+                      formikProps.errors.userName && (
+                        <ErrorText>
+                          {formikProps.touched.userName &&
+                            formikProps.errors.userName}
+                        </ErrorText>
+                      )}
 
-                      <AuthFormInput
-                        labelValue={formikProps.values.userSurname}
-                        bgColor={`${theme.appColors.backgroundColorDarken}`}
-                        onChangeText={formikProps.handleChange('userSurname')}
-                        placeholderText={t('signup:Surname')}
-                        iconType="user"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                      />
+                    <AuthFormInput
+                      labelValue={formikProps.values.userSurname}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
+                      onChangeText={formikProps.handleChange('userSurname')}
+                      placeholderText={t('signup:Surname')}
+                      iconType="user"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                    />
 
-                      {formikProps.touched.userSurname &&
-                        formikProps.errors.userSurname && (
-                          <ErrorText>
-                            {formikProps.touched.userSurname &&
-                              formikProps.errors.userSurname}
-                          </ErrorText>
-                        )}
+                    {formikProps.touched.userSurname &&
+                      formikProps.errors.userSurname && (
+                        <ErrorText>
+                          {formikProps.touched.userSurname &&
+                            formikProps.errors.userSurname}
+                        </ErrorText>
+                      )}
 
-                      <AuthFormInput
-                        labelValue={formikProps.values.email}
-                        bgColor={`${theme.appColors.backgroundColorDarken}`}
-                        onChangeText={formikProps.handleChange('email')}
-                        placeholderText={t('signup:Email')}
-                        iconType="user"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                      />
-                      {formikProps.touched.email &&
-                        formikProps.errors.email && (
-                          <ErrorText>
-                            {formikProps.touched.email &&
-                              formikProps.errors.email}
-                          </ErrorText>
-                        )}
+                    <AuthFormInput
+                      labelValue={formikProps.values.email}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
+                      onChangeText={formikProps.handleChange('email')}
+                      placeholderText={t('signup:Email')}
+                      iconType="user"
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                    />
+                    {formikProps.touched.email && formikProps.errors.email && (
+                      <ErrorText>
+                        {formikProps.touched.email && formikProps.errors.email}
+                      </ErrorText>
+                    )}
 
-                      <AuthFormInput
-                        labelValue={formikProps.values.password}
-                        bgColor={`${theme.appColors.backgroundColorDarken}`}
-                        onChangeText={formikProps.handleChange('password')}
-                        placeholderText={t('signup:Password')}
-                        iconType="lock"
-                        secureTextEntry={true}
-                      />
-                      {formikProps.touched.password &&
-                        formikProps.errors.password && (
-                          <ErrorText>
-                            {formikProps.touched.password &&
-                              formikProps.errors.password}
-                          </ErrorText>
-                        )}
+                    <AuthFormInput
+                      labelValue={formikProps.values.password}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
+                      onChangeText={formikProps.handleChange('password')}
+                      placeholderText={t('signup:Password')}
+                      iconType="lock"
+                      secureTextEntry={true}
+                    />
+                    {formikProps.touched.password &&
+                      formikProps.errors.password && (
+                        <ErrorText>
+                          {formikProps.touched.password &&
+                            formikProps.errors.password}
+                        </ErrorText>
+                      )}
 
-                      <AuthFormInput
-                        labelValue={formikProps.values.passwordConfirm}
-                        bgColor={`${theme.appColors.backgroundColorDarken}`}
-                        onChangeText={formikProps.handleChange(
-                          'passwordConfirm',
-                        )}
-                        placeholderText={t('signup:ConfirmPassword')}
-                        iconType="lock"
-                        secureTextEntry={true}
-                      />
-                      {formikProps.touched.passwordConfirm &&
-                        formikProps.errors.passwordConfirm && (
-                          <ErrorText>
-                            {formikProps.touched.passwordConfirm &&
-                              formikProps.errors.passwordConfirm}
-                          </ErrorText>
-                        )}
-                    </Inputs>
-                    <SignUpButtonContainer>
-                      <Button
-                        text={t('signup:SignUp')}
-                        bgColor={`${theme.appColors.primaryColorLighter}`}
-                        onPress={formikProps.handleSubmit}
-                      />
-                    </SignUpButtonContainer>
-                  </>
-                );
+                    <AuthFormInput
+                      labelValue={formikProps.values.passwordConfirm}
+                      bgColor={`${theme.appColors.backgroundColorDarken}`}
+                      onChangeText={formikProps.handleChange('passwordConfirm')}
+                      placeholderText={t('signup:ConfirmPassword')}
+                      iconType="lock"
+                      secureTextEntry={true}
+                    />
+                    {formikProps.touched.passwordConfirm &&
+                      formikProps.errors.passwordConfirm && (
+                        <ErrorText>
+                          {formikProps.touched.passwordConfirm &&
+                            formikProps.errors.passwordConfirm}
+                        </ErrorText>
+                      )}
+                  </Inputs>
+                  <SignUpButtonContainer>
+                    <Button
+                      text={t('signup:SignUp')}
+                      bgColor={`${theme.appColors.primaryColorLighter}`}
+                      onPress={formikProps.handleSubmit}
+                    />
+                  </SignUpButtonContainer>
+                </>
+              );
+            }}
+          </Formik>
+          <SocialButtons>
+            <SocialButton
+              text={t('login:FacebookLogin')}
+              btnType="facebook"
+              iconColor="#4867aa"
+              onPress={() => {
+                dispatch(actions.user.getUserAtFbLogin());
               }}
-            </Formik>
-            <SocialButtons>
-              <SocialButton
-                text="Facebook"
-                btnType="facebook"
-                iconColor="#4867aa"
-                onPress={() => {
-                  dispatch(actions.user.getUserAtFbLogin());
-                }}
-              />
-
-              <SocialButton
-                text="Google"
-                btnType="google"
-                iconColor="#de4d41"
-                onPress={() => {
-                  alert('Google Clicked');
-                }}
-              />
-            </SocialButtons>
-          </ScrollView>
-        </>
+            />
+          </SocialButtons>
+        </ScrollContent>
       )}
     </Container>
   );
 };
 
+const ScrollContent = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}))`
+  width: 100%;
+`;
+
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 60px;
+  padding-top: 40px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
@@ -221,8 +210,8 @@ const Container = styled.View`
 const Heading = styled.Text`
   margin: 15px 0px 25px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
-  font-size: 30px;
-  text-align: center;
+  font-size: 35px;
+  font-weight: bold;
 `;
 
 const SignUpButtonContainer = styled.View`
@@ -236,8 +225,10 @@ const Inputs = styled.View`
 `;
 const SocialButtons = styled.View`
   flex-direction: row;
-  margin: 30px 0px;
+  margin: 30px 0px 20px 0px;
   align-items: center;
+  justify-content: center;
+  width: 80%;
 `;
 
 const ErrorText = styled.Text`

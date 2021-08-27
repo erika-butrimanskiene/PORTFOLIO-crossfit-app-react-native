@@ -42,18 +42,19 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <HeaderRight>
-          <Logout onPress={() => dispatch(actions.user.logoutUser())}>
-            <LogoutText>{t('user:logout')}</LogoutText>
-          </Logout>
+      headerLeft: () => (
+        <HeaderLeft>
           <ImageContainer>
             <Image source={{uri: user.imageUrl}}></Image>
           </ImageContainer>
-        </HeaderRight>
+
+          <Logout onPress={() => dispatch(actions.user.logoutUser())}>
+            <LogoutText>{t('user:logout')}</LogoutText>
+          </Logout>
+        </HeaderLeft>
       ),
-      headerLeft: () => (
-        <HeaderLeft>
+      headerRight: () => (
+        <HeaderRight>
           <SwitchLanguage
             options={options}
             hasPadding
@@ -63,7 +64,7 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
               i18n.changeLanguage(language);
             }}
           />
-        </HeaderLeft>
+        </HeaderRight>
       ),
     });
   }, [navigation, user]);
@@ -75,87 +76,90 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
       {onSync ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
-        <ScrollContent>
+        <>
           <WelcomeMessage>
             <WelcomeText>{t('user:welcome')}, </WelcomeText>
             <WelcomeUser>{user.name}</WelcomeUser>
           </WelcomeMessage>
-          <HomeViewLink
-            image={imagesURI[1]}
-            onPress={() => navigation.navigate(ROUTES.WodsList)}
-            text={t('wods:wodsList')}
-            admin={false}
-            timeoutForAnimation={0}
-          />
+          <ScrollContent>
+            <HomeViewLink
+              image={imagesURI[1]}
+              onPress={() => navigation.navigate(ROUTES.WodsList)}
+              text={t('wods:wodsList')}
+              admin={false}
+              timeoutForAnimation={0}
+            />
 
-          <HomeViewLink
-            image={imagesURI[6]}
-            onPress={() => navigation.navigate(ROUTES.ActivityBoard)}
-            text={t('user:activityBoard')}
-            admin={false}
-            timeoutForAnimation={400}
-          />
+            <HomeViewLink
+              image={imagesURI[6]}
+              onPress={() => navigation.navigate(ROUTES.ActivityBoard)}
+              text={t('user:activityBoard')}
+              admin={false}
+              timeoutForAnimation={400}
+            />
 
-          <HomeViewLink
-            image={imagesURI[3]}
-            onPress={() => {
-              dispatch(actions.ui.setOnSync(true));
-              navigation.navigate(ROUTES.ActivitiesHistory);
-            }}
-            text={t('user:activitiesHistory')}
-            admin={false}
-            timeoutForAnimation={800}
-          />
+            <HomeViewLink
+              image={imagesURI[3]}
+              onPress={() => {
+                dispatch(actions.ui.setOnSync(true));
+                navigation.navigate(ROUTES.ActivitiesHistory);
+              }}
+              text={t('user:activitiesHistory')}
+              admin={false}
+              timeoutForAnimation={800}
+            />
 
-          <HomeViewLink
-            image={imagesURI[2]}
-            onPress={() => navigation.navigate(ROUTES.Profile)}
-            text={t('user:userProfile')}
-            admin={false}
-            timeoutForAnimation={1200}
-          />
+            <HomeViewLink
+              image={imagesURI[2]}
+              onPress={() => navigation.navigate(ROUTES.Profile)}
+              text={t('user:userProfile')}
+              admin={false}
+              timeoutForAnimation={1200}
+            />
 
-          {user.admin && (
-            <>
-              <HomeViewLink
-                image={imagesURI[5]}
-                onPress={() => navigation.navigate(ROUTES.CreateWorkout)}
-                text={t('admin:createWorkout')}
-                admin={true}
-                timeoutForAnimation={1600}
-              />
+            {user.admin && (
+              <>
+                <HomeViewLink
+                  image={imagesURI[5]}
+                  onPress={() => navigation.navigate(ROUTES.CreateWorkout)}
+                  text={t('admin:createWorkout')}
+                  admin={true}
+                  timeoutForAnimation={1600}
+                />
 
-              <HomeViewLink
-                image={imagesURI[0]}
-                onPress={() => navigation.navigate(ROUTES.WorkoutsList)}
-                text={t('admin:workoutsList')}
-                admin={true}
-                timeoutForAnimation={2000}
-              />
+                <HomeViewLink
+                  image={imagesURI[0]}
+                  onPress={() => navigation.navigate(ROUTES.WorkoutsList)}
+                  text={t('admin:workoutsList')}
+                  admin={true}
+                  timeoutForAnimation={2000}
+                />
 
-              <HomeViewLink
-                image={imagesURI[4]}
-                onPress={() => navigation.navigate(ROUTES.CreateWod)}
-                text={t('admin:createWod')}
-                admin={true}
-                timeoutForAnimation={2400}
-              />
-            </>
-          )}
-        </ScrollContent>
+                <HomeViewLink
+                  image={imagesURI[4]}
+                  onPress={() => navigation.navigate(ROUTES.CreateWod)}
+                  text={t('admin:createWod')}
+                  admin={true}
+                  timeoutForAnimation={2400}
+                />
+              </>
+            )}
+          </ScrollContent>
+        </>
       )}
     </Container>
   );
 };
 
 const HeaderRight = styled.View`
-  flex-direction: row;
   margin-top: 20px;
   align-items: center;
   justify-content: center;
 `;
 
 const HeaderLeft = styled.View`
+  padding: 5px;
+  flex-direction: row;
   margin-top: 20px;
   align-items: center;
   justify-content: center;
@@ -167,20 +171,20 @@ const SwitchLanguage = styled(SwitchSelector)`
 `;
 
 const ImageContainer = styled.View`
-  margin-right: 15px;
-  width: 35px;
-  height: 35px;
+  margin-left: 15px;
+  width: 40px;
+  height: 40px;
   align-items: center;
   border-radius: 100px;
   border-width: 2px;
-  border-color: ${({theme}) => theme.appColors.backgroundColor};
+  border-color: ${({theme}) => theme.appColors.accentColor};
   overflow: hidden;
 `;
 
 const Image = styled.ImageBackground`
   border-radius: 100px;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
 `;
 
 const Logout = styled(TouchableOpacity)`
@@ -188,7 +192,9 @@ const Logout = styled(TouchableOpacity)`
 `;
 
 const LogoutText = styled.Text`
-  font-size: 20px;
+  font-size: 23px;
+
+  font-style: italic;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
@@ -208,7 +214,7 @@ const WelcomeMessage = styled.View`
   border-radius: 5px;
   width: 90%;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
-  margin: 15px 0px 15px 0px;
+  margin: 45px 0px 15px 0px;
 `;
 
 const WelcomeText = styled.Text`
@@ -218,7 +224,7 @@ const WelcomeText = styled.Text`
 
 const WelcomeUser = styled.Text`
   font-size: 20px;
-  color: ${({theme}) => theme.appColors.accentColor};
+  color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 const ScrollContent = styled.ScrollView.attrs(() => ({
@@ -228,7 +234,7 @@ const ScrollContent = styled.ScrollView.attrs(() => ({
   },
 }))`
   width: 100%;
-  margin: 30px 0px 40px 0px;
+  margin: 15px 0px 0px 0px;
 `;
 
 export default withTheme(HomeView);

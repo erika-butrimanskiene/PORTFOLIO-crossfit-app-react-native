@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {DefaultTheme} from 'styled-components/native';
-import {TouchableOpacity, GestureResponderEvent} from 'react-native';
+import {GestureResponderEvent} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 interface ISocialButtonProps {
@@ -18,33 +18,38 @@ const SocialButton: React.FC<ISocialButtonProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableButton onPress={onPress}>
       <CustomButton>
         <IconWrapper>
           <FontAwesome name={btnType} size={22} color={iconColor} />
         </IconWrapper>
         <Title>{text}</Title>
       </CustomButton>
-    </TouchableOpacity>
+    </TouchableButton>
   );
 };
 
+const TouchableButton = styled.TouchableOpacity`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const CustomButton = styled.View`
   margin: 10px;
-  padding: 10px 0px;
-  width: 160px;
-  border-radius: 30px;
+  padding: 15px 6px 15px 0px;
+  width: 100%;
+  border-radius: 5px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}) => theme.appColors.whiteColor};
+  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
 `;
 
 const Title = styled.Text`
-  color: ${({theme}) => theme.appColors.textColorDarkGray};
+  color: ${({theme}) => theme.appColors.whiteColor};
   font-weight: bold;
   text-transform: uppercase;
-  text-align: center;
 `;
 
 const IconWrapper = styled.View`

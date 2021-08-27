@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StatusBar, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import SwitchSelector from 'react-native-switch-selector';
@@ -39,18 +39,16 @@ const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
     navigation.setOptions({
       headerRight: () => (
         <>
-          {!onSync && (
-            <SwitchSelector
-              options={options}
-              hasPadding
-              initial={0}
-              buttonColor={theme.appColors.accentColor}
-              style={{width: 70}}
-              onPress={(language: string) => {
-                i18n.changeLanguage(language);
-              }}
-            />
-          )}
+          <SwitchSelector
+            options={options}
+            hasPadding
+            initial={0}
+            buttonColor={theme.appColors.accentColor}
+            style={{width: 70}}
+            onPress={(language: string) => {
+              i18n.changeLanguage(language);
+            }}
+          />
         </>
       ),
     });
@@ -132,7 +130,7 @@ const TextMessagesContainer = styled.View`
 
 const TextMessage = styled.Text`
   font-size: 22px;
-  padding: 4px 0px;
+  padding: 7px 0px;
   color: ${({theme}) => theme.appColors.whiteColor};
   text-align: center;
 `;
