@@ -86,7 +86,7 @@ const Link = styled.TouchableOpacity<{admin: boolean}>`
   align-items: center;
   background-color: ${({theme, admin}) =>
     admin
-      ? theme.appColors.backgroundColor_opacity80
+      ? theme.appColors.backgroundColor_opacity20
       : theme.appColors.backgroundColor_opacity20};
 `;
 

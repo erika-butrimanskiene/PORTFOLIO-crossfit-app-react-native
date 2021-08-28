@@ -394,7 +394,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 50px;
+  padding-top: 60px;
   font-size: 20px;
   align-items: center;
 `;

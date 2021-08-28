@@ -37,7 +37,7 @@ const TouchableButton = styled.TouchableOpacity`
 
 const CustomButton = styled.View`
   margin: 10px;
-  padding: 15px 6px 15px 0px;
+  padding: 15px 11px 15px 0px;
   width: 100%;
   border-radius: 5px;
   flex-direction: row;
@@ -47,7 +47,7 @@ const CustomButton = styled.View`
 `;
 
 const Title = styled.Text`
-  color: ${({theme}) => theme.appColors.whiteColor};
+  color: ${({theme}) => theme.appColors.textColorLightGray};
   font-weight: bold;
   text-transform: uppercase;
 `;

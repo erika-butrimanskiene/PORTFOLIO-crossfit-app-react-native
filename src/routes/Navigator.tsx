@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
@@ -142,5 +142,11 @@ const Navigator: React.FC = () => {
     </View>
   );
 };
+
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  background-color: ${({theme}) => theme.appColors.backgroundColor};
+`;
 
 export default Navigator;

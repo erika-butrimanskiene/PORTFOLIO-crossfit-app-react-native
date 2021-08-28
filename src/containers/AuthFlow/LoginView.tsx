@@ -43,24 +43,6 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
   const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderRight>
-          <SwitchLanguage
-            options={options}
-            hasPadding
-            initial={0}
-            buttonColor={theme.appColors.accentColor}
-            onPress={(language: string) => {
-              i18n.changeLanguage(language);
-            }}
-          />
-        </HeaderRight>
-      ),
-    });
-  }, [navigation, user]);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.messages.clearMessages());
@@ -141,12 +123,11 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
               );
             }}
           </Formik>
-
           <SocialButtons>
             <SocialButton
               text={t('login:FacebookLogin')}
               btnType="facebook"
-              iconColor="#4867aa"
+              iconColor={theme.appColors.primaryColorLighter}
               onPress={() => {
                 dispatch(actions.user.getUserAtFbLogin());
               }}
@@ -161,7 +142,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
 const Container = styled.View`
   background-color: ${({theme}) => theme.appColors.backgroundColor};
   flex: 1;
-  padding-top: 60px;
+  padding-top: 50px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
@@ -179,9 +160,9 @@ const SwitchLanguage = styled(SwitchSelector)`
 `;
 
 const LoginForm = styled.View`
+  padding-top: 50px;
   width: 100%;
-  height: 85%;
-  justify-content: space-between;
+  height: 100%;
   align-items: center;
 `;
 
@@ -214,15 +195,16 @@ const ButtonContainer = styled.View`
 `;
 
 const SocialButtons = styled.View`
+  margin-top: 40px;
   align-items: center;
   justify-content: center;
-  width: 85%;
+  width: 75%;
 `;
 
 const ErrorText = styled.Text`
   color: ${({theme}) => theme.appColors.accentColor};
   font-size: 17px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 `;
 
 export default withTheme(LoginView);

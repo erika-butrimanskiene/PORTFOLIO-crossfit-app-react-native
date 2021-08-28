@@ -5,7 +5,7 @@
     "SignIn": "Login",
     "Start": "Let's Go!",
     "ForgotPsw": "Forgot your password?",
-    "FacebookLogin": "Continue with Facebook"
+    "FacebookLogin": "Login with Facebook"
   },
   "signup": {
     "Name": "Name",

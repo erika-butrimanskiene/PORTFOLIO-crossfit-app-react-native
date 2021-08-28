@@ -177,7 +177,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
             <SocialButton
               text={t('login:FacebookLogin')}
               btnType="facebook"
-              iconColor="#4867aa"
+              iconColor={theme.appColors.primaryColorLighter}
               onPress={() => {
                 dispatch(actions.user.getUserAtFbLogin());
               }}
@@ -228,7 +228,7 @@ const SocialButtons = styled.View`
   margin: 30px 0px 20px 0px;
   align-items: center;
   justify-content: center;
-  width: 80%;
+  width: 75%;
 `;
 
 const ErrorText = styled.Text`

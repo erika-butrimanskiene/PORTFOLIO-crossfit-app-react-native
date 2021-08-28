@@ -25,7 +25,7 @@ import Link from '../../components/Links/Link';
 
 type ActivitiesHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  ROUTES.ActivityBoard
+  ROUTES.ActivitiesHistory
 >;
 interface IActivitiesHistoryViewProps {
   theme: DefaultTheme;
@@ -70,6 +70,7 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
       setIsResultEntered([...resultArray]);
     };
     checkIsResultEntered();
+
     dispatch(actions.ui.setOnSync(false));
   }, [showModal]);
 

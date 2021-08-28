@@ -39,20 +39,22 @@ const LandingView: React.FC<ILandingViewProps> = ({navigation, theme}) => {
     navigation.setOptions({
       headerRight: () => (
         <>
-          <SwitchSelector
-            options={options}
-            hasPadding
-            initial={0}
-            buttonColor={theme.appColors.accentColor}
-            style={{width: 70}}
-            onPress={(language: string) => {
-              i18n.changeLanguage(language);
-            }}
-          />
+          {!onSync && Object.keys(user).length === 0 && (
+            <SwitchSelector
+              options={options}
+              hasPadding
+              initial={0}
+              buttonColor={theme.appColors.accentColor}
+              style={{width: 70}}
+              onPress={(language: string) => {
+                i18n.changeLanguage(language);
+              }}
+            />
+          )}
         </>
       ),
     });
-  }, [navigation]);
+  }, [navigation, onSync]);
 
   const navigateToLogin = () => {
     navigation.navigate(ROUTES.Login);

@@ -5,6 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
 import SwitchSelector from 'react-native-switch-selector';
+import Reactotron from 'reactotron-react-native';
 
 //ROUTES
 import {RootState} from 'src/state/reducers';
@@ -30,9 +31,10 @@ type HomeViewScreenNavigationProp = StackNavigationProp<
 interface IHomeViewProps {
   theme: DefaultTheme;
   navigation: HomeViewScreenNavigationProp;
+  route: any;
 }
 
-const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
+const HomeView: React.FC<IHomeViewProps> = ({theme, navigation, route}) => {
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
 
@@ -43,31 +45,42 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation}) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <HeaderLeft>
-          <ImageContainer>
-            <Image source={{uri: user.imageUrl}}></Image>
-          </ImageContainer>
-
-          <Logout onPress={() => dispatch(actions.user.logoutUser())}>
-            <LogoutText>{t('user:logout')}</LogoutText>
-          </Logout>
-        </HeaderLeft>
+        <>
+          {!onSync && Object.keys(user).length !== 0 && (
+            <HeaderLeft
+              onPress={() => {
+                Reactotron.log('veikia');
+                dispatch(actions.user.logoutUser());
+              }}>
+              <ImageContainer>
+                <Image source={{uri: user.imageUrl}}></Image>
+              </ImageContainer>
+              <LogoutButton>
+                <LogoutText>{t('user:logout')}</LogoutText>
+              </LogoutButton>
+            </HeaderLeft>
+          )}
+        </>
       ),
       headerRight: () => (
-        <HeaderRight>
-          <SwitchLanguage
-            options={options}
-            hasPadding
-            initial={0}
-            buttonColor={theme.appColors.accentColor}
-            onPress={(language: string) => {
-              i18n.changeLanguage(language);
-            }}
-          />
-        </HeaderRight>
+        <>
+          {!onSync && Object.keys(user).length !== 0 && (
+            <HeaderRight>
+              <SwitchLanguage
+                options={options}
+                hasPadding
+                initial={0}
+                buttonColor={theme.appColors.accentColor}
+                onPress={(language: string) => {
+                  i18n.changeLanguage(language);
+                }}
+              />
+            </HeaderRight>
+          )}
+        </>
       ),
     });
-  }, [navigation, user]);
+  }, [navigation, user, onSync]);
 
   return (
     <Container>
@@ -157,21 +170,22 @@ const HeaderRight = styled.View`
   justify-content: center;
 `;
 
-const HeaderLeft = styled.View`
-  padding: 5px;
+const HeaderLeft = styled.TouchableOpacity`
+  padding: 5px 5px 5px 5px;
+  border-radius: 5px;
   flex-direction: row;
   margin-top: 20px;
-  align-items: center;
-  justify-content: center;
+  margin-left: 17px;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 const SwitchLanguage = styled(SwitchSelector)`
-  margin: 0px 15px;
+  margin: 0px 17px;
   width: 70px;
 `;
 
 const ImageContainer = styled.View`
-  margin-left: 15px;
   width: 40px;
   height: 40px;
   align-items: center;
@@ -187,13 +201,11 @@ const Image = styled.ImageBackground`
   height: 40px;
 `;
 
-const Logout = styled(TouchableOpacity)`
-  margin: 0px 10px;
-`;
+const LogoutButton = styled.View``;
 
 const LogoutText = styled.Text`
+  padding: 3px 10px;
   font-size: 23px;
-
   font-style: italic;
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
@@ -214,7 +226,7 @@ const WelcomeMessage = styled.View`
   border-radius: 5px;
   width: 90%;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
-  margin: 45px 0px 15px 0px;
+  margin: 45px 0px 10px 0px;
 `;
 
 const WelcomeText = styled.Text`

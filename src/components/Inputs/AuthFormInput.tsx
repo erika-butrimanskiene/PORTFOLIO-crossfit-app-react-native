@@ -52,7 +52,7 @@ const AuthFormInput: React.FC<IAuthFormInputProps> = ({
 const InputContainer = styled.View<{bgColor: string; focus: boolean}>`
   width: 90%;
   height: 60px;
-  margin: 10px 0px;
+  margin: 10px 0px 5px 0px;
   background-color: ${({bgColor}) => bgColor};
   border-width: ${({focus}) => (focus ? '1px' : '0px')};
   border-color: ${({theme}) => theme.appColors.primaryColorLighter};
