@@ -1,43 +1,29 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, Modal} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import styled, {DefaultTheme, withTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {ScrollView} from 'react-native-gesture-handler';
 
 //LIBRARIES
-import {showAlert, closeAlert} from 'react-native-customisable-alert';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
 //ROUTES
 import {RootState} from 'src/state/reducers';
 import ROUTES from '../../routes/Routes';
-import {actions} from '../../state/actions';
 import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
 import {imagesURI} from '../../utils/workoutsImages';
-import {formatDateToDate, formatDateToTime} from '../../utils/dateFormating';
-//UTILS-DATABASE
-import {
-  getUserByUid,
-  addAttendee,
-  removeAattendee,
-} from '../../utils/firebase/firebaseDatabaseAPI';
-//INTERFACES
-import {IAttendee, IWodTime} from 'src/state/wods/wodsInterface';
+import {formatDateToDate} from '../../utils/dateFormating';
 //COMPONENTS
-import ConfirmationModal from '../../components/Modals/ConfirmationModal';
-import WodTimeInfo from '../../components/WodTimeInfo';
-import SmallBtn from '../../components/Buttons/SmallBtn';
-import {IUser} from 'src/state/user/userInterface';
-import {ScrollView} from 'react-native-gesture-handler';
+import RenderItemToWorkoutsList from '../../components/RenderItems/RenderItemToWorkoutsList';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -50,10 +36,8 @@ interface IWodsListViewProps {
 
 const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   const {t} = useTranslation();
-  const dispatch = useDispatch();
 
   //GLOBAL STATES
-  const user = useSelector((state: RootState) => state.user.user);
   const wods = useSelector((state: RootState) => state.wods.wods);
 
   //LOCAL STATES
@@ -66,7 +50,6 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   //VARIABLES
   let today = new Date();
   const todayDate = formatDateToDate(today);
-  const todayTime = formatDateToTime(today);
 
   const sortedWodsByDate = wods.sort((a, b) => {
     return a.date < b.date ? -1 : 1;
@@ -105,141 +88,6 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
   }, [showWodIndex]);
 
   useEffect(() => {}, [wodAttendees]);
-
-  //FUNCTIONS
-  const handleRegister = (index: number) => {
-    if (
-      disabledRegisterOrCancel ||
-      (sortedWodsByDate[showWodIndex].date === todayDate &&
-        sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
-          todayTime)
-    ) {
-      dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
-    } else {
-      showAlert({
-        alertType: 'custom',
-        customAlert: (
-          <ConfirmationModal
-            confirmText={t('wods:register')}
-            alertText={t('wods:willBeRegister')}
-            onCancelPress={() => closeAlert()}
-            onConfirmPress={() => {
-              const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
-              addAttendee(url, {
-                uid: user.uid,
-              });
-              closeAlert();
-            }}
-          />
-        ),
-      });
-    }
-  };
-
-  const handleUnregister = (index: number) => {
-    if (
-      disabledRegisterOrCancel ||
-      (sortedWodsByDate[showWodIndex].date === todayDate &&
-        sortedWodsByDate[showWodIndex].data.times[index].wodTime + 1 <
-          todayTime)
-    ) {
-      dispatch(actions.messages.setErrorMessage('wodTimeIsPassed'));
-    } else {
-      showAlert({
-        alertType: 'custom',
-        customAlert: (
-          <ConfirmationModal
-            confirmText={t('wods:yesCancel')}
-            alertText={t('wods:willBeUnregister')}
-            onCancelPress={() => closeAlert()}
-            onConfirmPress={() => {
-              const url = `/WODs/${sortedWodsByDate[showWodIndex].date}/${sortedWodsByDate[showWodIndex].data.type}/times/${index}/attendees`;
-              removeAattendee(url, user.uid);
-              closeAlert();
-            }}
-          />
-        ),
-      });
-    }
-  };
-
-  const showAttendees = async (itemAttendees: IAttendee[]) => {
-    if (itemAttendees) {
-      let attendees: {
-        uid: string;
-        name: string;
-        surname: string;
-        imageUrl: string;
-      }[] = [];
-
-      await Promise.all(
-        itemAttendees.map(async attendee => {
-          let user: IUser = await getUserByUid(attendee.uid);
-          attendees.push({
-            uid: user.uid,
-            name: user.name,
-            surname: user.surname,
-            imageUrl: user.imageUrl,
-          });
-        }),
-      );
-
-      setWodAttendees(attendees);
-      setShowModal(true);
-    } else {
-      setShowModal(true);
-    }
-  };
-
-  const renderItem = ({item, index}: {item: IWodTime; index: number}) => {
-    let attendees: IAttendee[] = [];
-    if (item.attendees) {
-      attendees = item.attendees;
-    }
-
-    return (
-      <ScheduleItem>
-        <WodTimeInfo
-          wodTime={item.wodTime}
-          coachName={item.coachName}
-          wodRoom={item.wodRoom}
-        />
-        <ScheduleActions>
-          {Object.values(attendees).filter(item => item.uid === user.uid)
-            .length === 0 ? (
-            <SmallBtn
-              text={t('wods:register')}
-              bgColor={theme.appColors.primaryColorLighter}
-              border={false}
-              onPress={() => {
-                handleRegister(index);
-              }}
-            />
-          ) : (
-            <SmallBtn
-              text={t('wods:cancel')}
-              bgColor={theme.appColors.backgroundColor}
-              border={true}
-              onPress={() => {
-                handleUnregister(index);
-              }}
-            />
-          )}
-
-          {user.admin && (
-            <SmallBtn
-              text={t('admin:attendees')}
-              bgColor={theme.appColors.primaryColorDarken}
-              border={false}
-              onPress={() => {
-                showAttendees(item.attendees);
-              }}
-            />
-          )}
-        </ScheduleActions>
-      </ScheduleItem>
-    );
-  };
 
   return (
     <Container>
@@ -332,7 +180,16 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
             <FlatList
               data={sortedWodsByDate[showWodIndex].data.times}
               keyExtractor={item => item.wodTime}
-              renderItem={renderItem}
+              renderItem={({item, index}) => (
+                <RenderItemToWorkoutsList
+                  item={item}
+                  index={index}
+                  sortedWodByDate={sortedWodsByDate[showWodIndex]}
+                  disabledRegisterOrCancel={disabledRegisterOrCancel}
+                  setShowModal={setShowModal}
+                  setWodAttendees={setWodAttendees}
+                />
+              )}
             />
           </ScheduleList>
           <Modal visible={showModal} transparent={true}>
@@ -492,19 +349,6 @@ const ScheduleList = styled.View`
   width: 90%;
 `;
 
-const ScheduleItem = styled.View`
-  margin: 10px 0px;
-  padding: 15px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 5px;
-  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
-  width: 100%;
-`;
-
-const ScheduleActions = styled.View``;
-
 const ModalLayout = styled.View`
   flex: 1;
   justify-content: center;
@@ -515,7 +359,7 @@ const ModalLayout = styled.View`
 const ModalDisplay = styled.View`
   padding: 20px;
   height: 85%;
-  width: 85%;
+  width: 90%;
   border-radius: 10px;
   justify-content: flex-start;
   background-color: ${({theme}) => theme.appColors.backgroundColor};

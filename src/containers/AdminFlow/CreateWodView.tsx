@@ -19,11 +19,12 @@ import {createWodSchema} from '../../utils/formsValidations';
 import {formatDateToDate} from '../../utils/dateFormating';
 //UTILS-DATABASE
 import {createWod} from '../../utils/firebase/firebaseDatabaseAPI';
+//INTERFACES
+import {InewWod} from 'src/state/wods/wodsInterface';
 //COMPONENTS
 import Button from '../../components/Buttons/Button';
 import FormInput from '../../components/Inputs/FormInput';
 import CreateWodTimesForm from '../../components/Formik/CreateWodTimesForm';
-import {InewWod} from 'src/state/wods/wodsInterface';
 
 type CreateWodScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -40,9 +41,9 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
 
   //STATES
   const newWod: InewWod = useSelector((state: RootState) => state.wods.newWod);
-
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
+  //EFFECTS
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       dispatch(actions.messages.clearMessages());
@@ -51,6 +52,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
     return unsubscribe;
   }, [navigation]);
 
+  //FUNCTIONS:
   //DATE TIME PICKER
   const showDateTimePicker = () => {
     setIsDatePickerVisible(true);
@@ -195,7 +197,6 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                   isVisible={isDatePickerVisible}
                   onConfirm={date => {
                     handleDatePicked(date);
-
                     dispatch(
                       actions.wods.setNewWod({
                         ...newWod,

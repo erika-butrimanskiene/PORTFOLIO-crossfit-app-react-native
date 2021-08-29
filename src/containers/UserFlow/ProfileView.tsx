@@ -15,7 +15,7 @@ import storage from '@react-native-firebase/storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {AreaChart, YAxis} from 'react-native-svg-charts';
+import {AreaChart, YAxis, Grid} from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
 //ROUTES
@@ -194,7 +194,7 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
                 numberOfTicks={3}
                 min={0}
                 formatLabel={(value, index) => value}
-                contentInset={{top: 15, bottom: 10}}
+                contentInset={{top: 15, bottom: 5}}
                 svg={{
                   fontSize: 15,
                   fill: theme.appColors.textColorLightGray,
@@ -208,11 +208,17 @@ const ProfileView: React.FC<IProfileViewProps> = ({theme}) => {
                   marginBottom: 10,
                 }}
                 data={lastTwelveEveryMonthWodsLenght}
-                contentInset={{top: 15, bottom: 15}}
+                contentInset={{top: 15, bottom: 0}}
                 curve={shape.curveNatural}
                 svg={{
                   fill: theme.appColors.primaryColorLighter,
-                }}></AreaChart>
+                }}>
+                <Grid
+                  svg={{
+                    stroke: theme.appColors.backgroundColorLighter,
+                    strokeOpacity: 0.9,
+                  }}></Grid>
+              </AreaChart>
             </ActivityChart>
             <ActivityChartTitle>
               wods number of last 12 months/per month
@@ -312,7 +318,7 @@ const Activity = styled.View`
 const ActivityChart = styled.View`
   margin-top: 10px;
   padding-top: 30px;
-  margin-right: 20px;
+  margin-right: 10px;
   flex-direction: row;
 `;
 

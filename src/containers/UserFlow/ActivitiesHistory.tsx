@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {FlatList, Modal, ActivityIndicator, Text} from 'react-native';
+import {FlatList, Modal, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
@@ -12,7 +12,6 @@ import {actions} from '../../state/actions';
 import {RootStackParamList} from 'src/routes/Interface';
 //UTILS
 import {getUserPreviousWods} from '../../utils/getUserFilteredWods';
-import {imagesURI} from '../../utils/workoutsImages';
 //UTILS-DATABASE
 import {
   getWorkoutById,
@@ -22,6 +21,7 @@ import {
 import {IuserWod} from 'src/state/user/userInterface';
 //COMPONENTS
 import Link from '../../components/Links/Link';
+import RenderItemToActivitiesHistory from '../../components/RenderItems/RenderItemToActivitiesHistory';
 
 type ActivitiesHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -109,55 +109,15 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
   };
 
   const renderItem = ({item, index}: {item: IuserWod; index: number}) => {
-    const imageIndex = index - Math.floor(index / 7) * 7;
-    const image = imagesURI[imageIndex];
-
     return (
-      <WodItem>
-        <WodDate>{item.wodDate}</WodDate>
-        <WodInfo>
-          <WorkoutName>{item.workoutName}</WorkoutName>
-          <ButtonContainer>
-            {isResultEntered.length !== 0 && isResultEntered[index] ? (
-              <ButtonDisabled disabled={true}>
-                <ButtonText>{t('user:resultExist')}</ButtonText>
-              </ButtonDisabled>
-            ) : (
-              <ButtonEnter
-                onPress={() => {
-                  setSelectedUserWod(item);
-                  setShowModal(true);
-                }}>
-                <ButtonText>{t('user:enterResult')}</ButtonText>
-              </ButtonEnter>
-            )}
-          </ButtonContainer>
-        </WodInfo>
-        <Actions>
-          <Link
-            theme={theme}
-            text={t('wods:aboutWorkout')}
-            onPress={async () => {
-              let data = await getWorkoutById(item.workoutId);
-
-              navigation.navigate(ROUTES.WodDetail, {
-                workout: data,
-                image: image,
-              });
-            }}
-          />
-          <Link
-            theme={theme}
-            text={t('wods:results')}
-            onPress={async () => {
-              let data = await getWorkoutById(item.workoutId);
-              navigation.navigate(ROUTES.WorkoutResults, {
-                workout: data,
-              });
-            }}
-          />
-        </Actions>
-      </WodItem>
+      <RenderItemToActivitiesHistory
+        item={item}
+        index={index}
+        navigation={navigation}
+        setShowModal={setShowModal}
+        setSelectedUserWod={setSelectedUserWod}
+        isResultEntered={isResultEntered}
+      />
     );
   };
 
@@ -258,70 +218,6 @@ const Title = styled.Text`
 const FlatListContainer = styled.View`
   width: 85%;
   margin-bottom: 150px;
-`;
-
-const WodItem = styled.View`
-  width: 100%;
-  justify-content: center;
-`;
-
-const WodDate = styled.Text`
-  width: 100%;
-  text-align: center;
-  margin: 20px 0px 0px 0px;
-  border-radius: 5px;
-  padding: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const WodInfo = styled.View`
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px 0px;
-  padding: 15px;
-  border-radius: 5px;
-  background-color: ${({theme}) => theme.appColors.backgroundColorLighter};
-`;
-
-const WorkoutName = styled.Text`
-  width: 60%;
-  font-size: 23px;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const ButtonContainer = styled.View`
-  max-width: 50%;
-  justify-content: flex-end;
-`;
-
-const ButtonEnter = styled.TouchableOpacity`
-  border-radius: 5px;
-  padding: 5px;
-  background-color: ${({theme}) => theme.appColors.accentColor};
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonDisabled = styled.TouchableOpacity`
-  border-radius: 5px;
-  padding: 5px;
-  background-color: ${({theme}) => theme.appColors.backgroundColor};
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonText = styled.Text`
-  font-size: 20px;
-  color: ${({theme}) => theme.appColors.whiteColor};
-`;
-
-const Actions = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
 `;
 
 const ModalLayout = styled.View`
