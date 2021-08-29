@@ -79,64 +79,68 @@ const ActivityBoardView: React.FC<IActivityBoardViewProps> = ({
   return (
     <Container>
       <Title>{t('user:upcomingWods')}</Title>
-      <Scroll>
-        <Wods>
-          {filteredWodsList.map((wod, index) => {
-            const imageIndex = index - Math.floor(index / 7) * 7;
-            const image = imagesURI[imageIndex];
+      {filteredWodsList.length > 0 ? (
+        <Scroll>
+          <Wods>
+            {filteredWodsList.map((wod, index) => {
+              const imageIndex = index - Math.floor(index / 7) * 7;
+              const image = imagesURI[imageIndex];
 
-            if (wod.wodTimes.length !== 0) {
-              return (
-                <Wod key={index}>
-                  <WodDate>{wod.wodDate}</WodDate>
-                  <WodTimes>
-                    {wod.wodTimes.map((item, index) => (
-                      <WodTime key={index}>
-                        <WodTimeInfo
-                          wodTime={item.wodTime}
-                          coachName={item.coachName}
-                          wodRoom={item.wodRoom}
-                        />
-                        <UnregisterBtn
-                          onPress={() => {
-                            const wodByDate = wods.filter(
-                              item => item.date === wod.wodDate,
-                            );
-                            let timeIndex = findWodTimeIndex(
-                              wodByDate,
-                              item.wodTime,
-                            );
-                            handleUnregister(
-                              wod.wodDate,
-                              wod.wodType,
-                              timeIndex,
-                            );
-                          }}>
-                          <UnregisterText>{t('wods:cancel')}</UnregisterText>
-                        </UnregisterBtn>
-                      </WodTime>
-                    ))}
-                  </WodTimes>
-                  <LinkContainer>
-                    <Link
-                      theme={theme}
-                      text={t('wods:aboutWorkout')}
-                      onPress={async () => {
-                        let data = await getWorkoutById(wod.workoutId);
+              if (wod.wodTimes.length !== 0) {
+                return (
+                  <Wod key={index}>
+                    <WodDate>{wod.wodDate}</WodDate>
+                    <WodTimes>
+                      {wod.wodTimes.map((item, index) => (
+                        <WodTime key={index}>
+                          <WodTimeInfo
+                            wodTime={item.wodTime}
+                            coachName={item.coachName}
+                            wodRoom={item.wodRoom}
+                          />
+                          <UnregisterBtn
+                            onPress={() => {
+                              const wodByDate = wods.filter(
+                                item => item.date === wod.wodDate,
+                              );
+                              let timeIndex = findWodTimeIndex(
+                                wodByDate,
+                                item.wodTime,
+                              );
+                              handleUnregister(
+                                wod.wodDate,
+                                wod.wodType,
+                                timeIndex,
+                              );
+                            }}>
+                            <UnregisterText>{t('wods:cancel')}</UnregisterText>
+                          </UnregisterBtn>
+                        </WodTime>
+                      ))}
+                    </WodTimes>
+                    <LinkContainer>
+                      <Link
+                        theme={theme}
+                        text={t('wods:aboutWorkout')}
+                        onPress={async () => {
+                          let data = await getWorkoutById(wod.workoutId);
 
-                        navigation.navigate(ROUTES.WodDetail, {
-                          workout: data,
-                          image: image,
-                        });
-                      }}
-                    />
-                  </LinkContainer>
-                </Wod>
-              );
-            }
-          })}
-        </Wods>
-      </Scroll>
+                          navigation.navigate(ROUTES.WodDetail, {
+                            workout: data,
+                            image: image,
+                          });
+                        }}
+                      />
+                    </LinkContainer>
+                  </Wod>
+                );
+              }
+            })}
+          </Wods>
+        </Scroll>
+      ) : (
+        <NoActivitiesMessage>{t('user:noActivities')}</NoActivitiesMessage>
+      )}
     </Container>
   );
 };
@@ -220,6 +224,13 @@ const UnregisterText = styled.Text`
 const LinkContainer = styled.View`
   width: 100%;
   justify-content: center;
+`;
+
+const NoActivitiesMessage = styled.Text`
+  margin: 25px;
+  font-size: 21px;
+  font-style: italic;
+  color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
 export default withTheme(ActivityBoardView);

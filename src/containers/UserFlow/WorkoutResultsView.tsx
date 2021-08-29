@@ -35,11 +35,27 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
       result => result.attendeeId === user.uid,
     );
 
-    if (isUserResults && userResults.length > 0) {
+    if (isUserResults) {
+      if (userResults.length > 0) {
+        return (
+          <ResultByDate>
+            <Date>{item}</Date>
+            {userResults.map(item => (
+              <Result key={item.attendeeId}>
+                <AttendeeInfo>
+                  {item.attendeeName} {item.attendeeSurname}
+                </AttendeeInfo>
+                <AttendeeResult>{item.result}</AttendeeResult>
+              </Result>
+            ))}
+          </ResultByDate>
+        );
+      }
+    } else {
       return (
         <ResultByDate>
           <Date>{item}</Date>
-          {userResults.map(item => (
+          {workout.data.results[item].map(item => (
             <Result key={item.attendeeId}>
               <AttendeeInfo>
                 {item.attendeeName} {item.attendeeSurname}
@@ -50,20 +66,6 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
         </ResultByDate>
       );
     }
-
-    return (
-      <ResultByDate>
-        <Date>{item}</Date>
-        {workout.data.results[item].map(item => (
-          <Result key={item.attendeeId}>
-            <AttendeeInfo>
-              {item.attendeeName} {item.attendeeSurname}
-            </AttendeeInfo>
-            <AttendeeResult>{item.result}</AttendeeResult>
-          </Result>
-        ))}
-      </ResultByDate>
-    );
   };
 
   return (
@@ -97,7 +99,9 @@ const WorkoutResultsView: React.FC<IWorkoutResultsViewProps> = ({
       <ResultsList>
         {workout.data.results && (
           <FlatList
-            data={Object.keys(workout.data.results)}
+            data={Object.keys(workout.data.results).sort((a, b) => {
+              return a > b ? -1 : 1;
+            })}
             keyExtractor={(item, index) => index.toString()}
             renderItem={renderItem}
           />
@@ -155,8 +159,9 @@ const SwitchResults = styled.View`
 `;
 
 const ResultsList = styled.View`
+  flex: 1;
   width: 90%;
-  margin-bottom: 360px;
+  margin-bottom: 20px;
 `;
 
 const ResultByDate = styled.View`

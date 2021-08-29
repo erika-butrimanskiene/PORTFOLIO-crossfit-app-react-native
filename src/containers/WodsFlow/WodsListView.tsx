@@ -428,7 +428,9 @@ const Day = styled(Animated.Text)`
   color: ${({theme}) => theme.appColors.whiteColor};
 `;
 
-const ScheduledWods = styled(Animated.View)``;
+const ScheduledWods = styled(Animated.View)`
+  flex: 1;
+`;
 
 const ImageContainer = styled.View`
   margin: 30px 0px;
@@ -486,8 +488,8 @@ const DetailsText = styled.Text`
 `;
 
 const ScheduleList = styled.View`
+  flex: 1;
   width: 90%;
-  margin-bottom: 360px;
 `;
 
 const ScheduleItem = styled.View`
@@ -559,7 +561,7 @@ const WodAttendeeName = styled.Text`
 const NoAttendeesMessage = styled.Text`
   font-size: 20px;
   text-align: center;
-  color: ${({theme}) => theme.appColors.backgroundColor};
+  color: ${({theme}) => theme.appColors.textColorLightGray};
 `;
 
 const NoWodsMessage = styled.Text`

@@ -249,7 +249,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
 
 const Container = styled.View`
   flex: 1;
-  padding-top: 70px;
+  padding-top: 60px;
   font-size: 20px;
   align-items: center;
   justify-content: center;
@@ -288,6 +288,7 @@ const ErrorText = styled.Text`
 `;
 
 const CreateButtonContainer = styled.View`
+  margin-bottom: 60px;
   align-items: center;
   width: 100%;
 `;

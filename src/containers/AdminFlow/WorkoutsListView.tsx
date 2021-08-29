@@ -225,8 +225,8 @@ const ButtonContainer = styled.View`
 `;
 
 const FlatListContainer = styled.View`
+  flex: 1;
   width: 85%;
-  margin-bottom: 180px;
 `;
 
 const WorkoutItem = styled.View`
@@ -234,7 +234,9 @@ const WorkoutItem = styled.View`
   align-items: center;
   margin: 10px 0px;
   border-radius: 3px;
-  border-left-width: 10px;
+  /* border-top-width: 5px;
+  border-top-color: ${({theme}) => theme.appColors.accentColor}; */
+  border-left-width: 5px;
   border-left-color: ${({theme}) => theme.appColors.accentColor};
   min-height: 100px;
   background-color: ${({theme}) => theme.appColors.backgroundColorLighter};

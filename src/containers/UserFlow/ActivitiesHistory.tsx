@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {FlatList, Modal, ActivityIndicator, Text} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -161,6 +161,9 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
     );
   };
 
+  //USEMEMO
+  const memoizedValue = useMemo(() => renderItem, [filteredWodsList]);
+
   if (!onSync) {
     return (
       <Container>
@@ -171,7 +174,7 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
               <FlatList
                 data={filteredWodsList}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={renderItem}
+                renderItem={memoizedValue}
               />
             </FlatListContainer>
             <Modal visible={showModal} transparent={true}>
