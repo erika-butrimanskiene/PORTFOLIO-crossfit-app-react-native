@@ -1,4 +1,3 @@
-import {IlogoutUser} from 'src/state/user/userInterface';
 import {IWorkoutState} from 'src/state/workouts/workoutsInterface';
 import ROUTES from './Routes';
 

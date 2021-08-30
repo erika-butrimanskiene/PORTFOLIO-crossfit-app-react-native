@@ -59,6 +59,7 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
         <LoginForm>
           <Heading>{t('login:SignIn')}</Heading>
           <Formik
+          
             initialValues={{email: '', password: ''}}
             validationSchema={loginSchema}
             onSubmit={values => {

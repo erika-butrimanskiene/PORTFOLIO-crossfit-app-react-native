@@ -14,7 +14,6 @@ export const configStore = (initialState = {}) => {
     const Reactotron = initReactotron();
     sagaMonitor = Reactotron.createSagaMonitor();
     reactorEnhancer = Reactotron.createEnhancer();
-    // console.tron = Reactotron;
   } else {
     // console.tron = {log: (): null => null, error: (): null => null};
   }
@@ -22,16 +21,16 @@ export const configStore = (initialState = {}) => {
   const appliedMiddleware = applyMiddleware(sagaMiddleware);
   const enhancers = compose(...compact([appliedMiddleware, reactorEnhancer]));
 
-  //  const store = createStore(rootReducer, initialState, enhancers as any);
   const persistConfig = {
     key: 'persistedReducer',
     storage: AsyncStorage,
     blacklist: ['wods', 'user', 'ui', 'messages', 'workouts'],
   };
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-  const store = createStore(persistedReducer, initialState, enhancers as any);
 
+  const store = createStore(persistedReducer, initialState, enhancers as any);
   const persistor = persistStore(store);
   sagaMiddleware.run(rootSaga);
+
   return {store, persistor};
 };

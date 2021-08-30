@@ -21,21 +21,19 @@ function* handleRegistration(action: {
     confirmPassword: string;
     userName: string;
     userSurname: string;
+    setSubmitting: any;
   };
   type: string;
 }) {
   try {
-    yield put(actions.ui.setOnSync(true));
-
     const response: IFirebaseAuth = yield call(
       register,
       action.payload.email,
       action.payload.password,
     );
 
-    //yield put(actions.ui.setOnSync(false));
-
     if (response.status === true) {
+      yield put(actions.ui.setOnSync(true));
       storage()
         .ref(`usersPhotos/defaultPhoto.png`)
         .getDownloadURL()
@@ -48,21 +46,19 @@ function* handleRegistration(action: {
             admin: false,
           });
         });
-
-      //create user in fireabase realtimeDB
-
       yield put(actions.messages.clearMessages());
 
       yield fork(watchUser, response.uid);
       yield fork(watchWods);
+      return {status: true};
     }
 
     if (response.status === false) {
       yield put(actions.ui.setOnSync(false));
       throw response;
+      return {status: false, code: response.code};
     }
   } catch (e) {
-    console.log(e);
     switch (e.code) {
       case 'auth/account-exists-with-different-credential':
       case 'auth/credential-already-in-use':
@@ -75,6 +71,7 @@ function* handleRegistration(action: {
       default:
         yield put(actions.messages.setErrorMessage('auth/unknown'));
     }
+    action.payload.setSubmitting(false);
   }
 }
 
@@ -83,8 +80,6 @@ function* handleLogin({payload: {email, password}}: AnyAction) {
     yield put(actions.ui.setOnSync(true));
 
     const response: IFirebaseAuth = yield call(login, email, password);
-
-    //yield put(actions.ui.setOnSync(false));
 
     if (response.status === true) {
       yield put(actions.messages.clearMessages());
@@ -117,17 +112,14 @@ function* handleLoginFacebook() {
     const response: IFirebaseAuth = yield call(fbLogin);
 
     if (response.status === true) {
-      database
-        .ref(`/users/${response.uid}`)
-        .set({
-          email: `${response.email}`,
-          name: `${response.name}`,
-          surname: `${response.surname}`,
-          imageUrl: `${response.imageUrl}`,
-          admin: false,
-        })
-        .then(yield fork(watchUser, response.uid));
-
+      database.ref(`/users/${response.uid}`).set({
+        email: `${response.email}`,
+        name: `${response.name}`,
+        surname: `${response.surname}`,
+        imageUrl: `${response.imageUrl}`,
+        admin: false,
+      });
+      yield fork(watchUser, response.uid);
       yield fork(watchWods);
     }
 
@@ -146,6 +138,7 @@ function* handleLogout() {
     yield put(actions.ui.setOnSync(true));
     const response: IFirebaseAuth = yield call(logout);
     yield put(actions.ui.setOnSync(false));
+
     if (response.status === true) {
       yield put(actions.user.setUserClear());
     }

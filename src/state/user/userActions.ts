@@ -24,6 +24,7 @@ const getUserAtRegister = (
   confirmPassword: string,
   userName: string,
   userSurname: string,
+  setSubmitting: any,
 ): IgetUserAtRegister => {
   return {
     type: constants.user.GET_USER_AT_REGISTER,
@@ -33,6 +34,7 @@ const getUserAtRegister = (
       confirmPassword,
       userName,
       userSurname,
+      setSubmitting,
     },
   };
 };

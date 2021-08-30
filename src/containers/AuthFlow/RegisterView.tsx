@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Text, StatusBar, ScrollView, ActivityIndicator} from 'react-native';
+import {StatusBar, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
@@ -35,6 +35,9 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
   //STATES
   const onSync = useSelector((state: RootState) => state.ui.onSync);
   const user = useSelector((state: RootState) => state.user.user);
+  const errorMsg = useSelector(
+    (state: RootState) => state.messages.authErrorMsg,
+  );
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -61,9 +64,10 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
               passwordConfirm: '',
             }}
             validationSchema={registerSchema}
-            onSubmit={values => {
+            onSubmit={(values, onSubmitProps) => {
               const {userName, userSurname, email, password, passwordConfirm} =
                 values;
+
               dispatch(
                 actions.user.getUserAtRegister(
                   email,
@@ -71,6 +75,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
                   passwordConfirm,
                   userName,
                   userSurname,
+                  onSubmitProps.setSubmitting,
                 ),
               );
             }}>

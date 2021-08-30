@@ -35,6 +35,7 @@ export interface IhandleRegistrationPayload {
   confirmPassword: string;
   userName: string;
   userSurname: string;
+  setSubmitting?: any;
 }
 
 export interface IgetUserAtRegister {

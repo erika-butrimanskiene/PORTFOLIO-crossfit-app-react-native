@@ -1,7 +1,7 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
 import {actions} from '../actions';
 import {constants} from '../constants';
-import {IsetWodsList, IWodState} from './wodsInterface';
+import {IsetWodsList} from './wodsInterface';
 import {getUserWods} from '../../utils/getUserWods';
 import auth from '@react-native-firebase/auth';
 

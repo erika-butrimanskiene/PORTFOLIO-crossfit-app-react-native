@@ -68,10 +68,9 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
         }),
       );
       setIsResultEntered([...resultArray]);
+      dispatch(actions.ui.setOnSync(false));
     };
     checkIsResultEntered();
-
-    dispatch(actions.ui.setOnSync(false));
   }, [showModal]);
 
   //FUNCTIONS
@@ -182,7 +181,7 @@ const ActivitiesHistoryView: React.FC<IActivitiesHistoryViewProps> = ({
 
   return (
     <OnSyncContainer>
-      <ActivityIndicator size={60} color="#ffffff" />
+      <ActivityIndicator size={40} color="#ffffff" />
     </OnSyncContainer>
   );
 };
