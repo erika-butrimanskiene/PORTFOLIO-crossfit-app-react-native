@@ -59,12 +59,10 @@ const LoginView: React.FC<ILoginViewProps> = ({navigation, theme}) => {
         <LoginForm>
           <Heading>{t('login:SignIn')}</Heading>
           <Formik
-          
             initialValues={{email: '', password: ''}}
             validationSchema={loginSchema}
             onSubmit={values => {
               const {email, password} = values;
-              dispatch(actions.ui.setOnSync(true));
               dispatch(actions.user.getUserAtLogin(email, password));
             }}>
             {formikProps => {

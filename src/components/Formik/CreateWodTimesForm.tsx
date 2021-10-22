@@ -41,6 +41,7 @@ const CreateWodTimesForm: React.FC<ICreateWodTimesFormProps> = ({theme}) => {
           ...newWod.wodTimes,
           {wodTime, wodRoom, coachName, attendeesNumber},
         ],
+
         wodTime: '',
         wodRoom: '',
         coachName: '',

@@ -141,14 +141,6 @@ const HomeView: React.FC<IHomeViewProps> = ({theme, navigation, route}) => {
                 />
 
                 <HomeViewLink
-                  image={imagesURI[0]}
-                  onPress={() => navigation.navigate(ROUTES.WorkoutsList)}
-                  text={t('admin:workoutsList')}
-                  admin={true}
-                  timeoutForAnimation={2000}
-                />
-
-                <HomeViewLink
                   image={imagesURI[4]}
                   onPress={() => navigation.navigate(ROUTES.CreateWod)}
                   text={t('admin:createWod')}

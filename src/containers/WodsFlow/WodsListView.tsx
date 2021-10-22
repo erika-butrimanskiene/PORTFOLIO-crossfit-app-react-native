@@ -23,7 +23,7 @@ import {RootStackParamList} from 'src/routes/Interface';
 import {imagesURI} from '../../utils/workoutsImages';
 import {formatDateToDate} from '../../utils/dateFormating';
 //COMPONENTS
-import RenderItemToWorkoutsList from '../../components/RenderItems/RenderItemToWorkoutsList';
+import RenderItemToWodsList from '../../components/RenderItems/RenderItemToWodsList';
 
 type WodsListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -181,7 +181,7 @@ const WodsListView: React.FC<IWodsListViewProps> = ({theme, navigation}) => {
               data={sortedWodsByDate[showWodIndex].data.times}
               keyExtractor={item => item.wodTime}
               renderItem={({item, index}) => (
-                <RenderItemToWorkoutsList
+                <RenderItemToWodsList
                   item={item}
                   index={index}
                   sortedWodByDate={sortedWodsByDate[showWodIndex]}

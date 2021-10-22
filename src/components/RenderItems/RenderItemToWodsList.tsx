@@ -20,9 +20,9 @@ import {
 import {IAttendee, IWodState, IWodTime} from '../../state/wods/wodsInterface';
 import {IUser} from '../../state/user/userInterface';
 //COMPONENTS
-import WodTimeInfo from '../../components/WodTimeInfo';
-import SmallBtn from '../../components/Buttons/SmallBtn';
-import ConfirmationModal from '../../components/Modals/ConfirmationModal';
+import WodTimeInfo from '../WodTimeInfo';
+import SmallBtn from '../Buttons/SmallBtn';
+import ConfirmationModal from '../Modals/ConfirmationModal';
 
 interface IRenderItemToWorkoutsList {
   theme: DefaultTheme;

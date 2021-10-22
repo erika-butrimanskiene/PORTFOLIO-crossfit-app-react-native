@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Keyboard} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled, {withTheme, DefaultTheme} from 'styled-components/native';
 import {useTranslation} from 'react-i18next';
@@ -30,6 +30,7 @@ const ForgotPasswordView: React.FC<IForgotPasswordViewProps> = ({theme}) => {
       if (response.status) {
         dispatch(actions.messages.setSuccessMessage('passwordReset'));
         setEmail('');
+        Keyboard.dismiss();
       } else {
         dispatch(actions.messages.setErrorMessage(response.code));
       }

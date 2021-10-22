@@ -67,7 +67,7 @@ const RegisterView: React.FC<IRegisterViewProps> = ({theme, navigation}) => {
             onSubmit={(values, onSubmitProps) => {
               const {userName, userSurname, email, password, passwordConfirm} =
                 values;
-
+              dispatch(actions.ui.setOnSync(true));
               dispatch(
                 actions.user.getUserAtRegister(
                   email,

@@ -64,7 +64,7 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
             exercises: newWorkout.exercises,
           }}
           validationSchema={createWorkoutSchema}
-          onSubmit={(values, {resetForm}) => {
+          onSubmit={(values, {resetForm, setFieldValue}) => {
             const {
               workoutName,
               workoutWeights,
@@ -83,6 +83,12 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
               dispatch(actions.messages.setSuccessMessage('successCreate'));
               resetForm();
               dispatch(actions.workouts.clearNewWorkout());
+
+              setFieldValue('workoutName', '');
+              setFieldValue('workoutType', '');
+              setFieldValue('countResultOf', '');
+              setFieldValue('workoutWeights', '');
+              setFieldValue('exercises', ['']);
             } catch (e) {
               console.log(e);
             }
@@ -187,10 +193,13 @@ const CreateWorkoutView: React.FC<ICreateWorkoutViewProps> = ({
                               <FormInput
                                 value={formikProps.values.exercises[index]}
                                 onChangeText={(text: string) => {
+                                  let newExercises = [...exercises];
+                                  newExercises[index] = text;
+
                                   dispatch(
                                     actions.workouts.setNewWorkout({
                                       ...newWorkout,
-                                      exercises: [...exercises, text],
+                                      exercises: [...newExercises],
                                     }),
                                   );
                                   return formikProps.setFieldValue(

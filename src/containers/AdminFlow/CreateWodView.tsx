@@ -83,7 +83,7 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
             wodName: newWod.wod,
           }}
           validationSchema={createWodSchema}
-          onSubmit={(values, {resetForm}) => {
+          onSubmit={(values, {resetForm, setFieldValue}) => {
             try {
               if (newWod.wodTimes.length !== 0) {
                 if (
@@ -99,6 +99,8 @@ const CreateWodView: React.FC<ICreateWodViewProps> = ({theme, navigation}) => {
                   handleCreateFormSubmit();
                   resetForm();
                   dispatch(actions.wods.clearNewWod());
+                  setFieldValue('wodDate', '');
+                  setFieldValue('wodName', '');
                 }
               } else {
                 dispatch(actions.messages.setErrorMessage('forgotWodTimes'));
